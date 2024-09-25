@@ -1,0 +1,20 @@
+# dune exec LMLCv2
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /home/zach/.cache/dune/db
+# Workspace root: /home/zach/Documents/LMLCv2
+# Auto-detected concurrency: 16
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /home/zach/.opam/default/bin/ocamlc.opt -config > /tmp/dune_9a5be0_output
+$ (cd _build/default && /home/zach/.opam/default/bin/ocamldep.opt -modules -impl lib/lang.ml) > _build/default/lib/.LMLCv2.objs/lMLCv2__Lang.impl.d
+$ (cd _build/default && /home/zach/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I lib/.LMLCv2.objs/byte -I lib/.LMLCv2.objs/native -intf-suffix .ml -no-alias-deps -opaque -open LMLCv2 -o lib/.LMLCv2.objs/native/lMLCv2__Lang.cmx -c -impl lib/lang.ml)
+$ (cd _build/default && /home/zach/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o lib/LMLCv2.cmxa lib/.LMLCv2.objs/native/lMLCv2.cmx lib/.LMLCv2.objs/native/lMLCv2__Try.cmx lib/.LMLCv2.objs/native/lMLCv2__Lang.cmx lib/.LMLCv2.objs/native/lMLCv2__Transpiler.cmx lib/.LMLCv2.objs/native/lMLCv2__Prettyprint.cmx lib/.LMLCv2.objs/native/lMLCv2__Parser.cmx lib/.LMLCv2.objs/native/lMLCv2__Lexer.cmx lib/.LMLCv2.objs/native/lMLCv2__Executor.cmx)
+$ (cd _build/default && /home/zach/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe lib/LMLCv2.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)

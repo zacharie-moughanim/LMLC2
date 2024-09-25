@@ -1,0 +1,8 @@
+lib: [
+  "_build/install/default/lib/LMLCv2/META"
+  "_build/install/default/lib/LMLCv2/dune-package"
+  "_build/install/default/lib/LMLCv2/opam"
+]
+bin: [
+  "_build/install/default/bin/LMLCv2"
+]

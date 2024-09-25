@@ -1,0 +1,4 @@
+(executable
+ (public_name LMLCv2)
+ (name main)
+ (libraries LMLCv2))

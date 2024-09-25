@@ -1,0 +1,63 @@
+[4mDUNE-HELP[24m(1)                      Dune Manual                     [4mDUNE-HELP[24m(1)
+
+[1mNAME[0m
+       dune-help - Additional Dune help.
+
+[1mSYNOPSIS[0m
+       [1mdune help [22m[[1m--build-info[22m] [[1m--man-format[22m=[4mFMT[24m] [[4mOPTION[24m]… [[4mTOPIC[24m]
+
+[1mDESCRIPTION[0m
+       [1mdune help TOPIC [22mprovides additional help on the given topic. The
+       following topics are available:
+
+       [1mconfig[0m
+           dune-config
+
+[1mOPTIONS[0m
+       [1m--build-info[0m
+           Show build information.
+
+       [1m--man-format[22m=[4mFMT[24m (absent=[1mpager[22m)
+           Show  output  in  format  [4mFMT[24m.  The  value [4mFMT[24m must be one of [1mauto[22m,
+           [1mpager[22m, [1mgroff [22mor [1mplain[22m. With [1mauto[22m, the  format  is  [1mpager  [22mor  [1mplain[0m
+           whenever the [1mTERM [22menv var is [1mdumb [22mor undefined.
+
+[1mCOMMON OPTIONS[0m
+       [1m--help[22m[=[4mFMT[24m] (default=[1mauto[22m)
+           Show  this  help  in format [4mFMT[24m. The value [4mFMT[24m must be one of [1mauto[22m,
+           [1mpager[22m, [1mgroff [22mor [1mplain[22m. With [1mauto[22m, the  format  is  [1mpager  [22mor  [1mplain[0m
+           whenever the [1mTERM [22menv var is [1mdumb [22mor undefined.
+
+       [1m--version[0m
+           Show version information.
+
+[1mEXIT STATUS[0m
+       [1mdune help [22mexits with:
+
+       0   on success.
+
+       1   if an error happened.
+
+       130 if it was interrupted by a signal.
+
+[1mENVIRONMENT[0m
+       These environment variables affect the execution of [1mhelp[22m:
+
+       [1mCLICOLOR[0m
+           If  different  than [1m0[22m, ANSI colors are supported and should be used
+           when the program isn't piped. If equal  to  [1m0[22m,  don't  output  ANSI
+           color escape codes
+
+       [1mCLICOLOR_FORCE[0m
+           If different than [1m0[22m, ANSI colors should be enabled no matter what.
+
+       [1mDUNE_CACHE_ROOT[0m
+           If set, determines the location of the machine-global shared cache.
+
+[1mBUGS[0m
+       Check bug reports at https://github.com/ocaml/dune/issues
+
+[1mSEE ALSO[0m
+       dune(1)
+
+Dune 3.16.0                                                       [4mDUNE-HELP[24m(1)
