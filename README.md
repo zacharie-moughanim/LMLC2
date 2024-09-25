@@ -2,7 +2,7 @@
 LambdaMLCompiler is a transpiler of a subset of Caml toward the λ-calculus.
 
 # Type inference
-Thanks to OCaml, this transpiler has a type checker, which didn't have the version coded in C.
+Thanks to OCaml, this transpiler has a type checker, which the version coded in C cruelly lacks.
 
 # Proof
 This compiler will (hopefully) be proven in Coq, the actual version (in the folder LMLCv2) isn't proved but is meant to resemble the output of the code extraction of the version actually in the Coq code.
