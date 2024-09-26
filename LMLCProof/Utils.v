@@ -53,21 +53,39 @@ Proof. intros n m p. induction n as [|n' IHn'].
   - simpl. rewrite IHn'. reflexivity.
 Qed.
 
+Lemma minus_n_Sm_p : forall n m p : nat,
+  n - S m - p = n - m - S p.
+Proof.
+  intros n. induction n.
+  - reflexivity.
+  - simpl. intros m p. destruct m.
+    + simpl. rewrite minus_n_0. reflexivity.
+    + apply IHn.
+Qed.
+
 Lemma plus_minus_assoc1 : forall n m p : nat,
   n - m - p = n - p - m.
-Proof. intros n m p. induction n as [|n' IHn'].
+Proof. intros n. induction n as [|n' IHn'].
   - simpl. reflexivity.
-  - simpl. destruct m.
+  - simpl. intros m p. destruct m.
     + simpl. destruct p.
       * reflexivity.
       * rewrite minus_n_0. reflexivity.
     + destruct p.
       * rewrite minus_n_0. simpl. reflexivity.
-      * Admitted.
+      * rewrite IHn'. apply minus_n_Sm_p.
+Qed.
 
 
 Example test_plus_minus : forall (a b c : nat), a + b - c - a = b - c.
-Proof. Admitted.
+Proof. 
+  intros a. induction a.
+  - simpl. intros b c. rewrite minus_n_0. reflexivity.
+  - simpl. destruct c.
+    + simpl. assert (H : a + b - 0 - a = b - 0). {apply IHa. } rewrite minus_n_0 in H. apply H.
+    + rewrite <- minus_n_Sm_p.  apply IHa.
+Qed.
+
 
 Lemma find_opt_app1 : forall {X : Type} (l1 l2 : list X) (n : nat),
   find_opt l1 n <> None -> find_opt (l1++l2) n = find_opt l1 n.
