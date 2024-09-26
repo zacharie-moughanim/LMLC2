@@ -37,7 +37,7 @@ Qed.
 
 Search "_ <= _".
 
-
+(* CE LEMME EST FAUX !!! *)
 Lemma le_n_plus_n_m : forall (n m : nat), 0 <= m - 1 -> n <= n + m - 1.
 Proof.
   intros n m.
