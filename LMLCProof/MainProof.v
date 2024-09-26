@@ -22,13 +22,30 @@ Proof. unfold reflexive. intro x. unfold beta_star.
 Qed.
 
 Lemma S_predn : forall (n : nat), n = 0 \/ S (pred n) = n.
-Proof. Admitted.
+Proof. 
+  intros [|n].
+  - simpl. left. reflexivity.
+  - simpl. right. reflexivity.
+Qed.
 
 Lemma pred_minus : forall (n : nat), pred n = n - 1.
-Proof. Admitted.
+Proof.
+  destruct n.
+  - reflexivity.
+  - simpl. rewrite minus_n_0. reflexivity.
+Qed.
+
+Search "_ <= _".
+
 
 Lemma le_n_plus_n_m : forall (n m : nat), 0 <= m - 1 -> n <= n + m - 1.
-Proof. Admitted.
+Proof.
+  intros n m.
+  induction n as [|n' IHn'].
+  - intros H. simpl. apply H.
+  - simpl. intros H. destruct m.
+  + 
+Admitted.
 
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
@@ -49,7 +66,8 @@ Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
         - symmetry. apply H.
       } rewrite Ll1Pos in K. apply le_S_n in K. rewrite pred_minus in K.
       apply le_n_plus_n_m. apply K.
-    + intro n. 
+    + intro n.
+Admitted.
 
 Lemma beta_subset_beta_star : forall (M N : lambda_term), M ->b N -> M ->b* N.
 Proof. intros M N H. unfold beta_star. unfold refl_trans_closure. exists [M;N].
@@ -95,7 +113,6 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
   - intros *. simpl. destruct (eqb x0 x).
     + reflexivity.
     + reflexivity.
-  -
   - intros *. simpl. rewrite IHappl1. rewrite IHappl2. reflexivity.
   - intros *. simpl. destruct (eqb x0 x).
     + reflexivity.
