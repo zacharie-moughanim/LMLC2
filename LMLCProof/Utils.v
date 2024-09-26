@@ -119,7 +119,7 @@ Lemma Succ_n_minus_1 : forall (n : nat), 1 <= n -> S(n-1) = n.
 Proof.
   intros n H.
   destruct n.
-  - rewrite no_positive_less_than_zero in H. contradiction.
+  - apply no_positive_less_than_zero in H. contradiction.
   - simpl. rewrite minus_n_0. reflexivity.
 Qed.
 
@@ -127,11 +127,26 @@ Lemma find_opt_length : forall {X : Type} (l : list X) (n : nat), length l <= n 
 Proof. intro X. induction l as [|h t IHt].
   - intros n H. simpl. destruct n. all : reflexivity.
   - intros n H. simpl in H. simpl. destruct n as [|n'].
-    + rewrite no_positive_less_than_zero in H. exfalso. apply H.
+    + apply no_positive_less_than_zero in H. exfalso. apply H.
     + apply le_S_n in H. apply IHt in H. apply H.
 Qed.
 
+Lemma all_positive_more_than_zero : forall (n : nat), 0 <= n.
+Proof. induction n as [|n' IH].
+  - trivial.
+  - apply le_S. apply IH.
+Qed.
+
 Lemma find_opt_length_2 : forall {X : Type} (l : list X) (n : nat), find_opt l n <> None -> 1 <= length l.
-Proof. Admitted.
+Proof. 
+  intros X l.
+  induction l as [|h tl IHtl].
+  - intros n H. destruct n.
+    + contradiction.
+    + contradiction.
+  - simpl. intros n. destruct n.
+    + intros H. apply le_n_S. apply all_positive_more_than_zero.
+    + intros H. apply IHtl in H. apply le_S. apply H.
+Qed.
 
 
