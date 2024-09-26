@@ -96,6 +96,15 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
     + reflexivity.
     + reflexivity.
   -
+  - intros *. simpl. rewrite IHappl1. rewrite IHappl2. reflexivity.
+  - intros *. simpl. destruct (eqb x0 x).
+    + reflexivity.
+    + simpl. rewrite IHfunbody. reflexivity.
+  - intros *. simpl. destruct (eqb x0 f).
+    + destruct (eqb x0 x).
+      * reflexivity. 
+      * destruct (eqb x0 1).
+        -- simpl. unfold turing_fixpoint_applied. 
 Admitted.
 
 (**
