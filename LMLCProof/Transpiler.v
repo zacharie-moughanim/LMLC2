@@ -1,4 +1,4 @@
-From LMLCProof Require Import Source Object.
+From LMLCProof Require Import Utils Source Object.
 
 Fixpoint lmlc (M : ml_term) : lambda_term := match M with
   | Var x => Lvar x

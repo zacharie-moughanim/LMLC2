@@ -1,8 +1,4 @@
-Fixpoint eqb (n m : nat) : bool := match n, m with
-  | O, O => true
-  | S n', S m' => eqb n' m'
-  | _, _ => false
-end.
+From LMLCProof Require Import Utils.
 
 Definition var : Type := nat.
 

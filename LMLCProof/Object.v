@@ -1,4 +1,4 @@
-From LMLCProof Require Import Source.
+From LMLCProof Require Import Utils Source.
 
 Inductive lambda_term : Type :=
   | Lvar (x : var)
@@ -16,17 +16,6 @@ Fixpoint beta_reduction (M N : lambda_term) : Prop := match M,N with
   | Lappl f arg, Lappl f' arg' => beta_reduction f f' /\ arg = arg' \/ f = f' /\ beta_reduction arg arg'
   | Lappl (Labs x M) N, N' => substitution M N x = N'
   | _, _ => False
-end.
-
-Fixpoint find_opt {X : Type} (l : list X) (n : nat) : option X := match n with
-  | 0 => match l with
-    | nil => None
-    | cons hd tl => Some hd
-  end
-  | S n' => match l with
-    | nil => None
-    | cons hd tl => find_opt tl n'
-  end
 end.
 
 Definition refl_trans_closure {X : Type} (R : X -> X -> Prop) : X -> X -> Prop := fun x y =>

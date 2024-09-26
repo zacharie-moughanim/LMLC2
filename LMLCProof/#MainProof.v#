@@ -6,7 +6,7 @@ Require Import Relation_Definitions.
 
 From LMLCProof Require Import Utils Source Object Transpiler.
 
-(** Beta-Eeduction properties *)
+(** Beta-Reduction properties *)
 
 Lemma beta_red_is_reflexive : reflexive lambda_term (beta_star).
 Proof. unfold reflexive. intro x. unfold beta_star.
@@ -21,12 +21,31 @@ Proof. unfold reflexive. intro x. unfold beta_star.
         ++ reflexivity.
 Qed.
 
+Lemma S_predn : forall (n : nat), S (pred n) = n.
+Proof. Admitted.
+
+Lemma pred_minus : forall (n : nat), pred n = n - 1.
+Proof. Admitted.
+
+Lemma le_n_plus_n_m : forall (n m : nat), 0 <= m - 1 -> n <= n + m - 1.
+Proof. Admitted.
+
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
        intros H G. destruct H as [l0 H]. destruct H as [H1 H2]. destruct H2 as [H2 H3].
                    destruct G as [l1 G]. destruct G as [G1 G2]. destruct G2 as [G2 G3].
        exists (l0 ++ l1). split.
-  - 
+  - assert (K : find_opt l0 0 <> None).
+  { rewrite H1. intro K'. discriminate K'. }
+  apply find_opt_app1 with (l2 := l0)(l3 := l1) in K. rewrite K. rewrite H1. reflexivity.
+  - split.
+    + assert (K : find_opt l1 0 <> None).
+      { rewrite G1. unfold not. intro Htmp. discriminate Htmp. }
+      apply find_opt_length_2 in K. rewrite length_app. rewrite find_opt_app2.
+      { rewrite <- G2. rewrite test_plus_minus. reflexivity. }
+      apply find_opt_length. rewrite <- S_predn in K. apply le_S_n in K. rewrite pred_minus in K.
+      apply le_n_plus_n_m. apply K.
+    + intro n. 
 
 Lemma beta_subset_beta_star : forall (M N : lambda_term), M ->b N -> M ->b* N.
 Proof. intros M N H. unfold beta_star. unfold refl_trans_closure. exists [M;N].
