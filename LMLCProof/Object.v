@@ -65,6 +65,17 @@ Definition church_succ (N : lambda_term) : lambda_term :=
                   (Lvar 1))
             )
            ))).
+Definition church_succ2 (N : lambda_term) : lambda_term :=
+  match N with
+  | Lvar _ => N
+  | Lappl _ _ => N
+  | Labs f N' => (match N' with
+                  | Lvar _ => N
+                  | Lappl _ _ => N
+                  | Labs x N'' => Labs f (Labs x (Lappl (Lvar f) N''))
+                  end)
+end.
+
 Definition church_pred (N : lambda_term) : lambda_term :=
   church_snd
   (Lappl (Lappl N
