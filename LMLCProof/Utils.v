@@ -1,3 +1,5 @@
+Require Import PeanoNat.
+
 Fixpoint eqb (n m : nat) : bool := match n, m with
   | O, O => true
   | S n', S m' => eqb n' m'
@@ -107,8 +109,11 @@ Proof. intros *. generalize dependent n. induction l1 as [|h t IHt].
       * apply IHt in H. simpl. apply H.
 Qed.
 
-Lemma no_positive_less_than_zero : forall (n : nat), S n <= 0 = False.
-Proof. Admitted.
+Lemma no_positive_less_than_zero : forall (n : nat), S n <= 0 -> False.
+Proof. induction n as [|n' IH].
+  - apply Nat.lt_irrefl.
+  - intro H. apply le_pred in H. simpl in H. apply IH in H. apply H.
+Qed.
 
 Lemma Succ_n_minus_1 : forall (n : nat), 1 <= n -> S(n-1) = n.
 Proof.
