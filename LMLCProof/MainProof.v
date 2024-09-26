@@ -47,6 +47,15 @@ Proof.
   + 
 Admitted.
 
+Lemma succ_church : forall n : nat,
+  church_succ2 (church_int n) = church_int (S n).
+Proof.
+  intros n. unfold church_int. unfold church_int_free. unfold church_succ2.
+  destruct n as [|n'].
+  - reflexivity.
+  - reflexivity.
+Qed.
+
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
        intros H G. destruct H as [l0 H]. destruct H as [H1 H2]. destruct H2 as [H2 H3].
