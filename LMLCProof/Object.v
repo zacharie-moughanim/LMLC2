@@ -97,3 +97,15 @@ Definition church_times (M N : lambda_term) : lambda_term := Labs 1 (Labs 0 (
                                                               (Lvar 0)))
                                               ).
 Definition church_gtz (M : lambda_term) : lambda_term := Lappl (Lappl M (Labs 0 church_true)) (church_false).
+
+(* Turing fixpoint *)
+
+Definition turing_fixpoint_half : lambda_term := 
+                        Labs 1 (Labs 0 (Lappl (Lvar 0) (Lappl (Lappl (Lvar 1) (Lvar 1)) (Lvar 0)))).
+
+Definition turing_fixpoint : lambda_term := Lappl turing_fixpoint_half turing_fixpoint_half.
+
+Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (Lappl (turing_fixpoint) M).
+
+
+

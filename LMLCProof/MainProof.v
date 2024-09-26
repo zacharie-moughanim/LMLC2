@@ -67,21 +67,7 @@ Proof. induction M.
       * exfalso. apply H.
       * simpl. destruct H.
         ++ exfalso. apply H.
-        ++ destruct H as [H1 H2]. rewrite <- H1. simpl. apply IHM2 in H2. apply beta_star_contextual_appl'r. apply H2.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-      * exfalso. apply H.
-    +
+        ++ destruct H as [H1 H2]. rewrite <- H1. simpl. apply IHM2 in H2.
+           apply beta_star_contextual_appl'r. apply H2 ;
+       exfalso; apply H; simpl.
 

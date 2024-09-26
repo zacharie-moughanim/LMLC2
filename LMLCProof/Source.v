@@ -8,6 +8,7 @@ Definition var : Type := nat.
 
 Inductive ml_term_gen : Type :=
   | GLet (x : var) (M : ml_term_gen) (N : ml_term_gen)
+  | GLetRec (f : var) (M : ml_term_gen) (x : var) (N : ml_term_gen)
   | GVar (x : var)
   | GAppl (f : ml_term_gen) (arg : ml_term_gen)
   | GFun (x : var) (M : ml_term_gen)
@@ -32,6 +33,7 @@ Inductive ml_term : Type :=
   | Var (x : var)
   | Appl (F : ml_term) (ARG : ml_term)
   | Fun (x : var) (M : ml_term)
+  | Fixfun (f : var) (x : var) (M : ml_term)
   | Plus (N : ml_term) (M : ml_term)
   | Minus (N : ml_term) (M : ml_term)
   | Times (N : ml_term) (M : ml_term)
@@ -51,6 +53,9 @@ Fixpoint ml_substitution (M N : ml_term) (x : var) : ml_term := match M with
   | Var y => if eqb x y then N else Var y
   | Appl f arg => Appl (ml_substitution f N x) (ml_substitution arg N x)
   | Fun y M' => if eqb x y then Fun y M else Fun y (ml_substitution M' N x)
+  | Fixfun f y M' => if eqb x f then Fixfun f y M
+                     else if eqb x y then  Fixfun f y M
+                     else Fixfun f y (ml_substitution M' N x)
   | Plus M' N' => Plus (ml_substitution M' N x) (ml_substitution N' N x)
   | Minus M' N' => Minus (ml_substitution M' N x) (ml_substitution N' N x)
   | Times M' N' => Times (ml_substitution M' N x) (ml_substitution N' N x)
@@ -70,6 +75,7 @@ end.
 Fixpoint ml_reduction (M0 N0 : ml_term) : Prop := match M0, N0 with
 (* context cases *)
   | Fun x M', Fun y N' => x = y /\ ml_reduction M' N'
+  | Fixfun f x M', Fixfun g y N' => x = y /\ f = g /\ ml_reduction M' N'
   | Appl f arg, Appl f' arg' => ml_reduction f f' /\ arg = arg' \/ f = f' /\ ml_reduction arg arg'
   | Plus M N, Plus M' N' => M = M' /\ ml_reduction N N' \/ ml_reduction M M' /\ N = N'
   | Minus M N, Minus M' N' => M = M' /\ ml_reduction N N' \/ ml_reduction M M' /\ N = N'
@@ -89,6 +95,7 @@ Fixpoint ml_reduction (M0 N0 : ml_term) : Prop := match M0, N0 with
   | Snd P, Snd Q => ml_reduction P Q
 (* beta-reduction *)
   | Appl (Fun x M) N, N' => ml_substitution M N x = N'
+  | Fixfun f x M', Appl M'' N'' => M'' = (Fun f (Fun x M')) /\ N'' = (Fixfun f x M')
 (* Arithmetic operations *)
   | Plus (Int n) (Int m), Int n' => n' = n + m
   | Times (Int n) (Int m), Int n' => n' = n*m
@@ -108,6 +115,7 @@ end.
 Fixpoint ml_gen_to_ml (M : ml_term_gen) : ml_term := match M with
   | GVar x => Var x
   | GLet x M N => Appl (Fun x (ml_gen_to_ml N)) (ml_gen_to_ml M)
+  | GLetRec f M x N => Appl (Fun f (ml_gen_to_ml N)) (Fixfun f x (ml_gen_to_ml M))
   | GAppl f arg => Appl (ml_gen_to_ml f) (ml_gen_to_ml arg)
   | GFun x M => Fun x (ml_gen_to_ml M)
   | GPlus M N => Plus (ml_gen_to_ml M) (ml_gen_to_ml N)

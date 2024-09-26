@@ -1,4 +1,4 @@
-DIGEST 26d6b3894f7e16a77483a97ce4924b49
+DIGEST 817113675884f3f93bf296c2b0ff0ab3
 FLMLCProof.Object
 R30:35 LMLCProof.Source <> <> lib
 ind 49:59 <> lambda_term
@@ -326,3 +326,28 @@ R4152:4156 LMLCProof.Object <> Lappl constr
 R4161:4164 LMLCProof.Object <> Labs constr
 R4168:4178 LMLCProof.Object <> church_true def
 R4158:4158 LMLCProof.Object <> M:54 var
+def 4233:4252 <> turing_fixpoint_half
+R4256:4266 LMLCProof.Object <> lambda_term ind
+R4296:4299 LMLCProof.Object <> Labs constr
+R4304:4307 LMLCProof.Object <> Labs constr
+R4312:4316 LMLCProof.Object <> Lappl constr
+R4328:4332 LMLCProof.Object <> Lappl constr
+R4361:4364 LMLCProof.Object <> Lvar constr
+R4335:4339 LMLCProof.Object <> Lappl constr
+R4351:4354 LMLCProof.Object <> Lvar constr
+R4342:4345 LMLCProof.Object <> Lvar constr
+R4319:4322 LMLCProof.Object <> Lvar constr
+def 4385:4399 <> turing_fixpoint
+R4403:4413 LMLCProof.Object <> lambda_term ind
+R4418:4422 LMLCProof.Object <> Lappl constr
+R4445:4464 LMLCProof.Object <> turing_fixpoint_half def
+R4424:4443 LMLCProof.Object <> turing_fixpoint_half def
+def 4479:4501 <> turing_fixpoint_applied
+R4508:4518 LMLCProof.Object <> lambda_term ind
+binder 4504:4504 <> M:55
+R4523:4533 LMLCProof.Object <> lambda_term ind
+R4538:4542 LMLCProof.Object <> Lappl constr
+R4547:4551 LMLCProof.Object <> Lappl constr
+R4571:4571 LMLCProof.Object <> M:55 var
+R4554:4568 LMLCProof.Object <> turing_fixpoint def
+R4544:4544 LMLCProof.Object <> M:55 var

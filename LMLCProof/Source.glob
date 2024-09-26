@@ -1,4 +1,4 @@
-DIGEST 6a3105f7276b328b5989ea3ebbb73820
+DIGEST 581ce0cb9591b9385e46cb1711666a5f
 FLMLCProof.Source
 def 9:11 <> eqb
 R20:22 Coq.Init.Datatypes <> nat ind
@@ -18,517 +18,570 @@ def 131:133 <> var
 R145:147 Coq.Init.Datatypes <> nat ind
 ind 161:171 <> ml_term_gen
 constr 187:190 <> GLet
-constr 242:245 <> GVar
-constr 261:265 <> GAppl
-constr 309:312 <> GFun
-constr 346:350 <> GPlus
-constr 392:397 <> GMinus
-constr 439:444 <> GTimes
-constr 486:489 <> GInt
-constr 505:507 <> GLt
-constr 549:553 <> GTrue
-constr 559:564 <> GFalse
-constr 570:573 <> GAnd
-constr 617:619 <> GOr
-constr 663:665 <> GIf
-constr 740:744 <> GCons
-constr 788:791 <> GNil
-constr 797:807 <> GFold_right
-constr 874:878 <> GPair
-constr 922:925 <> GFst
-constr 949:952 <> GSnd
+constr 242:248 <> GLetRec
+constr 310:313 <> GVar
+constr 329:333 <> GAppl
+constr 377:380 <> GFun
+constr 414:418 <> GPlus
+constr 460:465 <> GMinus
+constr 507:512 <> GTimes
+constr 554:557 <> GInt
+constr 573:575 <> GLt
+constr 617:621 <> GTrue
+constr 627:632 <> GFalse
+constr 638:641 <> GAnd
+constr 685:687 <> GOr
+constr 731:733 <> GIf
+constr 808:812 <> GCons
+constr 856:859 <> GNil
+constr 865:875 <> GFold_right
+constr 942:946 <> GPair
+constr 990:993 <> GFst
+constr 1017:1020 <> GSnd
 R197:199 LMLCProof.Source <> var def
 binder 193:193 <> x:8
 R207:217 LMLCProof.Source <> ml_term_gen:6 ind
 binder 203:203 <> M:9
 R225:235 LMLCProof.Source <> ml_term_gen:6 ind
 binder 221:221 <> N:10
-R252:254 LMLCProof.Source <> var def
-binder 248:248 <> x:11
-R272:282 LMLCProof.Source <> ml_term_gen:6 ind
-binder 268:268 <> f:12
-R292:302 LMLCProof.Source <> ml_term_gen:6 ind
-binder 286:288 <> arg:13
-R319:321 LMLCProof.Source <> var def
-binder 315:315 <> x:14
-R329:339 LMLCProof.Source <> ml_term_gen:6 ind
-binder 325:325 <> M:15
-R357:367 LMLCProof.Source <> ml_term_gen:6 ind
-binder 353:353 <> n:16
-R375:385 LMLCProof.Source <> ml_term_gen:6 ind
-binder 371:371 <> m:17
-R404:414 LMLCProof.Source <> ml_term_gen:6 ind
-binder 400:400 <> n:18
-R422:432 LMLCProof.Source <> ml_term_gen:6 ind
-binder 418:418 <> m:19
-R451:461 LMLCProof.Source <> ml_term_gen:6 ind
-binder 447:447 <> n:20
-R469:479 LMLCProof.Source <> ml_term_gen:6 ind
-binder 465:465 <> m:21
-R496:498 Coq.Init.Datatypes <> nat ind
-binder 492:492 <> n:22
-R514:524 LMLCProof.Source <> ml_term_gen:6 ind
-binder 510:510 <> n:23
-R532:542 LMLCProof.Source <> ml_term_gen:6 ind
-binder 528:528 <> m:24
-R581:591 LMLCProof.Source <> ml_term_gen:6 ind
-binder 576:577 <> b1:25
+R255:257 LMLCProof.Source <> var def
+binder 251:251 <> f:11
+R265:275 LMLCProof.Source <> ml_term_gen:6 ind
+binder 261:261 <> M:12
+R283:285 LMLCProof.Source <> var def
+binder 279:279 <> x:13
+R293:303 LMLCProof.Source <> ml_term_gen:6 ind
+binder 289:289 <> N:14
+R320:322 LMLCProof.Source <> var def
+binder 316:316 <> x:15
+R340:350 LMLCProof.Source <> ml_term_gen:6 ind
+binder 336:336 <> f:16
+R360:370 LMLCProof.Source <> ml_term_gen:6 ind
+binder 354:356 <> arg:17
+R387:389 LMLCProof.Source <> var def
+binder 383:383 <> x:18
+R397:407 LMLCProof.Source <> ml_term_gen:6 ind
+binder 393:393 <> M:19
+R425:435 LMLCProof.Source <> ml_term_gen:6 ind
+binder 421:421 <> n:20
+R443:453 LMLCProof.Source <> ml_term_gen:6 ind
+binder 439:439 <> m:21
+R472:482 LMLCProof.Source <> ml_term_gen:6 ind
+binder 468:468 <> n:22
+R490:500 LMLCProof.Source <> ml_term_gen:6 ind
+binder 486:486 <> m:23
+R519:529 LMLCProof.Source <> ml_term_gen:6 ind
+binder 515:515 <> n:24
+R537:547 LMLCProof.Source <> ml_term_gen:6 ind
+binder 533:533 <> m:25
+R564:566 Coq.Init.Datatypes <> nat ind
+binder 560:560 <> n:26
+R582:592 LMLCProof.Source <> ml_term_gen:6 ind
+binder 578:578 <> n:27
 R600:610 LMLCProof.Source <> ml_term_gen:6 ind
-binder 595:596 <> b2:26
-R627:637 LMLCProof.Source <> ml_term_gen:6 ind
-binder 622:623 <> b1:27
-R646:656 LMLCProof.Source <> ml_term_gen:6 ind
-binder 641:642 <> b2:28
-R675:685 LMLCProof.Source <> ml_term_gen:6 ind
-binder 668:671 <> cond:29
-R699:709 LMLCProof.Source <> ml_term_gen:6 ind
-binder 689:695 <> brancht:30
-R723:733 LMLCProof.Source <> ml_term_gen:6 ind
-binder 713:719 <> branche:31
-R752:762 LMLCProof.Source <> ml_term_gen:6 ind
-binder 747:748 <> hd:32
-R771:781 LMLCProof.Source <> ml_term_gen:6 ind
-binder 766:767 <> tl:33
-R816:826 LMLCProof.Source <> ml_term_gen:6 ind
-binder 810:812 <> lst:34
-R836:846 LMLCProof.Source <> ml_term_gen:6 ind
-binder 830:832 <> foo:35
-R857:867 LMLCProof.Source <> ml_term_gen:6 ind
-binder 850:853 <> init:36
-R886:896 LMLCProof.Source <> ml_term_gen:6 ind
-binder 881:882 <> p1:37
-R905:915 LMLCProof.Source <> ml_term_gen:6 ind
-binder 900:901 <> p2:38
-R932:942 LMLCProof.Source <> ml_term_gen:6 ind
-binder 928:928 <> p:39
-R959:969 LMLCProof.Source <> ml_term_gen:6 ind
-binder 955:955 <> p:40
-ind 984:990 <> ml_term
-constr 1006:1008 <> Var
-constr 1024:1027 <> Appl
-constr 1063:1065 <> Fun
-constr 1095:1098 <> Plus
-constr 1132:1136 <> Minus
-constr 1170:1174 <> Times
-constr 1208:1210 <> Int
-constr 1226:1228 <> Gtz
-constr 1248:1255 <> BoolTrue
-constr 1261:1269 <> BoolFalse
-constr 1275:1276 <> If
-constr 1339:1342 <> Cons
-constr 1378:1380 <> Nil
-constr 1386:1395 <> Fold_right
-constr 1450:1453 <> Pair
-constr 1489:1491 <> Fst
-constr 1511:1513 <> Snd
-R1015:1017 LMLCProof.Source <> var def
-binder 1011:1011 <> x:43
-R1034:1040 LMLCProof.Source <> ml_term:41 ind
-binder 1030:1030 <> F:44
-R1050:1056 LMLCProof.Source <> ml_term:41 ind
-binder 1044:1046 <> ARG:45
-R1072:1074 LMLCProof.Source <> var def
-binder 1068:1068 <> x:46
-R1082:1088 LMLCProof.Source <> ml_term:41 ind
-binder 1078:1078 <> M:47
-R1105:1111 LMLCProof.Source <> ml_term:41 ind
-binder 1101:1101 <> N:48
-R1119:1125 LMLCProof.Source <> ml_term:41 ind
-binder 1115:1115 <> M:49
-R1143:1149 LMLCProof.Source <> ml_term:41 ind
-binder 1139:1139 <> N:50
-R1157:1163 LMLCProof.Source <> ml_term:41 ind
-binder 1153:1153 <> M:51
-R1181:1187 LMLCProof.Source <> ml_term:41 ind
-binder 1177:1177 <> N:52
-R1195:1201 LMLCProof.Source <> ml_term:41 ind
-binder 1191:1191 <> M:53
-R1217:1219 Coq.Init.Datatypes <> nat ind
-binder 1213:1213 <> n:54
-R1235:1241 LMLCProof.Source <> ml_term:41 ind
-binder 1231:1231 <> N:55
-R1286:1292 LMLCProof.Source <> ml_term:41 ind
-binder 1279:1282 <> cond:56
-R1306:1312 LMLCProof.Source <> ml_term:41 ind
-binder 1296:1302 <> brancht:57
-R1326:1332 LMLCProof.Source <> ml_term:41 ind
-binder 1316:1322 <> branche:58
-R1350:1356 LMLCProof.Source <> ml_term:41 ind
-binder 1345:1346 <> hd:59
-R1365:1371 LMLCProof.Source <> ml_term:41 ind
-binder 1360:1361 <> tl:60
-R1404:1410 LMLCProof.Source <> ml_term:41 ind
-binder 1398:1400 <> lst:61
-R1420:1426 LMLCProof.Source <> ml_term:41 ind
-binder 1414:1416 <> foo:62
-R1437:1443 LMLCProof.Source <> ml_term:41 ind
-binder 1430:1433 <> init:63
-R1461:1467 LMLCProof.Source <> ml_term:41 ind
-binder 1456:1457 <> p1:64
-R1476:1482 LMLCProof.Source <> ml_term:41 ind
-binder 1471:1472 <> p2:65
-R1498:1504 LMLCProof.Source <> ml_term:41 ind
-binder 1494:1494 <> p:66
-R1520:1526 LMLCProof.Source <> ml_term:41 ind
-binder 1516:1516 <> p:67
-def 1540:1554 <> ml_substitution
-R1563:1569 LMLCProof.Source <> ml_term ind
-binder 1557:1557 <> M:68
-binder 1559:1559 <> N:69
-R1577:1579 LMLCProof.Source <> var def
-binder 1573:1573 <> x:70
-R1584:1590 LMLCProof.Source <> ml_term ind
-R1601:1601 LMLCProof.Source <> M:68 var
-R1612:1614 LMLCProof.Source <> Var constr
-R1624:1626 LMLCProof.Source <> eqb def
-R1628:1628 LMLCProof.Source <> x:70 var
-R1644:1646 LMLCProof.Source <> Var constr
-R1637:1637 LMLCProof.Source <> N:69 var
-R1654:1657 LMLCProof.Source <> Appl constr
-R1668:1671 LMLCProof.Source <> Appl constr
-R1698:1712 LMLCProof.Source <> ml_substitution:71 def
-R1720:1720 LMLCProof.Source <> x:70 var
-R1718:1718 LMLCProof.Source <> N:69 var
-R1674:1688 LMLCProof.Source <> ml_substitution:71 def
-R1694:1694 LMLCProof.Source <> x:70 var
-R1692:1692 LMLCProof.Source <> N:69 var
-R1727:1729 LMLCProof.Source <> Fun constr
-R1742:1744 LMLCProof.Source <> eqb def
-R1746:1746 LMLCProof.Source <> x:70 var
-R1768:1770 LMLCProof.Source <> Fun constr
-R1775:1789 LMLCProof.Source <> ml_substitution:71 def
-R1796:1796 LMLCProof.Source <> x:70 var
-R1794:1794 LMLCProof.Source <> N:69 var
-R1755:1757 LMLCProof.Source <> Fun constr
-R1761:1761 LMLCProof.Source <> M:68 var
-R1803:1806 LMLCProof.Source <> Plus constr
-R1817:1820 LMLCProof.Source <> Plus constr
-R1848:1862 LMLCProof.Source <> ml_substitution:71 def
-R1869:1869 LMLCProof.Source <> x:70 var
-R1867:1867 LMLCProof.Source <> N:69 var
-R1823:1837 LMLCProof.Source <> ml_substitution:71 def
-R1844:1844 LMLCProof.Source <> x:70 var
-R1842:1842 LMLCProof.Source <> N:69 var
-R1876:1880 LMLCProof.Source <> Minus constr
-R1891:1895 LMLCProof.Source <> Minus constr
-R1923:1937 LMLCProof.Source <> ml_substitution:71 def
-R1944:1944 LMLCProof.Source <> x:70 var
-R1942:1942 LMLCProof.Source <> N:69 var
-R1898:1912 LMLCProof.Source <> ml_substitution:71 def
-R1919:1919 LMLCProof.Source <> x:70 var
-R1917:1917 LMLCProof.Source <> N:69 var
-R1951:1955 LMLCProof.Source <> Times constr
-R1966:1970 LMLCProof.Source <> Times constr
-R1998:2012 LMLCProof.Source <> ml_substitution:71 def
-R2019:2019 LMLCProof.Source <> x:70 var
-R2017:2017 LMLCProof.Source <> N:69 var
-R1973:1987 LMLCProof.Source <> ml_substitution:71 def
-R1994:1994 LMLCProof.Source <> x:70 var
-R1992:1992 LMLCProof.Source <> N:69 var
-R2026:2028 LMLCProof.Source <> Int constr
-R2035:2037 LMLCProof.Source <> Int constr
-R2045:2047 LMLCProof.Source <> Gtz constr
-R2055:2057 LMLCProof.Source <> Gtz constr
-R2060:2074 LMLCProof.Source <> ml_substitution:71 def
-R2081:2081 LMLCProof.Source <> x:70 var
-R2079:2079 LMLCProof.Source <> N:69 var
-R2088:2095 LMLCProof.Source <> BoolTrue constr
-R2100:2107 LMLCProof.Source <> BoolTrue constr
-R2113:2121 LMLCProof.Source <> BoolFalse constr
-R2126:2134 LMLCProof.Source <> BoolFalse constr
-R2140:2141 LMLCProof.Source <> If constr
-R2152:2153 LMLCProof.Source <> If constr
-R2204:2218 LMLCProof.Source <> ml_substitution:71 def
-R2224:2224 LMLCProof.Source <> x:70 var
-R2222:2222 LMLCProof.Source <> N:69 var
-R2180:2194 LMLCProof.Source <> ml_substitution:71 def
-R2200:2200 LMLCProof.Source <> x:70 var
-R2198:2198 LMLCProof.Source <> N:69 var
-R2156:2170 LMLCProof.Source <> ml_substitution:71 def
-R2176:2176 LMLCProof.Source <> x:70 var
-R2174:2174 LMLCProof.Source <> N:69 var
-R2231:2234 LMLCProof.Source <> Cons constr
-R2245:2248 LMLCProof.Source <> Cons constr
-R2276:2290 LMLCProof.Source <> ml_substitution:71 def
-R2297:2297 LMLCProof.Source <> x:70 var
-R2295:2295 LMLCProof.Source <> N:69 var
-R2251:2265 LMLCProof.Source <> ml_substitution:71 def
-R2272:2272 LMLCProof.Source <> x:70 var
-R2270:2270 LMLCProof.Source <> N:69 var
-R2304:2306 LMLCProof.Source <> Nil constr
-R2311:2313 LMLCProof.Source <> Nil constr
-R2319:2328 LMLCProof.Source <> Fold_right constr
-R2345:2354 LMLCProof.Source <> Fold_right constr
-R2408:2422 LMLCProof.Source <> ml_substitution:71 def
-R2431:2431 LMLCProof.Source <> x:70 var
-R2429:2429 LMLCProof.Source <> N:69 var
-R2383:2397 LMLCProof.Source <> ml_substitution:71 def
-R2404:2404 LMLCProof.Source <> x:70 var
-R2402:2402 LMLCProof.Source <> N:69 var
-R2357:2371 LMLCProof.Source <> ml_substitution:71 def
-R2379:2379 LMLCProof.Source <> x:70 var
-R2377:2377 LMLCProof.Source <> N:69 var
-R2438:2441 LMLCProof.Source <> Pair constr
-R2452:2455 LMLCProof.Source <> Pair constr
-R2483:2497 LMLCProof.Source <> ml_substitution:71 def
-R2504:2504 LMLCProof.Source <> x:70 var
-R2502:2502 LMLCProof.Source <> N:69 var
-R2458:2472 LMLCProof.Source <> ml_substitution:71 def
-R2479:2479 LMLCProof.Source <> x:70 var
-R2477:2477 LMLCProof.Source <> N:69 var
-R2511:2513 LMLCProof.Source <> Fst constr
-R2520:2522 LMLCProof.Source <> Fst constr
-R2525:2539 LMLCProof.Source <> ml_substitution:71 def
-R2545:2545 LMLCProof.Source <> x:70 var
-R2543:2543 LMLCProof.Source <> N:69 var
-R2552:2554 LMLCProof.Source <> Snd constr
-R2561:2563 LMLCProof.Source <> Snd constr
-R2566:2580 LMLCProof.Source <> ml_substitution:71 def
-R2586:2586 LMLCProof.Source <> x:70 var
-R2584:2584 LMLCProof.Source <> N:69 var
-def 2604:2615 <> ml_reduction
-R2626:2632 LMLCProof.Source <> ml_term ind
-binder 2618:2619 <> M0:73
-binder 2621:2622 <> N0:74
-R2655:2656 LMLCProof.Source <> N0:74 var
-R2651:2652 LMLCProof.Source <> M0:73 var
-R2687:2689 LMLCProof.Source <> Fun constr
-R2697:2699 LMLCProof.Source <> Fun constr
-R2714:2717 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2710:2712 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2718:2729 LMLCProof.Source <> ml_reduction:75 def
-R2741:2744 LMLCProof.Source <> Appl constr
-R2753:2756 LMLCProof.Source <> Appl constr
-R2800:2803 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R2786:2789 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2769:2780 LMLCProof.Source <> ml_reduction:75 def
-R2793:2795 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2810:2813 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2805:2807 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2814:2825 LMLCProof.Source <> ml_reduction:75 def
-R2840:2843 LMLCProof.Source <> Plus constr
-R2850:2853 LMLCProof.Source <> Plus constr
-R2891:2894 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R2870:2873 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2865:2867 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2874:2885 LMLCProof.Source <> ml_reduction:75 def
-R2912:2915 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2895:2906 LMLCProof.Source <> ml_reduction:75 def
-R2917:2919 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2927:2931 LMLCProof.Source <> Minus constr
-R2938:2942 LMLCProof.Source <> Minus constr
-R2980:2983 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R2959:2962 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2954:2956 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R2963:2974 LMLCProof.Source <> ml_reduction:75 def
-R3001:3004 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R2984:2995 LMLCProof.Source <> ml_reduction:75 def
-R3006:3008 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3016:3020 LMLCProof.Source <> Times constr
-R3027:3031 LMLCProof.Source <> Times constr
-R3069:3072 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3048:3051 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3043:3045 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3052:3063 LMLCProof.Source <> ml_reduction:75 def
-R3090:3093 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3073:3084 LMLCProof.Source <> ml_reduction:75 def
-R3095:3097 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3105:3107 LMLCProof.Source <> Gtz constr
-R3112:3114 LMLCProof.Source <> Gtz constr
-R3122:3133 LMLCProof.Source <> ml_reduction:75 def
-R3144:3145 LMLCProof.Source <> If constr
-R3169:3170 LMLCProof.Source <> If constr
-R3275:3284 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3220:3223 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3212:3214 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3242:3245 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3231:3233 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3246:3257 LMLCProof.Source <> ml_reduction:75 def
-R3352:3361 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3297:3300 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3289:3291 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3330:3333 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3301:3312 LMLCProof.Source <> ml_reduction:75 def
-R3341:3343 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3385:3388 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3362:3373 LMLCProof.Source <> ml_reduction:75 def
-R3407:3410 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3396:3398 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3418:3420 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3434:3437 LMLCProof.Source <> Cons constr
-R3446:3449 LMLCProof.Source <> Cons constr
-R3493:3496 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3470:3473 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3464:3466 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3474:3485 LMLCProof.Source <> ml_reduction:75 def
-R3516:3519 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3497:3508 LMLCProof.Source <> ml_reduction:75 def
-R3522:3524 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3533:3542 LMLCProof.Source <> Fold_right constr
-R3558:3567 LMLCProof.Source <> Fold_right constr
-R3648:3657 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3607:3610 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3600:3602 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3621:3624 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3614:3616 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3625:3636 LMLCProof.Source <> ml_reduction:75 def
-R3709:3718 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3668:3671 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3661:3663 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3693:3696 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3672:3683 LMLCProof.Source <> ml_reduction:75 def
-R3701:3703 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3740:3743 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3719:3730 LMLCProof.Source <> ml_reduction:75 def
-R3754:3757 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3747:3749 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3762:3764 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3775:3778 LMLCProof.Source <> Pair constr
-R3787:3790 LMLCProof.Source <> Pair constr
-R3830:3833 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
-R3819:3822 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3801:3812 LMLCProof.Source <> ml_reduction:75 def
-R3825:3827 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3841:3844 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
-R3836:3838 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3845:3856 LMLCProof.Source <> ml_reduction:75 def
-R3868:3870 LMLCProof.Source <> Fst constr
-R3875:3877 LMLCProof.Source <> Fst constr
-R3884:3895 LMLCProof.Source <> ml_reduction:75 def
-R3905:3907 LMLCProof.Source <> Snd constr
-R3912:3914 LMLCProof.Source <> Snd constr
-R3921:3932 LMLCProof.Source <> ml_reduction:75 def
-R3963:3966 LMLCProof.Source <> Appl constr
-R3969:3971 LMLCProof.Source <> Fun constr
-R4008:4010 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3987:4001 LMLCProof.Source <> ml_substitution def
-R4046:4049 LMLCProof.Source <> Plus constr
-R4052:4054 LMLCProof.Source <> Int constr
-R4060:4062 LMLCProof.Source <> Int constr
-R4068:4070 LMLCProof.Source <> Int constr
-R4080:4082 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4084:4086 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
-R4093:4097 LMLCProof.Source <> Times constr
-R4100:4102 LMLCProof.Source <> Int constr
-R4108:4110 LMLCProof.Source <> Int constr
-R4116:4118 LMLCProof.Source <> Int constr
-R4128:4130 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4132:4132 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
-R4139:4143 LMLCProof.Source <> Minus constr
-R4146:4148 LMLCProof.Source <> Int constr
-R4154:4156 LMLCProof.Source <> Int constr
-R4162:4164 LMLCProof.Source <> Int constr
-R4174:4176 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4178:4178 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
-R4202:4204 LMLCProof.Source <> Gtz constr
-R4207:4209 LMLCProof.Source <> Int constr
-R4215:4222 LMLCProof.Source <> BoolTrue constr
-R4228:4230 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
-R4237:4239 LMLCProof.Source <> Gtz constr
-R4242:4244 LMLCProof.Source <> Int constr
-R4250:4258 LMLCProof.Source <> BoolFalse constr
-R4263:4264 Coq.Init.Logic <> ::type_scope:'~'_x not
-R4270:4270 Coq.Init.Logic <> ::type_scope:'~'_x not
-R4266:4268 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
-R4293:4302 LMLCProof.Source <> Fold_right constr
-R4305:4308 LMLCProof.Source <> Cons constr
-R4343:4345 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4346:4355 LMLCProof.Source <> Fold_right constr
-R4365:4368 LMLCProof.Source <> Appl constr
-R4371:4374 LMLCProof.Source <> Appl constr
-R4394:4403 LMLCProof.Source <> Fold_right constr
-R4405:4407 LMLCProof.Source <> Nil constr
-R4432:4434 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4468:4470 LMLCProof.Source <> Fst constr
-R4473:4476 LMLCProof.Source <> Pair constr
-R4494:4496 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4504:4506 LMLCProof.Source <> Snd constr
-R4509:4512 LMLCProof.Source <> Pair constr
-R4530:4532 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R4548:4552 Coq.Init.Logic <> False ind
-def 4569:4580 <> ml_gen_to_ml
-R4587:4597 LMLCProof.Source <> ml_term_gen ind
-binder 4583:4583 <> M:78
-R4602:4608 LMLCProof.Source <> ml_term ind
-R4619:4619 LMLCProof.Source <> M:78 var
-R4630:4633 LMLCProof.Source <> GVar constr
-R4640:4642 LMLCProof.Source <> Var constr
-R4650:4653 LMLCProof.Source <> GLet constr
-R4664:4667 LMLCProof.Source <> Appl constr
-R4695:4706 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4708:4708 LMLCProof.Source <> M:78 var
-R4670:4672 LMLCProof.Source <> Fun constr
-R4677:4688 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4715:4719 LMLCProof.Source <> GAppl constr
-R4730:4733 LMLCProof.Source <> Appl constr
-R4753:4764 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4736:4747 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4775:4778 LMLCProof.Source <> GFun constr
-R4787:4789 LMLCProof.Source <> Fun constr
-R4794:4805 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4807:4807 LMLCProof.Source <> M:78 var
-R4814:4818 LMLCProof.Source <> GPlus constr
-R4827:4830 LMLCProof.Source <> Plus constr
-R4850:4861 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4833:4844 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4846:4846 LMLCProof.Source <> M:78 var
-R4870:4875 LMLCProof.Source <> GMinus constr
-R4884:4888 LMLCProof.Source <> Minus constr
-R4908:4919 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4891:4902 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4904:4904 LMLCProof.Source <> M:78 var
-R4928:4933 LMLCProof.Source <> GTimes constr
-R4942:4946 LMLCProof.Source <> Times constr
-R4966:4977 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4949:4960 LMLCProof.Source <> ml_gen_to_ml:79 def
-R4962:4962 LMLCProof.Source <> M:78 var
-R4986:4989 LMLCProof.Source <> GInt constr
-R4996:4998 LMLCProof.Source <> Int constr
-R5006:5008 LMLCProof.Source <> GLt constr
-R5017:5019 LMLCProof.Source <> Gtz constr
-R5022:5026 LMLCProof.Source <> Minus constr
-R5046:5057 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5029:5040 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5042:5042 LMLCProof.Source <> M:78 var
-R5067:5071 LMLCProof.Source <> GTrue constr
-R5076:5083 LMLCProof.Source <> BoolTrue constr
-R5089:5094 LMLCProof.Source <> GFalse constr
-R5099:5107 LMLCProof.Source <> BoolFalse constr
-R5113:5116 LMLCProof.Source <> GAnd constr
-R5125:5126 LMLCProof.Source <> If constr
-R5162:5170 LMLCProof.Source <> BoolFalse constr
-R5146:5157 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5129:5140 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5142:5142 LMLCProof.Source <> M:78 var
-R5176:5178 LMLCProof.Source <> GOr constr
-R5187:5188 LMLCProof.Source <> If constr
-R5217:5228 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5207:5214 LMLCProof.Source <> BoolTrue constr
-R5191:5202 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5204:5204 LMLCProof.Source <> M:78 var
-R5237:5239 LMLCProof.Source <> GIf constr
-R5253:5254 LMLCProof.Source <> If constr
-R5294:5305 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5277:5288 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5257:5268 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5314:5318 LMLCProof.Source <> GCons constr
-R5329:5332 LMLCProof.Source <> Cons constr
-R5353:5364 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5335:5346 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5374:5377 LMLCProof.Source <> GNil constr
-R5382:5384 LMLCProof.Source <> Nil constr
-R5390:5400 LMLCProof.Source <> GFold_right constr
-R5418:5427 LMLCProof.Source <> Fold_right constr
-R5468:5479 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5449:5460 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5430:5441 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5491:5495 LMLCProof.Source <> GPair constr
-R5506:5509 LMLCProof.Source <> Pair constr
-R5530:5541 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5512:5523 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5551:5554 LMLCProof.Source <> GFst constr
-R5561:5563 LMLCProof.Source <> Fst constr
-R5566:5577 LMLCProof.Source <> ml_gen_to_ml:79 def
-R5586:5589 LMLCProof.Source <> GSnd constr
-R5596:5598 LMLCProof.Source <> Snd constr
-R5601:5612 LMLCProof.Source <> ml_gen_to_ml:79 def
+binder 596:596 <> m:28
+R649:659 LMLCProof.Source <> ml_term_gen:6 ind
+binder 644:645 <> b1:29
+R668:678 LMLCProof.Source <> ml_term_gen:6 ind
+binder 663:664 <> b2:30
+R695:705 LMLCProof.Source <> ml_term_gen:6 ind
+binder 690:691 <> b1:31
+R714:724 LMLCProof.Source <> ml_term_gen:6 ind
+binder 709:710 <> b2:32
+R743:753 LMLCProof.Source <> ml_term_gen:6 ind
+binder 736:739 <> cond:33
+R767:777 LMLCProof.Source <> ml_term_gen:6 ind
+binder 757:763 <> brancht:34
+R791:801 LMLCProof.Source <> ml_term_gen:6 ind
+binder 781:787 <> branche:35
+R820:830 LMLCProof.Source <> ml_term_gen:6 ind
+binder 815:816 <> hd:36
+R839:849 LMLCProof.Source <> ml_term_gen:6 ind
+binder 834:835 <> tl:37
+R884:894 LMLCProof.Source <> ml_term_gen:6 ind
+binder 878:880 <> lst:38
+R904:914 LMLCProof.Source <> ml_term_gen:6 ind
+binder 898:900 <> foo:39
+R925:935 LMLCProof.Source <> ml_term_gen:6 ind
+binder 918:921 <> init:40
+R954:964 LMLCProof.Source <> ml_term_gen:6 ind
+binder 949:950 <> p1:41
+R973:983 LMLCProof.Source <> ml_term_gen:6 ind
+binder 968:969 <> p2:42
+R1000:1010 LMLCProof.Source <> ml_term_gen:6 ind
+binder 996:996 <> p:43
+R1027:1037 LMLCProof.Source <> ml_term_gen:6 ind
+binder 1023:1023 <> p:44
+ind 1052:1058 <> ml_term
+constr 1074:1076 <> Var
+constr 1092:1095 <> Appl
+constr 1131:1133 <> Fun
+constr 1163:1168 <> Fixfun
+constr 1208:1211 <> Plus
+constr 1245:1249 <> Minus
+constr 1283:1287 <> Times
+constr 1321:1323 <> Int
+constr 1339:1341 <> Gtz
+constr 1361:1368 <> BoolTrue
+constr 1374:1382 <> BoolFalse
+constr 1388:1389 <> If
+constr 1452:1455 <> Cons
+constr 1491:1493 <> Nil
+constr 1499:1508 <> Fold_right
+constr 1563:1566 <> Pair
+constr 1602:1604 <> Fst
+constr 1624:1626 <> Snd
+R1083:1085 LMLCProof.Source <> var def
+binder 1079:1079 <> x:47
+R1102:1108 LMLCProof.Source <> ml_term:45 ind
+binder 1098:1098 <> F:48
+R1118:1124 LMLCProof.Source <> ml_term:45 ind
+binder 1112:1114 <> ARG:49
+R1140:1142 LMLCProof.Source <> var def
+binder 1136:1136 <> x:50
+R1150:1156 LMLCProof.Source <> ml_term:45 ind
+binder 1146:1146 <> M:51
+R1175:1177 LMLCProof.Source <> var def
+binder 1171:1171 <> f:52
+R1185:1187 LMLCProof.Source <> var def
+binder 1181:1181 <> x:53
+R1195:1201 LMLCProof.Source <> ml_term:45 ind
+binder 1191:1191 <> M:54
+R1218:1224 LMLCProof.Source <> ml_term:45 ind
+binder 1214:1214 <> N:55
+R1232:1238 LMLCProof.Source <> ml_term:45 ind
+binder 1228:1228 <> M:56
+R1256:1262 LMLCProof.Source <> ml_term:45 ind
+binder 1252:1252 <> N:57
+R1270:1276 LMLCProof.Source <> ml_term:45 ind
+binder 1266:1266 <> M:58
+R1294:1300 LMLCProof.Source <> ml_term:45 ind
+binder 1290:1290 <> N:59
+R1308:1314 LMLCProof.Source <> ml_term:45 ind
+binder 1304:1304 <> M:60
+R1330:1332 Coq.Init.Datatypes <> nat ind
+binder 1326:1326 <> n:61
+R1348:1354 LMLCProof.Source <> ml_term:45 ind
+binder 1344:1344 <> N:62
+R1399:1405 LMLCProof.Source <> ml_term:45 ind
+binder 1392:1395 <> cond:63
+R1419:1425 LMLCProof.Source <> ml_term:45 ind
+binder 1409:1415 <> brancht:64
+R1439:1445 LMLCProof.Source <> ml_term:45 ind
+binder 1429:1435 <> branche:65
+R1463:1469 LMLCProof.Source <> ml_term:45 ind
+binder 1458:1459 <> hd:66
+R1478:1484 LMLCProof.Source <> ml_term:45 ind
+binder 1473:1474 <> tl:67
+R1517:1523 LMLCProof.Source <> ml_term:45 ind
+binder 1511:1513 <> lst:68
+R1533:1539 LMLCProof.Source <> ml_term:45 ind
+binder 1527:1529 <> foo:69
+R1550:1556 LMLCProof.Source <> ml_term:45 ind
+binder 1543:1546 <> init:70
+R1574:1580 LMLCProof.Source <> ml_term:45 ind
+binder 1569:1570 <> p1:71
+R1589:1595 LMLCProof.Source <> ml_term:45 ind
+binder 1584:1585 <> p2:72
+R1611:1617 LMLCProof.Source <> ml_term:45 ind
+binder 1607:1607 <> p:73
+R1633:1639 LMLCProof.Source <> ml_term:45 ind
+binder 1629:1629 <> p:74
+def 1653:1667 <> ml_substitution
+R1676:1682 LMLCProof.Source <> ml_term ind
+binder 1670:1670 <> M:75
+binder 1672:1672 <> N:76
+R1690:1692 LMLCProof.Source <> var def
+binder 1686:1686 <> x:77
+R1697:1703 LMLCProof.Source <> ml_term ind
+R1714:1714 LMLCProof.Source <> M:75 var
+R1725:1727 LMLCProof.Source <> Var constr
+R1737:1739 LMLCProof.Source <> eqb def
+R1741:1741 LMLCProof.Source <> x:77 var
+R1757:1759 LMLCProof.Source <> Var constr
+R1750:1750 LMLCProof.Source <> N:76 var
+R1767:1770 LMLCProof.Source <> Appl constr
+R1781:1784 LMLCProof.Source <> Appl constr
+R1811:1825 LMLCProof.Source <> ml_substitution:78 def
+R1833:1833 LMLCProof.Source <> x:77 var
+R1831:1831 LMLCProof.Source <> N:76 var
+R1787:1801 LMLCProof.Source <> ml_substitution:78 def
+R1807:1807 LMLCProof.Source <> x:77 var
+R1805:1805 LMLCProof.Source <> N:76 var
+R1840:1842 LMLCProof.Source <> Fun constr
+R1855:1857 LMLCProof.Source <> eqb def
+R1859:1859 LMLCProof.Source <> x:77 var
+R1881:1883 LMLCProof.Source <> Fun constr
+R1888:1902 LMLCProof.Source <> ml_substitution:78 def
+R1909:1909 LMLCProof.Source <> x:77 var
+R1907:1907 LMLCProof.Source <> N:76 var
+R1868:1870 LMLCProof.Source <> Fun constr
+R1874:1874 LMLCProof.Source <> M:75 var
+R1916:1921 LMLCProof.Source <> Fixfun constr
+R1936:1938 LMLCProof.Source <> eqb def
+R1940:1940 LMLCProof.Source <> x:77 var
+R1991:1993 LMLCProof.Source <> eqb def
+R1995:1995 LMLCProof.Source <> x:77 var
+R2044:2049 LMLCProof.Source <> Fixfun constr
+R2056:2070 LMLCProof.Source <> ml_substitution:78 def
+R2077:2077 LMLCProof.Source <> x:77 var
+R2075:2075 LMLCProof.Source <> N:76 var
+R2005:2010 LMLCProof.Source <> Fixfun constr
+R2016:2016 LMLCProof.Source <> M:75 var
+R1949:1954 LMLCProof.Source <> Fixfun constr
+R1960:1960 LMLCProof.Source <> M:75 var
+R2084:2087 LMLCProof.Source <> Plus constr
+R2098:2101 LMLCProof.Source <> Plus constr
+R2129:2143 LMLCProof.Source <> ml_substitution:78 def
+R2150:2150 LMLCProof.Source <> x:77 var
+R2148:2148 LMLCProof.Source <> N:76 var
+R2104:2118 LMLCProof.Source <> ml_substitution:78 def
+R2125:2125 LMLCProof.Source <> x:77 var
+R2123:2123 LMLCProof.Source <> N:76 var
+R2157:2161 LMLCProof.Source <> Minus constr
+R2172:2176 LMLCProof.Source <> Minus constr
+R2204:2218 LMLCProof.Source <> ml_substitution:78 def
+R2225:2225 LMLCProof.Source <> x:77 var
+R2223:2223 LMLCProof.Source <> N:76 var
+R2179:2193 LMLCProof.Source <> ml_substitution:78 def
+R2200:2200 LMLCProof.Source <> x:77 var
+R2198:2198 LMLCProof.Source <> N:76 var
+R2232:2236 LMLCProof.Source <> Times constr
+R2247:2251 LMLCProof.Source <> Times constr
+R2279:2293 LMLCProof.Source <> ml_substitution:78 def
+R2300:2300 LMLCProof.Source <> x:77 var
+R2298:2298 LMLCProof.Source <> N:76 var
+R2254:2268 LMLCProof.Source <> ml_substitution:78 def
+R2275:2275 LMLCProof.Source <> x:77 var
+R2273:2273 LMLCProof.Source <> N:76 var
+R2307:2309 LMLCProof.Source <> Int constr
+R2316:2318 LMLCProof.Source <> Int constr
+R2326:2328 LMLCProof.Source <> Gtz constr
+R2336:2338 LMLCProof.Source <> Gtz constr
+R2341:2355 LMLCProof.Source <> ml_substitution:78 def
+R2362:2362 LMLCProof.Source <> x:77 var
+R2360:2360 LMLCProof.Source <> N:76 var
+R2369:2376 LMLCProof.Source <> BoolTrue constr
+R2381:2388 LMLCProof.Source <> BoolTrue constr
+R2394:2402 LMLCProof.Source <> BoolFalse constr
+R2407:2415 LMLCProof.Source <> BoolFalse constr
+R2421:2422 LMLCProof.Source <> If constr
+R2433:2434 LMLCProof.Source <> If constr
+R2485:2499 LMLCProof.Source <> ml_substitution:78 def
+R2505:2505 LMLCProof.Source <> x:77 var
+R2503:2503 LMLCProof.Source <> N:76 var
+R2461:2475 LMLCProof.Source <> ml_substitution:78 def
+R2481:2481 LMLCProof.Source <> x:77 var
+R2479:2479 LMLCProof.Source <> N:76 var
+R2437:2451 LMLCProof.Source <> ml_substitution:78 def
+R2457:2457 LMLCProof.Source <> x:77 var
+R2455:2455 LMLCProof.Source <> N:76 var
+R2512:2515 LMLCProof.Source <> Cons constr
+R2526:2529 LMLCProof.Source <> Cons constr
+R2557:2571 LMLCProof.Source <> ml_substitution:78 def
+R2578:2578 LMLCProof.Source <> x:77 var
+R2576:2576 LMLCProof.Source <> N:76 var
+R2532:2546 LMLCProof.Source <> ml_substitution:78 def
+R2553:2553 LMLCProof.Source <> x:77 var
+R2551:2551 LMLCProof.Source <> N:76 var
+R2585:2587 LMLCProof.Source <> Nil constr
+R2592:2594 LMLCProof.Source <> Nil constr
+R2600:2609 LMLCProof.Source <> Fold_right constr
+R2626:2635 LMLCProof.Source <> Fold_right constr
+R2689:2703 LMLCProof.Source <> ml_substitution:78 def
+R2712:2712 LMLCProof.Source <> x:77 var
+R2710:2710 LMLCProof.Source <> N:76 var
+R2664:2678 LMLCProof.Source <> ml_substitution:78 def
+R2685:2685 LMLCProof.Source <> x:77 var
+R2683:2683 LMLCProof.Source <> N:76 var
+R2638:2652 LMLCProof.Source <> ml_substitution:78 def
+R2660:2660 LMLCProof.Source <> x:77 var
+R2658:2658 LMLCProof.Source <> N:76 var
+R2719:2722 LMLCProof.Source <> Pair constr
+R2733:2736 LMLCProof.Source <> Pair constr
+R2764:2778 LMLCProof.Source <> ml_substitution:78 def
+R2785:2785 LMLCProof.Source <> x:77 var
+R2783:2783 LMLCProof.Source <> N:76 var
+R2739:2753 LMLCProof.Source <> ml_substitution:78 def
+R2760:2760 LMLCProof.Source <> x:77 var
+R2758:2758 LMLCProof.Source <> N:76 var
+R2792:2794 LMLCProof.Source <> Fst constr
+R2801:2803 LMLCProof.Source <> Fst constr
+R2806:2820 LMLCProof.Source <> ml_substitution:78 def
+R2826:2826 LMLCProof.Source <> x:77 var
+R2824:2824 LMLCProof.Source <> N:76 var
+R2833:2835 LMLCProof.Source <> Snd constr
+R2842:2844 LMLCProof.Source <> Snd constr
+R2847:2861 LMLCProof.Source <> ml_substitution:78 def
+R2867:2867 LMLCProof.Source <> x:77 var
+R2865:2865 LMLCProof.Source <> N:76 var
+def 2885:2896 <> ml_reduction
+R2907:2913 LMLCProof.Source <> ml_term ind
+binder 2899:2900 <> M0:80
+binder 2902:2903 <> N0:81
+R2936:2937 LMLCProof.Source <> N0:81 var
+R2932:2933 LMLCProof.Source <> M0:80 var
+R2968:2970 LMLCProof.Source <> Fun constr
+R2978:2980 LMLCProof.Source <> Fun constr
+R2995:2998 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R2991:2993 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2999:3010 LMLCProof.Source <> ml_reduction:82 def
+R3022:3027 LMLCProof.Source <> Fixfun constr
+R3037:3042 LMLCProof.Source <> Fixfun constr
+R3059:3062 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3055:3057 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3068:3071 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3064:3066 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3072:3083 LMLCProof.Source <> ml_reduction:82 def
+R3095:3098 LMLCProof.Source <> Appl constr
+R3107:3110 LMLCProof.Source <> Appl constr
+R3154:3157 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3140:3143 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3123:3134 LMLCProof.Source <> ml_reduction:82 def
+R3147:3149 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3164:3167 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3159:3161 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3168:3179 LMLCProof.Source <> ml_reduction:82 def
+R3194:3197 LMLCProof.Source <> Plus constr
+R3204:3207 LMLCProof.Source <> Plus constr
+R3245:3248 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3224:3227 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3219:3221 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3228:3239 LMLCProof.Source <> ml_reduction:82 def
+R3266:3269 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3249:3260 LMLCProof.Source <> ml_reduction:82 def
+R3271:3273 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3281:3285 LMLCProof.Source <> Minus constr
+R3292:3296 LMLCProof.Source <> Minus constr
+R3334:3337 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3313:3316 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3308:3310 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3317:3328 LMLCProof.Source <> ml_reduction:82 def
+R3355:3358 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3338:3349 LMLCProof.Source <> ml_reduction:82 def
+R3360:3362 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3370:3374 LMLCProof.Source <> Times constr
+R3381:3385 LMLCProof.Source <> Times constr
+R3423:3426 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3402:3405 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3397:3399 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3406:3417 LMLCProof.Source <> ml_reduction:82 def
+R3444:3447 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3427:3438 LMLCProof.Source <> ml_reduction:82 def
+R3449:3451 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3459:3461 LMLCProof.Source <> Gtz constr
+R3466:3468 LMLCProof.Source <> Gtz constr
+R3476:3487 LMLCProof.Source <> ml_reduction:82 def
+R3498:3499 LMLCProof.Source <> If constr
+R3523:3524 LMLCProof.Source <> If constr
+R3629:3638 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3574:3577 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3566:3568 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3596:3599 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3585:3587 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3600:3611 LMLCProof.Source <> ml_reduction:82 def
+R3706:3715 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3651:3654 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3643:3645 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3684:3687 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3655:3666 LMLCProof.Source <> ml_reduction:82 def
+R3695:3697 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3739:3742 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3716:3727 LMLCProof.Source <> ml_reduction:82 def
+R3761:3764 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3750:3752 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3772:3774 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3788:3791 LMLCProof.Source <> Cons constr
+R3800:3803 LMLCProof.Source <> Cons constr
+R3847:3850 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3824:3827 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3818:3820 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3828:3839 LMLCProof.Source <> ml_reduction:82 def
+R3870:3873 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3851:3862 LMLCProof.Source <> ml_reduction:82 def
+R3876:3878 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3887:3896 LMLCProof.Source <> Fold_right constr
+R3912:3921 LMLCProof.Source <> Fold_right constr
+R4002:4011 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R3961:3964 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3954:3956 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3975:3978 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3968:3970 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3979:3990 LMLCProof.Source <> ml_reduction:82 def
+R4063:4072 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R4022:4025 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4015:4017 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4047:4050 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4026:4037 LMLCProof.Source <> ml_reduction:82 def
+R4055:4057 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4094:4097 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4073:4084 LMLCProof.Source <> ml_reduction:82 def
+R4108:4111 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4101:4103 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4116:4118 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4129:4132 LMLCProof.Source <> Pair constr
+R4141:4144 LMLCProof.Source <> Pair constr
+R4184:4187 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R4173:4176 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4155:4166 LMLCProof.Source <> ml_reduction:82 def
+R4179:4181 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4195:4198 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4190:4192 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4199:4210 LMLCProof.Source <> ml_reduction:82 def
+R4222:4224 LMLCProof.Source <> Fst constr
+R4229:4231 LMLCProof.Source <> Fst constr
+R4238:4249 LMLCProof.Source <> ml_reduction:82 def
+R4259:4261 LMLCProof.Source <> Snd constr
+R4266:4268 LMLCProof.Source <> Snd constr
+R4275:4286 LMLCProof.Source <> ml_reduction:82 def
+R4317:4320 LMLCProof.Source <> Appl constr
+R4323:4325 LMLCProof.Source <> Fun constr
+R4362:4364 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4341:4355 LMLCProof.Source <> ml_substitution def
+R4372:4377 LMLCProof.Source <> Fixfun constr
+R4387:4390 LMLCProof.Source <> Appl constr
+R4427:4430 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4406:4409 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4426:4426 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4410:4412 LMLCProof.Source <> Fun constr
+R4417:4419 LMLCProof.Source <> Fun constr
+R4434:4437 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4451:4451 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4438:4443 LMLCProof.Source <> Fixfun constr
+R4485:4488 LMLCProof.Source <> Plus constr
+R4491:4493 LMLCProof.Source <> Int constr
+R4499:4501 LMLCProof.Source <> Int constr
+R4507:4509 LMLCProof.Source <> Int constr
+R4519:4521 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4523:4525 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R4532:4536 LMLCProof.Source <> Times constr
+R4539:4541 LMLCProof.Source <> Int constr
+R4547:4549 LMLCProof.Source <> Int constr
+R4555:4557 LMLCProof.Source <> Int constr
+R4567:4569 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4571:4571 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
+R4578:4582 LMLCProof.Source <> Minus constr
+R4585:4587 LMLCProof.Source <> Int constr
+R4593:4595 LMLCProof.Source <> Int constr
+R4601:4603 LMLCProof.Source <> Int constr
+R4613:4615 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4617:4617 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R4641:4643 LMLCProof.Source <> Gtz constr
+R4646:4648 LMLCProof.Source <> Int constr
+R4654:4661 LMLCProof.Source <> BoolTrue constr
+R4667:4669 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R4676:4678 LMLCProof.Source <> Gtz constr
+R4681:4683 LMLCProof.Source <> Int constr
+R4689:4697 LMLCProof.Source <> BoolFalse constr
+R4702:4703 Coq.Init.Logic <> ::type_scope:'~'_x not
+R4709:4709 Coq.Init.Logic <> ::type_scope:'~'_x not
+R4705:4707 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R4732:4741 LMLCProof.Source <> Fold_right constr
+R4744:4747 LMLCProof.Source <> Cons constr
+R4782:4784 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4785:4794 LMLCProof.Source <> Fold_right constr
+R4804:4807 LMLCProof.Source <> Appl constr
+R4810:4813 LMLCProof.Source <> Appl constr
+R4833:4842 LMLCProof.Source <> Fold_right constr
+R4844:4846 LMLCProof.Source <> Nil constr
+R4871:4873 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4907:4909 LMLCProof.Source <> Fst constr
+R4912:4915 LMLCProof.Source <> Pair constr
+R4933:4935 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4943:4945 LMLCProof.Source <> Snd constr
+R4948:4951 LMLCProof.Source <> Pair constr
+R4969:4971 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4987:4991 Coq.Init.Logic <> False ind
+def 5008:5019 <> ml_gen_to_ml
+R5026:5036 LMLCProof.Source <> ml_term_gen ind
+binder 5022:5022 <> M:85
+R5041:5047 LMLCProof.Source <> ml_term ind
+R5058:5058 LMLCProof.Source <> M:85 var
+R5069:5072 LMLCProof.Source <> GVar constr
+R5079:5081 LMLCProof.Source <> Var constr
+R5089:5092 LMLCProof.Source <> GLet constr
+R5103:5106 LMLCProof.Source <> Appl constr
+R5134:5145 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5147:5147 LMLCProof.Source <> M:85 var
+R5109:5111 LMLCProof.Source <> Fun constr
+R5116:5127 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5154:5160 LMLCProof.Source <> GLetRec constr
+R5173:5176 LMLCProof.Source <> Appl constr
+R5204:5209 LMLCProof.Source <> Fixfun constr
+R5216:5227 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5229:5229 LMLCProof.Source <> M:85 var
+R5179:5181 LMLCProof.Source <> Fun constr
+R5186:5197 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5237:5241 LMLCProof.Source <> GAppl constr
+R5252:5255 LMLCProof.Source <> Appl constr
+R5275:5286 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5258:5269 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5297:5300 LMLCProof.Source <> GFun constr
+R5309:5311 LMLCProof.Source <> Fun constr
+R5316:5327 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5329:5329 LMLCProof.Source <> M:85 var
+R5336:5340 LMLCProof.Source <> GPlus constr
+R5349:5352 LMLCProof.Source <> Plus constr
+R5372:5383 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5355:5366 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5368:5368 LMLCProof.Source <> M:85 var
+R5392:5397 LMLCProof.Source <> GMinus constr
+R5406:5410 LMLCProof.Source <> Minus constr
+R5430:5441 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5413:5424 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5426:5426 LMLCProof.Source <> M:85 var
+R5450:5455 LMLCProof.Source <> GTimes constr
+R5464:5468 LMLCProof.Source <> Times constr
+R5488:5499 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5471:5482 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5484:5484 LMLCProof.Source <> M:85 var
+R5508:5511 LMLCProof.Source <> GInt constr
+R5518:5520 LMLCProof.Source <> Int constr
+R5528:5530 LMLCProof.Source <> GLt constr
+R5539:5541 LMLCProof.Source <> Gtz constr
+R5544:5548 LMLCProof.Source <> Minus constr
+R5568:5579 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5551:5562 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5564:5564 LMLCProof.Source <> M:85 var
+R5589:5593 LMLCProof.Source <> GTrue constr
+R5598:5605 LMLCProof.Source <> BoolTrue constr
+R5611:5616 LMLCProof.Source <> GFalse constr
+R5621:5629 LMLCProof.Source <> BoolFalse constr
+R5635:5638 LMLCProof.Source <> GAnd constr
+R5647:5648 LMLCProof.Source <> If constr
+R5684:5692 LMLCProof.Source <> BoolFalse constr
+R5668:5679 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5651:5662 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5664:5664 LMLCProof.Source <> M:85 var
+R5698:5700 LMLCProof.Source <> GOr constr
+R5709:5710 LMLCProof.Source <> If constr
+R5739:5750 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5729:5736 LMLCProof.Source <> BoolTrue constr
+R5713:5724 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5726:5726 LMLCProof.Source <> M:85 var
+R5759:5761 LMLCProof.Source <> GIf constr
+R5775:5776 LMLCProof.Source <> If constr
+R5816:5827 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5799:5810 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5779:5790 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5836:5840 LMLCProof.Source <> GCons constr
+R5851:5854 LMLCProof.Source <> Cons constr
+R5875:5886 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5857:5868 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5896:5899 LMLCProof.Source <> GNil constr
+R5904:5906 LMLCProof.Source <> Nil constr
+R5912:5922 LMLCProof.Source <> GFold_right constr
+R5940:5949 LMLCProof.Source <> Fold_right constr
+R5990:6001 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5971:5982 LMLCProof.Source <> ml_gen_to_ml:86 def
+R5952:5963 LMLCProof.Source <> ml_gen_to_ml:86 def
+R6013:6017 LMLCProof.Source <> GPair constr
+R6028:6031 LMLCProof.Source <> Pair constr
+R6052:6063 LMLCProof.Source <> ml_gen_to_ml:86 def
+R6034:6045 LMLCProof.Source <> ml_gen_to_ml:86 def
+R6073:6076 LMLCProof.Source <> GFst constr
+R6083:6085 LMLCProof.Source <> Fst constr
+R6088:6099 LMLCProof.Source <> ml_gen_to_ml:86 def
+R6108:6111 LMLCProof.Source <> GSnd constr
+R6118:6120 LMLCProof.Source <> Snd constr
+R6123:6134 LMLCProof.Source <> ml_gen_to_ml:86 def

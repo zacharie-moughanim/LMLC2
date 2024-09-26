@@ -4,6 +4,7 @@ Fixpoint lmlc (M : ml_term) : lambda_term := match M with
   | Var x => Lvar x
   | Appl M N => Lappl (lmlc M) (lmlc N)
   | Fun x M => Labs x (lmlc M)
+  | Fixfun f x M => Labs x (turing_fixpoint_applied (lmlc M))
   | Plus M N => church_plus (lmlc M) (lmlc N)
   | Minus M N => church_minus (lmlc M) (lmlc N)
   | Times M N => church_times (lmlc M) (lmlc N)
