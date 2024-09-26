@@ -48,9 +48,9 @@ Inductive ml_term : Type :=
 Fixpoint ml_substitution (M N : ml_term) (x : var) : ml_term := match M with
   | Var y => if eqb x y then N else Var y
   | Appl f arg => Appl (ml_substitution f N x) (ml_substitution arg N x)
-  | Fun y M' => if eqb x y then Fun y M else Fun y (ml_substitution M' N x)
-  | Fixfun f y M' => if eqb x f then Fixfun f y M
-                     else if eqb x y then  Fixfun f y M
+  | Fun y M' => if eqb x y then Fun y M' else Fun y (ml_substitution M' N x)
+  | Fixfun f y M' => if eqb x f then Fixfun f y M'
+                     else if eqb x y then  Fixfun f y M'
                      else Fixfun f y (ml_substitution M' N x)
   | Plus M' N' => Plus (ml_substitution M' N x) (ml_substitution N' N x)
   | Minus M' N' => Minus (ml_substitution M' N x) (ml_substitution N' N x)
