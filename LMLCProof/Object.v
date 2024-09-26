@@ -7,8 +7,8 @@ Inductive lambda_term : Type :=
 
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
   | Lvar y => if eqb x y then N else Lvar y
-  | Labs y M' => if eqb x y then Labs y M' else Labs x (substitution M' N x)
-  | Lappl M' N' => Lappl (substitution M' N x) (substitution M' N x)
+  | Labs y M' => if eqb x y then Labs y M' else Labs y (substitution M' N x)
+  | Lappl M' N' => Lappl (substitution M' N x) (substitution N' N x)
 end.
 
 Fixpoint beta_reduction (M N : lambda_term) : Prop := match M,N with
