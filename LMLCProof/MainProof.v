@@ -1,4 +1,3 @@
-
 Require Export Coq.Classes.Init.
 Require Import Coq.Program.Basics.
 Require Import Coq.Program.Tactics.
@@ -60,14 +59,52 @@ Lemma beta_star_contextual_appl'r :
 Admitted.
 
 Theorem lmlc_is_correct : forall (M N : ml_term), M ->ml N -> (lmlc M) ->b* (lmlc N).
-Proof. induction M.
+Proof. induction M as [ x | M1 IHappl1 M2 IHappl2| x M' IHfunbody| f x M' IHfixfunbody
+                      | M1 IHplus1 M2 IHplus2| M1 IHminus1 M2 IHminus2 | M1 IHtimes1 M2 IHtimes2 | n
+                      | M' IHgtz
+                      | | | C IHifc T IHift E IHife
+                      | HD IHconshd TL IHconsnil| |LST IHfoldlst OP IHfoldop INIT IHfoldinit
+                      | P1 IHpair1 P2 IHpair2 | P IHfst | P IHsnd ].
+(* M = x *)
   - intros N H. simpl in H. exfalso. apply H.
+(* M = (M1)M2 *)
   - intros N H. simpl. simpl in H. destruct M1 eqn:eqM1.
-    + simpl. simpl in H. destruct N eqn:eqN.
-      * exfalso. apply H.
+    + simpl. simpl in H. destruct N eqn:eqN. all : try (exfalso; apply H).
       * simpl. destruct H.
         ++ exfalso. apply H.
         ++ destruct H as [H1 H2]. rewrite <- H1. simpl. apply IHM2 in H2.
-           apply beta_star_contextual_appl'r. apply H2 ;
-       exfalso; apply H; simpl.
+           apply beta_star_contextual_appl'r. apply H2.
+    + destruct N eqn:eqN. all : try (exfalso; apply H).
+      * simpl. destruct H.
+        ++
+(* M = fun x -> M' *)
+  -
+(* M = fixfun f x -> M' *)
+  -
+(* M = M1 + M2 *)
+  -
+(* M = M1 - M2 *)
+  -
+(* M = M1 * M2 *)
+  -
+(* M = n [in NN] *)
+  -
+(* M = 0 < M *)
+  -
+(* M = true *)
+  -
+(* M = false *)
+  -
+(* M = If C then T else E *)
+  -
+(* M = HD::TL *)
+  -
+(* M = [] *)
+  -
+(* M = Fold_right LST OP INIT *)
+  -
+(* M = <P1,P2> *)
+  -
+(* M = fst P *)
+(* M = snd P *)
 
