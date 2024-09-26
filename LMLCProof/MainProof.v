@@ -35,17 +35,16 @@ Proof.
   - simpl. rewrite minus_n_0. reflexivity.
 Qed.
 
-Search "_ <= _".
+Search "_ + _".
 
-(* CE LEMME EST FAUX !!! *)
-Lemma le_n_plus_n_m : forall (n m : nat), 0 <= m - 1 -> n <= n + m - 1.
+
+Lemma le_n_plus_n_m : forall (n m : nat), 1 <= m -> n <= n + m - 1.
 Proof.
-  intros n m.
+  intros n.
   induction n as [|n' IHn'].
-  - intros H. simpl. apply H.
-  - simpl. intros H. destruct m.
-  + 
-Abort.
+  - intros m H. simpl. apply all_positive_more_than_zero.
+  - simpl. intros m H. apply IHn' in H as H'. rewrite minus_n_0. apply le_n_S in H'.
+Admitted.
 
 Lemma succ_church : forall n : nat,
   church_succ2 (church_int n) = church_int (S n).
@@ -71,10 +70,10 @@ Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
       { rewrite <- G2. rewrite test_plus_minus. reflexivity. }
       apply find_opt_length. assert (Ll1Pos : length l1 = S (pred (length l1))).
       { destruct (S_predn (length l1)).
-        - rewrite H in K. rewrite no_positive_less_than_zero in K. exfalso. apply K.
+        - rewrite H in K. apply no_positive_less_than_zero in K. exfalso. apply K.
         - symmetry. apply H.
       } rewrite Ll1Pos in K. apply le_S_n in K. rewrite pred_minus in K.
-      apply le_n_plus_n_m. apply K.
+      apply le_n_plus_n_m. rewrite Ll1Pos. apply le_n_S. apply all_positive_more_than_zero.
     + intro n.
 Admitted.
 
