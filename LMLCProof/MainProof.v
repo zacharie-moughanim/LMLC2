@@ -45,7 +45,7 @@ Proof.
   - intros H. simpl. apply H.
   - simpl. intros H. destruct m.
   + 
-Admitted.
+Abort.
 
 Lemma succ_church : forall n : nat,
   church_succ2 (church_int n) = church_int (S n).
