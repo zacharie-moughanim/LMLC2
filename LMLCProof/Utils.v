@@ -110,6 +110,14 @@ Qed.
 Lemma no_positive_less_than_zero : forall (n : nat), S n <= 0 = False.
 Proof. Admitted.
 
+Lemma Succ_n_minus_1 : forall (n : nat), 1 <= n -> S(n-1) = n.
+Proof.
+  intros n H.
+  destruct n.
+  - rewrite no_positive_less_than_zero in H. contradiction.
+  - simpl. rewrite minus_n_0. reflexivity.
+Qed.
+
 Lemma find_opt_length : forall {X : Type} (l : list X) (n : nat), length l <= n -> find_opt l n = None.
 Proof. intro X. induction l as [|h t IHt].
   - intros n H. simpl. destruct n. all : reflexivity.
