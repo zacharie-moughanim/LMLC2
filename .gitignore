@@ -6,3 +6,14 @@ LMLCProof/\#MainProof.v\#
 *.aux
 *.glob
 *.vo
+LMLCProof/.Object.aux
+LMLCProof/.Source.aux
+LMLCProof/\#MainProof.v\#
+LMLCProof/.Transpiler.aux
+LMLCProof/.Utils.aux
+LMLCProof/Object.glob
+LMLCProof/Object.vo
+LMLCProof/Source.glob
+LMLCProof/Source.vo
+LMLCProof/Transpiler.vo
+LMLCProof/Utils.vo
