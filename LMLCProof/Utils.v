@@ -169,15 +169,15 @@ Proof.
     + intros H. apply IHtl in H. apply le_n_S. apply H.
 Qed.
 
-Lemma find_opt_length_2 : forall {X : Type} (l : list X) (n : nat), find_opt l n <> None -> n <= length l.
+Lemma find_opt_length_2' : forall {X : Type} (l : list X) (n : nat), find_opt l n = None -> length l <= n.
 Proof. 
   intros X l.
   induction l as [|h tl IHtl].
   - intros n H. destruct n.
-    + contradiction.
-    + contradiction.
+    + simpl. reflexivity.
+    + simpl. apply all_positive_more_than_zero.
   - simpl. intros n. destruct n.
-    + intros H. apply all_positive_more_than_zero.
+    + intros H. discriminate H.
     + intros H. apply IHtl in H. apply le_n_S. apply H.
 Qed.
 

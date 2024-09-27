@@ -42,9 +42,6 @@ Proof.
   - simpl. rewrite minus_n_0. reflexivity.
 Qed.
 
-Search "_ + _".
-
-
 Lemma le_n_plus_n_m : forall (n m : nat), 1 <= m -> n <= n + m - 1.
 Proof.
   intros n.
@@ -133,15 +130,13 @@ Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
           simpl. rewrite minus_n_0. rewrite eq. simpl. rewrite minus_n_0. reflexivity.
         }
         rewrite G2usable in G2. apply G2.
-    + intro n. destruct (find_opt l0 (S n)) eqn:eq.Scheme new_scheme := Induction for _ Sort _
-with _ := Induction for _ Sort _.
-
+    + intro n. destruct (find_opt l0 (S n)) eqn:eq.
       * assert (eq' : find_opt l0 (S n) <> None).
       { rewrite eq. unfold not. intro H. discriminate H. }
-        apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq'. rewrite eq'.
+        apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq'. rewrite eq'.
         assert (eq'' : find_opt l0 (S n) <> None).
       { rewrite eq. unfold not. intro H. discriminate H. }
-        apply find_opt_S in eq''. apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq''. rewrite eq''.
+        apply find_opt_S in eq''. apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq''. rewrite eq''.
         apply H3.
       * destruct (find_opt l0 n) eqn:eq2.
         ++ assert (eq2' : find_opt l0 n <> None).
@@ -149,10 +144,39 @@ with _ := Induction for _ Sort _.
           apply find_opt_length_bound in eq2'.
           ** assert (eq2'' : find_opt l0 n <> None).
           { rewrite eq2. intro Tmp. discriminate Tmp. }
-            apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq2''. rewrite eq2''.
-            apply find_opt_app2 with (l2 := l0)(l3 := l1) in eq. rewrite eq. rewrite eq2.
-            rewrite eq2'. simpl. rewrite minus_n_n. rewrite G1. rewrite eq2' in H2. simpl in H2.
-Admitted.
+            apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq2''. rewrite eq2''.
+            apply find_opt_app2 with (l2 := l0)(l3 := tail l1) in eq. rewrite eq. rewrite eq2.
+            rewrite eq2'. simpl. rewrite minus_n_n. destruct (tail l1) as [|htl1 ttl1] eqn:eqtl1.
+            *** reflexivity.
+            *** simpl. assert (l_is_y : Some l = Some y).
+                {
+                  rewrite <- eq2. apply f_equal_pred in eq2'. simpl in eq2'. rewrite pred_minus in eq2'.
+                  rewrite <- H2. rewrite eq2'. reflexivity.
+                }
+                injection l_is_y. intro l_is_y'. rewrite l_is_y'. assert (G3' : match find_opt l1 0 with
+                                                                               | Some a => match find_opt l1 1 with
+                                                                                           | Some b => a ->b b
+                                                                                           | None => True
+                                                                                           end
+                                                                               | None => True
+                                                                               end).
+              { apply G3. }
+                rewrite G1 in G3'. assert (L1Form : l1 = y :: (tail l1)).
+        { destruct l1.
+          - simpl. simpl in G1. discriminate G1.
+          - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+                rewrite L1Form in G3'. rewrite eqtl1 in G3'. simpl in G3'. apply G3'.
+          ** apply eq.
+        ++ assert (eq2' : find_opt l0 n = None). { apply eq2. }
+            apply find_opt_app2 with (l2:=l0)(l3:=tail l1) in eq2. rewrite eq2.
+            apply find_opt_app2 with (l2:=l0)(l3:=tail l1) in eq. rewrite eq.
+            apply find_opt_length_2' in eq2'. apply PeanoNat.Nat.sub_succ_l in eq2'.
+            rewrite eq2'. assert (L1Form : l1 = y :: (tail l1)).
+            { destruct l1.
+              - simpl. simpl in G1. discriminate G1.
+              - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+            rewrite L1Form in G3. simpl in G3. apply G3 with (n := S (n - length l0)).
+Qed.
 
 Lemma beta_subset_beta_star : forall (M N : lambda_term), M ->b N -> M ->b* N.
 Proof. intros M N H. unfold beta_star. unfold refl_trans_closure. exists [M;N].
