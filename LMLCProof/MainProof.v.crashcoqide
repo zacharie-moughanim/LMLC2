@@ -30,15 +30,17 @@ Proof.
   - simpl. right. reflexivity.
 Qed.
 
+Lemma S_predn' : forall (n : nat), 0 < n -> S (pred n) = n.
+Proof. 
+  intros *. intro H.  Abort.
+
+
 Lemma pred_minus : forall (n : nat), pred n = n - 1.
 Proof.
   destruct n.
   - reflexivity.
   - simpl. rewrite minus_n_0. reflexivity.
 Qed.
-
-Search "_ + _".
-
 
 Lemma le_n_plus_n_m : forall (n m : nat), 1 <= m -> n <= n + m - 1.
 Proof.
@@ -93,18 +95,48 @@ Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
         { destruct l1.
           - simpl. simpl in G1. discriminate G1.
           - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
-        rewrite L1Form. simpl. rewrite <- G2. symmetry. rewrite L1Form. simpl. rewrite minus_n_0. destruct (length (tail l1)).
-          ++ reflexivity.
-          ++ rewrite eq. simpl. 
-
-
+        rewrite L1Form. simpl. rewrite <- G2. symmetry. rewrite L1Form. simpl.
+        rewrite minus_n_0. rewrite eq. simpl. reflexivity.
+      * assert (K : find_opt l0 (length (l0 ++ (tail l1)) - 1) = None).
+        { rewrite length_app. apply find_opt_length.
+          assert (ineq : length l0 + length (tail l1) - 1 = length l0 + (length (tail l1) - 1)).
+          {
+            assert (L1Form : l1 = y :: (tail l1)).
+            { destruct l1.
+              - simpl. simpl in G1. discriminate G1.
+              - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+            rewrite L1Form. simpl. destruct (length l0).
+              - simpl. reflexivity.
+              - simpl. rewrite minus_n_0. rewrite plus_n_Sm. rewrite PeanoNat.Nat.sub_1_r.
+                assert (S_predlengthl1 : length (tail l1) = 0 \/ S (pred (length (tail l1))) = length (tail l1)).
+                { apply S_predn. } destruct S_predlengthl1.
+                + rewrite eq in H. simpl in H. discriminate H.
+                + rewrite H. reflexivity.
+          }
+          rewrite ineq. apply Plus.le_plus_l.
+        }
+        apply find_opt_app2 with (l2 := l0)(l3 := tail l1) in K. rewrite <- eq. rewrite K.
+        assert (Num_is_lengthl1 : length (l0 ++ tail l1) - 1 - length l0 = length (tail l1) - 1).
+        {
+          rewrite length_app. rewrite test_plus_minus. reflexivity.
+        }
+        rewrite Num_is_lengthl1. assert (L1Form : l1 = y :: (tail l1)).
+        { destruct l1.
+          - simpl. simpl in G1. discriminate G1.
+          - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+        rewrite L1Form in G2. assert (G2usable : find_opt (y :: tail l1) (length (y :: tail l1) - 1) =
+                                                 find_opt (tail l1) (length (tail l1) - 1)).
+        {
+          simpl. rewrite minus_n_0. rewrite eq. simpl. rewrite minus_n_0. reflexivity.
+        }
+        rewrite G2usable in G2. apply G2.
     + intro n. destruct (find_opt l0 (S n)) eqn:eq.
       * assert (eq' : find_opt l0 (S n) <> None).
       { rewrite eq. unfold not. intro H. discriminate H. }
-        apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq'. rewrite eq'.
+        apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq'. rewrite eq'.
         assert (eq'' : find_opt l0 (S n) <> None).
       { rewrite eq. unfold not. intro H. discriminate H. }
-        apply find_opt_S in eq''. apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq''. rewrite eq''.
+        apply find_opt_S in eq''. apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq''. rewrite eq''.
         apply H3.
       * destruct (find_opt l0 n) eqn:eq2.
         ++ assert (eq2' : find_opt l0 n <> None).
@@ -112,10 +144,39 @@ Proof. unfold transitive. intros *. unfold beta_star. unfold refl_trans_closure.
           apply find_opt_length_bound in eq2'.
           ** assert (eq2'' : find_opt l0 n <> None).
           { rewrite eq2. intro Tmp. discriminate Tmp. }
-            apply find_opt_app1 with (l2 := l0)(l3 := l1) in eq2''. rewrite eq2''.
-            apply find_opt_app2 with (l2 := l0)(l3 := l1) in eq. rewrite eq. rewrite eq2.
-            rewrite eq2'. simpl. rewrite minus_n_n. rewrite G1. rewrite eq2' in H2. simpl in H2.
-Admitted.
+            apply find_opt_app1 with (l2 := l0)(l3 := tail l1) in eq2''. rewrite eq2''.
+            apply find_opt_app2 with (l2 := l0)(l3 := tail l1) in eq. rewrite eq. rewrite eq2.
+            rewrite eq2'. simpl. rewrite minus_n_n. destruct (tail l1) as [|htl1 ttl1] eqn:eqtl1.
+            *** reflexivity.
+            *** simpl. assert (l_is_y : Some l = Some y).
+                {
+                  rewrite <- eq2. apply f_equal_pred in eq2'. simpl in eq2'. rewrite pred_minus in eq2'.
+                  rewrite <- H2. rewrite eq2'. reflexivity.
+                }
+                injection l_is_y. intro l_is_y'. rewrite l_is_y'. assert (G3' : match find_opt l1 0 with
+                                                                               | Some a => match find_opt l1 1 with
+                                                                                           | Some b => a ->b b
+                                                                                           | None => True
+                                                                                           end
+                                                                               | None => True
+                                                                               end).
+              { apply G3. }
+                rewrite G1 in G3'. assert (L1Form : l1 = y :: (tail l1)).
+        { destruct l1.
+          - simpl. simpl in G1. discriminate G1.
+          - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+                rewrite L1Form in G3'. rewrite eqtl1 in G3'. simpl in G3'. apply G3'.
+          ** apply eq.
+        ++ assert (eq2' : find_opt l0 n = None). { apply eq2. }
+            apply find_opt_app2 with (l2:=l0)(l3:=tail l1) in eq2. rewrite eq2.
+            apply find_opt_app2 with (l2:=l0)(l3:=tail l1) in eq. rewrite eq.
+            apply find_opt_length_2' in eq2'. apply PeanoNat.Nat.sub_succ_l in eq2'.
+            rewrite eq2'. assert (L1Form : l1 = y :: (tail l1)).
+            { destruct l1.
+              - simpl. simpl in G1. discriminate G1.
+              - simpl. simpl in G1. injection G1. intro G1'. rewrite G1'. reflexivity. }
+            rewrite L1Form in G3. simpl in G3. apply G3 with (n := S (n - length l0)).
+Qed.
 
 Lemma beta_subset_beta_star : forall (M N : lambda_term), M ->b N -> M ->b* N.
 Proof. intros M N H. unfold beta_star. unfold refl_trans_closure. exists [M;N].

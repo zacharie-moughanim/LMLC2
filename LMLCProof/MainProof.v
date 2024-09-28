@@ -6,7 +6,7 @@ Require Import Relation_Definitions.
 From Coq Require Import Lists.List.
 Import ListNotations.
 
-From LMLCProof Require Import Utils Source Object Transpiler.
+From LMLCProof Require Import Utils Source Object Transpiler. Print lmlc.
 
 (** Beta-Reduction properties *)
 
@@ -219,18 +219,62 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
                       | | | C IHifc T IHift E IHife
                       | HD IHconshd TL IHconsnil| |LST IHfoldlst OP IHfoldop INIT IHfoldinit
                       | P1 IHpair1 P2 IHpair2 | P IHfst | P IHsnd ].
+(* M = x *)
   - intros *. simpl. destruct (eqb x0 x).
     + reflexivity.
     + reflexivity.
+(* M = (M1)M2 *)
   - intros *. simpl. rewrite IHappl1. rewrite IHappl2. reflexivity.
+(* M = fun x -> M' *)
   - intros *. simpl. destruct (eqb x0 x).
     + reflexivity.
     + simpl. rewrite IHfunbody. reflexivity.
-  - intros *. simpl. destruct (eqb x0 f).
-    + destruct (eqb x0 x).
-      * reflexivity. 
-      * destruct (eqb x0 1).
-        -- simpl. unfold turing_fixpoint_applied. 
+(* M = fixfun f x -> M' *)
+  - intros N y. destruct (eqb y f) eqn:eq_y_f.
+    + destruct (eqb y x) eqn:eq_y_x.
+      * simpl. rewrite eq_y_f. rewrite eq_y_x. reflexivity.
+      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (eqb y 0) eqn:eq_y_0.
+        -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. reflexivity.
+          ++ simpl. reflexivity.
+       -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. reflexivity.
+          ++ simpl. reflexivity.
+    + destruct (eqb y x) eqn:eq_y_x.
+      * simpl. rewrite eq_y_f. rewrite eq_y_x. reflexivity.
+      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (eqb y 0) eqn:eq_y_0.
+        -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. rewrite IHfixfunbody. reflexivity.
+          ++ simpl. rewrite IHfixfunbody. reflexivity.
+       -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. rewrite IHfixfunbody. reflexivity.
+          ++ simpl. rewrite IHfixfunbody. reflexivity.
+(* M = M1 + M2 *)
+  -
+(* M = M1 - M2 *)
+  -
+(* M = M1 * M2 *)
+  -
+(* M = n [in NN] *)
+  -
+(* M = 0 < M *)
+  -
+(* M = true *)
+  -
+(* M = false *)
+  -
+(* M = If C then T else E *)
+  -
+(* M = HD::TL *)
+  -
+(* M = [] *)
+  -
+(* M = Fold_right LST OP INIT *)
+  -
+(* M = <P1,P2> *)
+  -
+(* M = fst P *)
+(* M = snd P *)
 Admitted.
 
 (**
