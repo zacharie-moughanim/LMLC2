@@ -5,8 +5,9 @@ Require Import Coq.Relations.Relation_Definitions.
 Require Import Relation_Definitions.
 From Coq Require Import Lists.List.
 Import ListNotations.
+Require Import PeanoNat.
 
-From LMLCProof Require Import Utils Source Object Transpiler. Print lmlc.
+From LMLCProof Require Import Utils Source Object Transpiler.
 
 (** Beta-Reduction properties *)
 
@@ -220,41 +221,41 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
                       | HD IHconshd TL IHconsnil| |LST IHfoldlst OP IHfoldop INIT IHfoldinit
                       | P1 IHpair1 P2 IHpair2 | P IHfst | P IHsnd ].
 (* M = x *)
-  - intros *. simpl. destruct (eqb x0 x).
+  - intros *. simpl. destruct (x0 =? x).
     + reflexivity.
     + reflexivity.
 (* M = (M1)M2 *)
   - intros *. simpl. rewrite IHappl1. rewrite IHappl2. reflexivity.
 (* M = fun x -> M' *)
-  - intros *. simpl. destruct (eqb x0 x).
+  - intros *. simpl. destruct (x0 =? x).
     + reflexivity.
     + simpl. rewrite IHfunbody. reflexivity.
 (* M = fixfun f x -> M' *)
-  - intros N y. destruct (eqb y f) eqn:eq_y_f.
-    + destruct (eqb y x) eqn:eq_y_x.
+  - intros N y. destruct (y =? f) eqn:eq_y_f.
+    + destruct (y =? x) eqn:eq_y_x.
       * simpl. rewrite eq_y_f. rewrite eq_y_x. reflexivity.
-      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (eqb y 0) eqn:eq_y_0.
-        -- destruct (eqb y 1) eqn:eq_y_1.
+      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (y =? 0) eqn:eq_y_0.
+        -- destruct (y =? 1) eqn:eq_y_1.
           ++ simpl. reflexivity.
           ++ simpl. reflexivity.
-       -- destruct (eqb y 1) eqn:eq_y_1.
+       -- destruct (y =? 1) eqn:eq_y_1.
           ++ simpl. reflexivity.
           ++ simpl. reflexivity.
-    + destruct (eqb y x) eqn:eq_y_x.
+    + destruct (y =? x) eqn:eq_y_x.
       * simpl. rewrite eq_y_f. rewrite eq_y_x. reflexivity.
-      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (eqb y 0) eqn:eq_y_0.
-        -- destruct (eqb y 1) eqn:eq_y_1.
+      * simpl. rewrite eq_y_x. rewrite eq_y_f. simpl. destruct (y =? 0) eqn:eq_y_0.
+        -- destruct (y =? 1) eqn:eq_y_1.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
-       -- destruct (eqb y 1) eqn:eq_y_1.
+       -- destruct (y =? 1) eqn:eq_y_1.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
 (* M = M1 + M2 *)
-  - intros N y. simpl. rewrite IHplus1. rewrite IHplus2. destruct (eqb y 0) eqn:eq_y_0.
-        -- destruct (eqb y 1) eqn:eq_y_1.
+  - intros N y. simpl. rewrite IHplus1. rewrite IHplus2. destruct (y =? fresh (fvL (lmlc M1) ++ fvL (lmlc M2))) eqn:eq_y_0.
+        -- destruct (y =? fresh ((fresh (fvL (lmlc M1) ++ fvL (lmlc M2)))::(fvL (lmlc M1) ++ fvL (lmlc M2)))) eqn:eq_y_1.
           ++ simpl. unfold church_plus. reflexivity.
           ++ simpl. reflexivity.
-       -- destruct (eqb y 1) eqn:eq_y_1.
+       -- destruct (y =? 1) eqn:eq_y_1.
           ++ simpl. reflexivity.
           ++ simpl. reflexivity.
 (* M = M1 - M2 *)

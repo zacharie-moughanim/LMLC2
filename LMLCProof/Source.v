@@ -1,5 +1,7 @@
 From LMLCProof Require Import Utils.
 Require Import PeanoNat.
+From Coq Require Import Lists.List.
+Import ListNotations.
 
 Definition var : Type := nat.
 
@@ -90,6 +92,73 @@ Fixpoint fvML (M : ml_term) : list var := match M with
   | Snd P => fvML P
 end.
 
+(** Here is a good function fresh, but spec is hardly provable *)
+
+Fixpoint first_nats_option (n : nat) : list (option nat) := match n with
+  | 0 => []
+  | S n' => (Some n') :: first_nats_option n'
+end.
+
+Definition unwrap_default {X : Type} (x : option X) (default : X) := match x with
+  | None => default
+  | Some x => x
+end.
+
+(* For this function to work, default should be absent in l;
+   This is okay, since it is meant to be used only on (first_nats_option n) *)
+Fixpoint first_unwrap_default (l : list (option nat)) (default : nat) : nat := match l with
+  | [] => default
+  | None :: t => first_unwrap_default t default
+  | (Some h) :: t => let tmp := first_unwrap_default t default in
+                     if first_unwrap_default t default =? default then h else tmp
+end.
+
+Fixpoint fresh_aux2 (l : list var) (n : nat) (available : list (option nat)) : nat := match l with
+    | [] => first_unwrap_default available n
+    | h :: t => fresh_aux2 t n (List.map (fun x => if (unwrap_default x n) =? h then None else x) available)
+end.
+
+Definition fresh2 (l : list var) : var := fresh_aux2 l (S (length l)) (first_nats_option (S (length l))).
+
+(** Here is a lame function fresh, but easily provable *)
+
+Fixpoint fresh_aux (l : list var) (n : nat) : var := match l with
+  | nil => S n
+  | h :: t => if h <=? n then fresh_aux t n else fresh_aux t h
+end.
+
+Definition fresh (l : list var) : var := fresh_aux l 0.
+
+Lemma fresh_aux_spec1 : forall (l : list nat) (n : nat), n < fresh_aux l n.
+Proof. induction l as [|h t IHt].
+  - apply Nat.lt_succ_diag_r.
+  - simpl. intro n. destruct (h <=? n) eqn:ineqhn.
+    + apply IHt.
+    + rewrite <- IHt. apply leb_to_ltb in ineqhn. apply ltb_to_lt in ineqhn. apply ineqhn.
+Qed.
+
+Lemma fresh_aux_spec2 : forall (l : list nat) (n x : nat), in_list l x = true ->x < fresh_aux l n.
+Proof. induction l as [|h t IHt].
+  - discriminate.
+  - intros n x H. simpl in H. simpl. destruct (x =? h) eqn:eqxh.
+    + apply eqb_to_eq in eqxh. rewrite <- eqxh. destruct (x <=? n) eqn:ineqxn.
+      * apply leb_to_le in ineqxn. assert (G : n < fresh_aux t n).
+        { apply fresh_aux_spec1. }
+        unfold lt in G. assert (K : n <= S n).
+        { apply Nat.le_succ_diag_r. } apply Nat.le_lt_trans with(p := fresh_aux t n) in ineqxn.
+        ++ apply ineqxn.
+        ++ unfold lt. apply G.
+      * apply fresh_aux_spec1.
+    + destruct (h <=? n).
+      * apply IHt with (n:=n) in H. apply H.
+      * apply IHt with (n:=h) in H. apply H.
+Qed.
+
+Lemma fresh_spec : forall (l : list nat) (x:nat), in_list l x = true -> fresh l =? x = false.
+Proof. intros l x H. apply fresh_aux_spec2 with (n := 0) in H. unfold fresh. destruct (fresh_aux l 0 =? x) eqn:eq.
+  - apply eqb_to_eq in eq. rewrite <- eq in H. apply Nat.lt_irrefl in H. exfalso. apply H.
+  - reflexivity.
+Qed.
 
 Fixpoint ml_reduction (M0 N0 : ml_term) : Prop := match M0, N0 with
 (* context cases *)

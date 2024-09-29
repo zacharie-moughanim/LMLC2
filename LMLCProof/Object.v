@@ -1,5 +1,6 @@
 From LMLCProof Require Import Utils Source.
 From Coq Require Import Lists.List.
+Require Import PeanoNat.
 Import ListNotations.
 
 Inductive lambda_term : Type :=
@@ -8,8 +9,8 @@ Inductive lambda_term : Type :=
   | Labs (x : var) (M : lambda_term).
 
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
-  | Lvar y => if eqb x y then N else Lvar y
-  | Labs y M' => if eqb x y then Labs y M' else Labs y (substitution M' N x)
+  | Lvar y => if x =? y then N else Lvar y
+  | Labs y M' => if x =? y then Labs y M' else Labs y (substitution M' N x)
   | Lappl M' N' => Lappl (substitution M' N x) (substitution N' N x)
 end.
 
@@ -57,7 +58,8 @@ Definition church_or (b1 b2 : lambda_term) := church_if b1 church_true b2.
 (* Pairs *)
 
 Definition church_pair (M : lambda_term) (N : lambda_term) : lambda_term :=
-  Labs 0 (Lappl (Lappl (Lvar 0) M) N).
+  let x := fresh ((fvL M) ++ (fvL N)) in
+  Labs x (Lappl (Lappl (Lvar x) M) N).
 Definition church_fst (P : lambda_term) : lambda_term := Lappl P (Labs 0 (Labs 1 (Lvar 0))).
 Definition church_snd (P : lambda_term) : lambda_term := Lappl P (Labs 0 (Labs 1 (Lvar 1))).
 
@@ -90,21 +92,25 @@ Definition church_pred (N : lambda_term) : lambda_term :=
   church_snd
   (Lappl (Lappl N
             (Labs 0 (Labs 1
-                          (Lappl (Lappl (Lvar 1) (church_succ (church_snd (Lvar 0))))
+                          (Lappl (Lappl (Lvar 1) (church_succ2 (church_snd (Lvar 0))))
                                (church_succ (church_snd (Lvar 0)))))))
        (church_pair (church_int 0) (church_int 0))).
 
-Definition church_plus (M N : lambda_term) : lambda_term := Labs 1 (Labs 0 (
-                                                 Lappl (Lappl N (Lvar 1))
-                                                       (Lappl (Lappl M (Lvar 1))
-                                                              (Lvar 0)))
+Definition church_plus (M N : lambda_term) : lambda_term :=
+let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh (x::((fvL M) ++ (fvL N))) in
+                               Labs x (Labs y (
+                                                 Lappl (Lappl N (Lvar y))
+                                                       (Lappl (Lappl M (Lvar y))
+                                                              (Lvar x)))
                                               ).
 Definition church_minus (M N : lambda_term) : lambda_term :=
       Lappl (Lappl M (Labs 0 (church_pred (Lvar 0)))) N.
-Definition church_times (M N : lambda_term) : lambda_term := Labs 1 (Labs 0 (
-                                                 Lappl (Lappl N (Lvar 1))
-                                                       (Lappl (Lappl M (Lvar 1))
-                                                              (Lvar 0)))
+Definition church_times (M N : lambda_term) : lambda_term :=
+let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh (x::((fvL M) ++ (fvL N))) in
+                               Labs x (Labs y (
+                                                 Lappl (Lappl N (Lvar x))
+                                                       (Lappl (Lappl M (Lvar x))
+                                                              (Lvar y)))
                                               ).
 Definition church_gtz (M : lambda_term) : lambda_term := Lappl (Lappl M (Labs 0 church_true)) (church_false).
 

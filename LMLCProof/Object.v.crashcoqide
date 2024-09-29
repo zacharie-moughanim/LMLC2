@@ -1,4 +1,7 @@
 From LMLCProof Require Import Utils Source.
+From Coq Require Import Lists.List.
+Import ListNotations.
+Require Import PeanoNat.
 
 Inductive lambda_term : Type :=
   | Lvar (x : var)
@@ -6,8 +9,8 @@ Inductive lambda_term : Type :=
   | Labs (x : var) (M : lambda_term).
 
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
-  | Lvar y => if eqb x y then N else Lvar y
-  | Labs y M' => if eqb x y then Labs y M' else Labs y (substitution M' N x)
+  | Lvar y => if x =? y then N else Lvar y
+  | Labs y M' => if x =? y then Labs y M' else Labs y (substitution M' N x)
   | Lappl M' N' => Lappl (substitution M' N x) (substitution N' N x)
 end.
 
@@ -34,6 +37,30 @@ Notation "M ->ml N" := (ml_reduction M N) (at level 50).
 
 Notation "M ->b* N" := (beta_star M N) (at level 50).
 Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
+
+(* fresh variables *)
+
+Fixpoint fvL (M : lambda_term) : list var := match M with
+  | Lvar x => [x]
+  | Labs x M' => remove_nat (fvL M') x
+  | Lappl M' N' => (fvL M') ++ (fvL N')
+end.
+
+Lemma lambda_substitution_fv : forall (M : lambda_term) (N : lambda_term) (x : var),
+              in_list (fvL M) x = false -> substitution M N x = M.
+Proof. induction M as [x|M' IHM N' IHN|x N' IHNabs].
+  - intros N y H. simpl. simpl in H. destruct (y =? x).
+    + discriminate H.
+    + reflexivity.
+  - intros N y H. simpl in H. apply in_list_app1 in H. destruct H as [H1 H2].
+    apply IHM with (N := N) in H1. apply IHN with (N := N) in H2.
+    simpl. rewrite H1. rewrite H2. reflexivity.
+  - intros N y H. simpl in H. destruct (x =? y) eqn:eqxy.
+    + simpl. rewrite Nat.eqb_sym. rewrite eqxy. reflexivity.
+    + rewrite in_remove_nat_neq in H.
+      * apply IHNabs with (N := N) in H. simpl. rewrite H. rewrite Nat.eqb_sym. rewrite eqxy. reflexivity.
+      * apply eqxy.
+Qed.
 
 (* Basic terms constructors *)
 
