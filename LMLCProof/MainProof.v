@@ -210,7 +210,7 @@ Lemma beta_star_contextual_appl'r :
 Admitted.
 
 (* MAIN PROOF *)
-
+(* false, fresh variables needed... *)
 Lemma lmlc_substitution : forall (M N : ml_term) (x : var),
                           lmlc (ml_substitution M N x) = substitution (lmlc M) (lmlc N) x.
 Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfixfunbody
@@ -250,7 +250,13 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
           ++ simpl. rewrite IHfixfunbody. reflexivity.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
 (* M = M1 + M2 *)
-  -
+  - intros N y. simpl. rewrite IHplus1. rewrite IHplus2. destruct (eqb y 0) eqn:eq_y_0.
+        -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. unfold church_plus. reflexivity.
+          ++ simpl. reflexivity.
+       -- destruct (eqb y 1) eqn:eq_y_1.
+          ++ simpl. reflexivity.
+          ++ simpl. reflexivity.
 (* M = M1 - M2 *)
   -
 (* M = M1 * M2 *)

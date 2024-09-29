@@ -186,3 +186,60 @@ Definition tail {X : Type} (lst : list X) := match lst with
   | nil => nil
 end.
 
+Fixpoint remove_nat (lst : list nat) (x : nat) : list nat := match lst with
+  | nil => nil
+  | h::t => if x =? h then remove_nat t x else h :: (remove_nat t x)
+end.
+
+Fixpoint in_list (lst : list nat) (x : nat) : bool := match lst with
+  | nil => false
+  | h::t => if x =? h then true else (in_list t x)
+end.
+
+Lemma in_list_app1 : forall (l1 l2 : list nat) (x : nat), in_list (l1 ++ l2) x = false ->
+                                          in_list l1 x = false /\ in_list l2 x = false.
+Proof. intros *. intro H. induction l1 as [|h t IHt1].
+  - simpl. split.
+    + reflexivity.
+    + simpl in H. apply H.
+  - simpl. destruct (x =? h) eqn:eqxh.
+    + simpl in H. rewrite eqxh in H. discriminate H.
+    + simpl in H. rewrite eqxh in H. apply IHt1 in H. apply H.
+Qed.
+
+Lemma in_list_app2 : forall (l1 l2 : list nat) (x : nat), in_list (l1 ++ l2) x = true ->
+                                          in_list l1 x = true \/ in_list l2 x = true. 
+Proof. intros *. intro H. induction l1 as [| h t IHt1].
+  - simpl. right. apply H.
+  - simpl. simpl in H. destruct (x =? h).
+    + left. reflexivity.
+    + apply IHt1 in H. apply H.
+Qed.
+
+Lemma eqb_to_eq : forall (x y : nat), x =? y = true -> x = y.
+Proof. induction x as[|x' IHx].
+  - intro y. destruct y as [|y'].
+    + reflexivity.
+    + simpl. discriminate.
+  - intro y. destruct y as [|y'].
+    + simpl. discriminate.
+    + simpl. intro H. apply IHx in H. rewrite H. reflexivity.
+Qed.
+
+Lemma in_remove_nat_neq : forall (l : list nat) (x y : nat), (x =? y = false) ->
+            in_list (remove_nat l x) y = in_list l y.
+Proof. intros *. intros H. induction l as [|h t IHt].
+  - reflexivity.
+  - simpl. destruct (x =? h) eqn:eqxh.
+    + destruct (y =? h) eqn:eqyh.
+      * apply eqb_to_eq in eqxh. apply eqb_to_eq in eqyh. rewrite eqxh in H. rewrite eqyh in H.
+        rewrite Nat.eqb_refl in H. discriminate H.
+      * apply IHt.
+    + destruct (y =? h) eqn:eqyh.
+      * simpl. rewrite eqyh. reflexivity.
+      * simpl. rewrite eqyh. apply IHt.
+Qed.
+
+
+
+

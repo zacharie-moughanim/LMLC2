@@ -1,4 +1,6 @@
 From LMLCProof Require Import Utils Source.
+From Coq Require Import Lists.List.
+Import ListNotations.
 
 Inductive lambda_term : Type :=
   | Lvar (x : var)
@@ -34,6 +36,14 @@ Notation "M ->ml N" := (ml_reduction M N) (at level 50).
 
 Notation "M ->b* N" := (beta_star M N) (at level 50).
 Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
+
+(* fresh variables *)
+
+Fixpoint fvL (M : lambda_term) : list var := match M with
+  | Lvar x => [x]
+  | Labs x M' => remove_nat (fvL M') x
+  | Lappl M' N' => (fvL M') ++ (fvL N')
+end.
 
 (* Basic terms constructors *)
 
