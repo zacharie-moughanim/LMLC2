@@ -155,23 +155,40 @@ Fixpoint ml_gen_to_ml (M : ml_term_gen) : ml_term := match M with
   | GSnd P => Snd (ml_gen_to_ml P)
 end.
 
-Lemma substitution_fv : forall (M : ml_term) (N : ml_term) (x : var),
+Lemma ml_substitution_fv : forall (M : ml_term) (N : ml_term) (x : var),
               in_list (fvML M) x = false -> ml_substitution M N x = M.
-Proof. intros *. intro H. generalize dependent N. induction M as [ y | L1 IHappl1' L2 IHappl2' | y L IHfunbody'| g y L IHfixfunbody'
-                                                                | L1 IHplus1' L2 IHplus2' | L1 IHminus1' L2 IHminus2' | L1 IHtimes1' L2 IHtimes2' | m
-                                                                | L IHgtz'
-                                                                | | | C' IHifc' T' IHift' E' IHife'
-                                                                | HD' IHconshd' TL' IHconsnil' | | LST' IHfoldlst' OP' IHfoldop' INIT' IHfoldinit'
-                                                                | P1' IHpair1' P2' IHpair2' | P' IHfst' | P' IHsnd' ].
+Proof. intros *. intro H. generalize dependent N. induction M as [ y | L1 IH1 L2 IH2 | y L IHfunbody'| g y L IHfixfunbody'
+                                                                | L1 IH1 L2 IH2 | L1 IH1 L2 IH2 | L1 IH1 L2 IH2 | m
+                                                                | L IH
+                                                                | | | C' IH1 T' IH2 E' IH3
+                                                                | HD' IH1 TL' IH2 | | LST' IH1 OP' IH2 INIT' IH3
+                                                                | P1' IH1 P2' IH2 | P' IH | P' IH ].
+  all : try (intro N; simpl; simpl in H; apply in_list_app1 in H; destruct H as [H1 H2]; apply IH1 with (N := N) in H1;
+             apply IH2 with (N := N) in H2; rewrite H1; rewrite H2; reflexivity).
+  all : try (simpl; intro N; apply IH with (N := N) in H; rewrite H; reflexivity).
+  all : try (simpl; reflexivity).
+  all : try (intro N; simpl; simpl in H; apply in_list_app1 in H; destruct H as [H1 H2];
+    apply in_list_app1 in H2; destruct H2 as [H2 H3];
+    apply IH1 with (N := N) in H1; apply IH2 with (N := N) in H2; apply IH3 with (N := N) in H3;
+    rewrite H1; rewrite H2; rewrite H3; reflexivity).
   - intro N. simpl. simpl in H. destruct (x =? y).
     + discriminate H.
     + reflexivity.
-  - intro N. simpl. simpl in H. apply in_list_app1 in H. destruct H as [H1 H2]. apply IHappl1' with (N := N) in H1.
-                                                                                apply IHappl2' with (N := N) in H2.
-    rewrite H1. rewrite H2. reflexivity.
   - simpl in H. destruct (x =? y) eqn:eqxy.
-    + simpl.
-
+    + simpl. rewrite eqxy. intro N. reflexivity.
+    + simpl. rewrite eqxy. intro N. rewrite in_remove_nat_neq in H.
+      * apply IHfunbody' with (N := N) in H. rewrite H. reflexivity.
+      * rewrite Nat.eqb_sym. apply eqxy.
+  -  simpl in H. destruct (x =? g) eqn:eqxg.
+    + simpl. rewrite eqxg. intro N. reflexivity.
+    + simpl. rewrite eqxg. intro N. destruct (x =? y) eqn:eqxy.
+      * reflexivity.
+      * rewrite in_remove_nat_neq in H.
+        -- rewrite in_remove_nat_neq in H.
+          ++ apply IHfixfunbody' with (N := N) in H. rewrite H. reflexivity.
+          ++ rewrite Nat.eqb_sym. apply eqxg.
+        -- rewrite Nat.eqb_sym. apply eqxy.
+Qed.
 
 
 
