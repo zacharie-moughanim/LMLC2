@@ -6,7 +6,7 @@ Require Import Relation_Definitions.
 From Coq Require Import Lists.List.
 Import ListNotations.
 Require Import PeanoNat.
-(* We require this : *)
+
 From LMLCProof Require Import Utils Source Object Transpiler.
 
 (** Beta-Reduction properties *)
