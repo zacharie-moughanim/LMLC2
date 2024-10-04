@@ -1,11 +1,5 @@
 Require Import PeanoNat.
 
-Fixpoint eqb (n m : nat) : bool := match n, m with
-  | O, O => true
-  | S n', S m' => eqb n' m'
-  | _, _ => false
-end.
-
 Fixpoint find_opt {X : Type} (l : list X) (n : nat) : option X := match n with
   | 0 => match l with
     | nil => None
@@ -226,6 +220,20 @@ Proof. induction x as[|x' IHx].
     + simpl. intro H. apply IHx in H. rewrite H. reflexivity.
 Qed.
 
+Lemma ltb_to_lt : forall (n m : nat), n <? m = true -> n < m.
+Proof. Admitted.
+
+Lemma leb_to_le : forall (n m : nat), n <=? m = true -> n <= m.
+Proof. Admitted.
+
+Lemma leb_to_ltb : forall (n m : nat), n <=? m = false -> m <? n = true.
+Proof. induction n as [|n' IHn].
+  - intros m H. simpl in H. discriminate H.
+  - intros m H. destruct m as [|m'].
+    + unfold Nat.ltb. unfold Nat.leb. reflexivity.
+    + simpl in H. apply IHn in H. apply H.
+Qed.
+
 Lemma in_remove_nat_neq : forall (l : list nat) (x y : nat), (x =? y = false) ->
             in_list (remove_nat l x) y = in_list l y.
 Proof. intros *. intros H. induction l as [|h t IHt].
@@ -239,6 +247,7 @@ Proof. intros *. intros H. induction l as [|h t IHt].
       * simpl. rewrite eqyh. reflexivity.
       * simpl. rewrite eqyh. apply IHt.
 Qed.
+
 
 
 
