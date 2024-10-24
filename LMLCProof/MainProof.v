@@ -149,32 +149,44 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
         }
         apply fresh_spec in H'. rewrite Nat.eqb_sym. apply H'.
       }
-      rewrite H. unfold church_plus. (*
+      rewrite H. unfold church_plus. admit.
+    + admit.
 (* M = M1 - M2 *)
-  -
+  - admit.
 (* M = M1 * M2 *)
-  -
+  - admit.
 (* M = n [in NN] *)
-  -
+  - intros. simpl. destruct (x =? 1) eqn:eqx1.
+    + reflexivity.
+    + destruct (x =? 0) eqn:eqx0.
+      * reflexivity.
+      * { induction n as [|n' IHn'].
+          - simpl. rewrite eqx0. reflexivity.
+          - admit.
+        }
 (* M = 0 < M *)
-  -
+  - simpl. symmetry. rewrite <- IHgtz. symmetry. unfold church_gtz. unfold church_true. unfold church_false. admit.
 (* M = true *)
-  -
+  - intros. simpl. destruct b.
+    + unfold church_true. admit.
+    + admit.
 (* M = false *)
-  -
+  - admit.
 (* M = If C then T else E *)
-  -
+  - admit.
 (* M = HD::TL *)
-  -
+  - admit.
 (* M = [] *)
-  -
+  - admit.
 (* M = Fold_right LST OP INIT *)
-  -
+  - admit.
 (* M = <P1,P2> *)
-  -
+  - admit.
 (* M = fst P *)
-(* M = snd P *)*)
+(* M = snd P *)
 Admitted.
+(* still a lot of prb with free variables when constructing terms *)
+
 
 (**
 If you want to induct :
