@@ -38,8 +38,7 @@ Inductive ml_term : Type :=
   | Times (N : ml_term) (M : ml_term)
   | Int (n : nat)
   | Gtz (N : ml_term)
-  | BoolTrue
-  | BoolFalse
+  | Bool (b : bool)
   | If (cond : ml_term) (brancht : ml_term) (branche : ml_term)
   | Cons (hd : ml_term) (tl : ml_term)
   | Nil
@@ -60,8 +59,7 @@ Fixpoint ml_substitution (M N : ml_term) (x : var) : ml_term := match M with
   | Times M' N' => Times (ml_substitution M' N x) (ml_substitution N' N x)
   | Int n => Int n
   | Gtz N' => Gtz (ml_substitution N' N x)
-  | BoolTrue => BoolTrue
-  | BoolFalse => BoolFalse
+  | Bool b => Bool b
   | If C T E => If (ml_substitution C N x) (ml_substitution T N x) (ml_substitution E N x)
   | Cons HD TL => Cons (ml_substitution HD N x) (ml_substitution TL N x)
   | Nil => Nil
@@ -81,8 +79,7 @@ Fixpoint fvML (M : ml_term) : list var := match M with
   | Times M' N' => fvML M' ++ fvML N'
   | Int n => []
   | Gtz N' => fvML N'
-  | BoolTrue => []
-  | BoolFalse => []
+  | Bool _ => []
   | If C T E => fvML C ++ fvML T ++ fvML E
   | Cons HD TL => fvML HD ++ fvML TL
   | Nil => []
@@ -134,7 +131,7 @@ Proof. induction l as [|h t IHt].
   - apply Nat.lt_succ_diag_r.
   - simpl. intro n. destruct (h <=? n) eqn:ineqhn.
     + apply IHt.
-    + rewrite <- IHt. apply leb_to_ltb in ineqhn. apply ltb_to_lt in ineqhn. apply ineqhn.
+    + rewrite <- IHt. apply leb_to_ltb in ineqhn. apply Nat.ltb_lt in ineqhn. apply ineqhn.
 Qed.
 
 Lemma fresh_aux_spec2 : forall (l : list nat) (n x : nat), in_list l x = true ->x < fresh_aux l n.
@@ -142,7 +139,7 @@ Proof. induction l as [|h t IHt].
   - discriminate.
   - intros n x H. simpl in H. simpl. destruct (x =? h) eqn:eqxh.
     + apply eqb_to_eq in eqxh. rewrite <- eqxh. destruct (x <=? n) eqn:ineqxn.
-      * apply leb_to_le in ineqxn. assert (G : n < fresh_aux t n).
+      * apply Nat.leb_le in ineqxn. assert (G : n < fresh_aux t n).
         { apply fresh_aux_spec1. }
         unfold lt in G. assert (K : n <= S n).
         { apply Nat.le_succ_diag_r. } apply Nat.le_lt_trans with(p := fresh_aux t n) in ineqxn.
@@ -160,45 +157,47 @@ Proof. intros l x H. apply fresh_aux_spec2 with (n := 0) in H. unfold fresh. des
   - reflexivity.
 Qed.
 
-Fixpoint ml_reduction (M0 N0 : ml_term) : Prop := match M0, N0 with
+Inductive ml_reduction : ml_term -> ml_term -> Prop :=
 (* context cases *)
-  | Fun x M', Fun y N' => x = y /\ ml_reduction M' N'
-  | Fixfun f x M', Fixfun g y N' => x = y /\ f = g /\ ml_reduction M' N'
-  | Appl f arg, Appl f' arg' => ml_reduction f f' /\ arg = arg' \/ f = f' /\ ml_reduction arg arg'
-  | Plus M N, Plus M' N' => M = M' /\ ml_reduction N N' \/ ml_reduction M M' /\ N = N'
-  | Minus M N, Minus M' N' => M = M' /\ ml_reduction N N' \/ ml_reduction M M' /\ N = N'
-  | Times M N, Times M' N' => M = M' /\ ml_reduction N N' \/ ml_reduction M M' /\ N = N'
-  | Gtz M, Gtz M' => ml_reduction M M'
-  | If cond brancht branche, If cond' brancht' branche' =>
-         cond = cond' /\ brancht = brancht' /\ ml_reduction branche branche'
-      \/ cond = cond' /\ ml_reduction brancht brancht' /\ branche = branche'
-      \/ ml_reduction cond cond' /\ brancht = brancht' /\ branche = branche'
-  | Cons HD TL, Cons HD' TL' => HD = HD' /\ ml_reduction TL TL' \/ ml_reduction HD HD' /\ TL = TL'
-  | Fold_right lst foo init, Fold_right lst' foo' init' =>
-         lst = lst' /\ foo = foo' /\ ml_reduction init init'
-      \/ lst = lst' /\ ml_reduction foo foo' /\ init = init'
-      \/ ml_reduction lst lst' /\ foo = foo' /\ init = init'
-  | Pair P1 P2, Pair Q1 Q2 => ml_reduction P1 Q1 /\ P2 = Q2 \/ P1 = Q1 /\ ml_reduction P2 Q2
-  | Fst P, Fst Q => ml_reduction P Q
-  | Snd P, Snd Q => ml_reduction P Q
+  | contextual_fun : forall (x : var) (M M' : ml_term), ml_reduction M M' -> ml_reduction (Fun x M) (Fun x M')
+  | contextual_fixfun : forall (f x : var) (M M' : ml_term), ml_reduction M M' -> ml_reduction (Fixfun f x M) (Fixfun f x M')
+  | contextual_appl1 : forall (M M' N : ml_term), ml_reduction M M' -> ml_reduction (Appl M N) (Appl M' N)
+  | contextual_appl2 : forall (M N N' : ml_term), ml_reduction N N' -> ml_reduction (Appl M N) (Appl M N')
+  | contextual_plus1 : forall (M M' N : ml_term), ml_reduction M M' -> ml_reduction (Plus M N) (Plus M' N)
+  | contextual_plus2 : forall (M N N' : ml_term), ml_reduction N N' -> ml_reduction (Plus M N) (Plus M N')
+  | contextual_minus1 : forall (M M' N : ml_term), ml_reduction M M' -> ml_reduction (Minus M N) (Minus M' N)
+  | contextual_minus2 : forall (M N N' : ml_term), ml_reduction N N' -> ml_reduction (Minus M N) (Minus M N')
+  | contextual_times1 : forall (M M' N : ml_term), ml_reduction M M' -> ml_reduction (Times M N) (Times M' N)
+  | contextual_times2 : forall (M N N' : ml_term), ml_reduction N N' -> ml_reduction (Times M N) (Times M N')
+  | contextual_gtz : forall (M M' : ml_term), ml_reduction M M' -> ml_reduction (Gtz M) (Gtz M')
+  | contextual_iftec : forall (C C' T E : ml_term), ml_reduction C C' -> ml_reduction (If C T E) (If C' T E)
+  | contextual_iftet : forall (C T T' E : ml_term), ml_reduction T T' -> ml_reduction (If C T E) (If C T' E)
+  | contextual_iftee : forall (C T E E' : ml_term), ml_reduction E E' -> ml_reduction (If C T E) (If C T E')
+  | contextual_conshd : forall (HD HD' TL : ml_term), ml_reduction HD HD' -> ml_reduction (Cons HD TL) (Cons HD' TL)
+  | contextual_constl : forall (HD TL TL' : ml_term), ml_reduction TL TL' -> ml_reduction (Cons HD TL) (Cons HD TL')
+  | contextual_foldrightlst : forall (LST LST' FOO INIT : ml_term), ml_reduction LST LST' -> ml_reduction (Fold_right LST FOO INIT) (Fold_right LST' FOO INIT)
+  | contextual_foldrightfoo : forall (LST FOO FOO' INIT : ml_term), ml_reduction FOO FOO' -> ml_reduction (Fold_right LST FOO INIT) (Fold_right LST FOO' INIT)
+  | contextual_foldrightinit : forall (LST FOO INIT INIT' : ml_term), ml_reduction INIT INIT' -> ml_reduction (Fold_right LST FOO INIT) (Fold_right LST FOO INIT')
+  | contextual_pair1 : forall (P1 P1' P2 : ml_term), ml_reduction P1 P1' -> ml_reduction (Pair P1 P2) (Pair P1' P2)
+  | contextual_pair2 : forall (P1 P2 P2' : ml_term), ml_reduction P2 P2' -> ml_reduction (Pair P1 P2) (Pair P1 P2')
+  | contextual_fst : forall (P P' : ml_term), ml_reduction P P' -> ml_reduction (Fst P) (Fst P')
+  | contextual_snd : forall (P P' : ml_term), ml_reduction P P' -> ml_reduction (Snd P) (Snd P')
 (* beta-reduction *)
-  | Appl (Fun x M) N, N' => ml_substitution M N x = N'
-  | Fixfun f x M', Appl M'' N'' => M'' = (Fun f (Fun x M')) /\ N'' = (Fixfun f x M')
+  | ml_redex : forall (x : var) (M N : ml_term), ml_reduction (Appl (Fun x M) N) (ml_substitution M N x)
+  | ml_rec : forall (f x : var) (M N : ml_term), ml_reduction (Fixfun f x M) (Appl (Fun f (Fun x M)) (Fixfun f x M))
 (* Arithmetic operations *)
-  | Plus (Int n) (Int m), Int n' => n' = n + m
-  | Times (Int n) (Int m), Int n' => n' = n*m
-  | Minus (Int n) (Int m), Int n' => n' = n-m
+  | plus : forall (n m : nat),  ml_reduction (Plus (Int n) (Int m)) (Int (n + m))
+  | times : forall (n m : nat), ml_reduction (Times (Int n) (Int m)) (Int (n * m))
+  | minus : forall (n m : nat), ml_reduction (Minus (Int n) (Int m)) (Int (n - m))
 (* Comparison *)
-  | Gtz (Int n), BoolTrue => 0 < n
-  | Gtz (Int n), BoolFalse => ~(0 < n)
+  | gtz : forall (n : nat), ml_reduction (Gtz (Int n)) (Bool (0 <? n))
 (* Fold_right *)
-  | Fold_right (Cons HD TL) foo init, Result => Result = Fold_right TL foo (Appl (Appl foo HD) init)
-  | Fold_right Nil foo init, init' => init = init'
+  | fold_nil : forall (FOO INIT : ml_term), ml_reduction (Fold_right Nil FOO INIT) INIT
+  | fold_cons : forall (HD TL FOO INIT : ml_term), ml_reduction (Fold_right (Cons HD TL) FOO INIT) (Fold_right TL FOO (Appl (Appl FOO HD) INIT))
 (* Pairs operations *)
-  | Fst (Pair P1 P2), P' => P1 = P'
-  | Snd (Pair P1 P2), P' => P2 = P'
-  | _, _ => False
-end.
+  | fst : forall (P1 P2 : ml_term), ml_reduction (Fst (Pair P1 P2)) P1
+  | snd : forall (P1 P2 : ml_term), ml_reduction (Snd (Pair P1 P2)) P2
+.
 
 Fixpoint ml_gen_to_ml (M : ml_term_gen) : ml_term := match M with
   | GVar x => Var x
@@ -211,10 +210,10 @@ Fixpoint ml_gen_to_ml (M : ml_term_gen) : ml_term := match M with
   | GTimes M N => Times (ml_gen_to_ml M) (ml_gen_to_ml N)
   | GInt n => Int n
   | GLt M N => Gtz (Minus (ml_gen_to_ml M) (ml_gen_to_ml N))
-  | GTrue => BoolTrue
-  | GFalse => BoolFalse
-  | GAnd M N => If (ml_gen_to_ml M) (ml_gen_to_ml N) BoolFalse
-  | GOr M N => If (ml_gen_to_ml M) BoolTrue (ml_gen_to_ml N)
+  | GTrue => Bool true
+  | GFalse => Bool false
+  | GAnd M N => If (ml_gen_to_ml M) (ml_gen_to_ml N) (Bool false)
+  | GOr M N => If (ml_gen_to_ml M) (Bool true) (ml_gen_to_ml N)
   | GIf Cond T E => If (ml_gen_to_ml Cond) (ml_gen_to_ml T) (ml_gen_to_ml E)
   | GCons HD TL => Cons (ml_gen_to_ml HD) (ml_gen_to_ml TL)
   | GNil => Nil
@@ -229,7 +228,7 @@ Lemma ml_substitution_fv : forall (M : ml_term) (N : ml_term) (x : var),
 Proof. intros *. intro H. generalize dependent N. induction M as [ y | L1 IH1 L2 IH2 | y L IHfunbody'| g y L IHfixfunbody'
                                                                 | L1 IH1 L2 IH2 | L1 IH1 L2 IH2 | L1 IH1 L2 IH2 | m
                                                                 | L IH
-                                                                | | | C' IH1 T' IH2 E' IH3
+                                                                | | C' IH1 T' IH2 E' IH3
                                                                 | HD' IH1 TL' IH2 | | LST' IH1 OP' IH2 INIT' IH3
                                                                 | P1' IH1 P2' IH2 | P' IH | P' IH ].
   all : try (intro N; simpl; simpl in H; apply in_list_app1 in H; destruct H as [H1 H2]; apply IH1 with (N := N) in H1;

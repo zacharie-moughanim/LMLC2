@@ -14,20 +14,17 @@ Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M wit
   | Lappl M' N' => Lappl (substitution M' N x) (substitution N' N x)
 end.
 
-Fixpoint beta_reduction (M N : lambda_term) : Prop := match M,N with
-  | Labs x M', Labs y N' => x = y /\ beta_reduction M' N'
-  | Lappl f arg, Lappl f' arg' => beta_reduction f f' /\ arg = arg' \/ f = f' /\ beta_reduction arg arg'
-  | Lappl (Labs x M) N, N' => substitution M N x = N'
-  | _, _ => False
-end.
+Inductive beta_reduction : lambda_term -> lambda_term -> Prop :=
+  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x M)
+  | contextual_function : forall (M N M' : lambda_term), beta_reduction M M' -> beta_reduction (Lappl M N) (Lappl M' N)
+  | contextual_argument : forall (M N N' : lambda_term), beta_reduction N N' -> beta_reduction (Lappl M N) (Lappl M N')
+  | redex_contraction : forall (x : var) (M N : lambda_term), beta_reduction (Lappl (Labs x M) N) (substitution M N x)
+.
 
-Definition refl_trans_closure {X : Type} (R : X -> X -> Prop) : X -> X -> Prop := fun x y =>
-  exists (l : list X), find_opt l 0 = Some x
-                    /\ find_opt l ((length l) - 1) = Some y
-                    /\ forall (n : nat), match find_opt l n, find_opt l (S n) with
-                          | Some a, Some b => R a b
-                          | _, _ => True
-                        end
+Inductive refl_trans_closure {X} (R : X -> X -> Prop) : X -> X -> Prop :=
+  | refl : forall (x : X), refl_trans_closure R x x
+  | trans : forall (x y z: X), refl_trans_closure R x y -> refl_trans_closure R y z -> refl_trans_closure R x z
+  | onestep : forall (x y : X), R x y -> refl_trans_closure R x y
 .
 
 Definition beta_star := refl_trans_closure beta_reduction.
@@ -37,6 +34,16 @@ Notation "M ->ml N" := (ml_reduction M N) (at level 50).
 
 Notation "M ->b* N" := (beta_star M N) (at level 50).
 Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
+Notation "M [ N / x ]" := (substitution M N x) (at level 40).
+
+Lemma bredstar_cont_lambda : forall (x : var) (M N : lambda_term), M ->b* N -> (Labs x M) ->b* (Labs x N).
+Proof. Admitted.
+
+Lemma bredstar_cont_appl : forall (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
+Proof. Admitted.
+
+Lemma bredstar_cont_subst : forall (x : var) (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> substitution M N x ->b* substitution M' N' x.
+Proof. Admitted.
 
 (* fresh variables *)
 
@@ -46,12 +53,11 @@ Fixpoint fvL (M : lambda_term) : list var := match M with
   | Lappl M' N' => (fvL M') ++ (fvL N')
 end.
 
+
 Inductive alpha_equivalence : lambda_term -> lambda_term -> Prop :=
   | alpha_context_labs : forall (M : lambda_term) (N : lambda_term) (x:var), alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs x N)
   | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term), alpha_equivalence (Lappl M N) (Lappl M' N')
-  | alpha_rename : forall (M N : lambda_term) (x y:var), alpha_equivalence M N ->
-                                                         in_list (fvL M) y = false ->
-                                                         alpha_equivalence (Labs x M) (Labs y (substitution N (Lvar y) x)).
+  | alpha_rename : forall (M N : lambda_term) (x y:var), ~(In y (fvL N)) -> alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs y (substitution N (Lvar y) x)).
 
 Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
 

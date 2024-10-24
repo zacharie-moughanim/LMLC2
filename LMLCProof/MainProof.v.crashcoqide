@@ -210,8 +210,10 @@ Lemma beta_star_contextual_appl'r :
   forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
 Admitted.
 
+Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
+Proof. intros * H. Admitted.
+
 (* MAIN PROOF *)
-(* false, fresh variables needed... *)
 Lemma lmlc_substitution : forall (M N : ml_term) (x : var),
                           lmlc (ml_substitution M N x) = substitution (lmlc M) (lmlc N) x.
 Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfixfunbody
@@ -251,13 +253,50 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
           ++ simpl. rewrite IHfixfunbody. reflexivity.
           ++ simpl. rewrite IHfixfunbody. reflexivity.
 (* M = M1 + M2 *)
-  - intros N y. simpl. rewrite IHplus1. rewrite IHplus2. destruct (y =? fresh (fvL (lmlc M1) ++ fvL (lmlc M2))) eqn:eq_y_0.
-        -- destruct (y =? fresh ((fresh (fvL (lmlc M1) ++ fvL (lmlc M2)))::(fvL (lmlc M1) ++ fvL (lmlc M2)))) eqn:eq_y_1.
-          ++ simpl. unfold church_plus. reflexivity.
-          ++ simpl. reflexivity.
-       -- destruct (y =? 1) eqn:eq_y_1.
-          ++ simpl. reflexivity.
-          ++ simpl. reflexivity.
+  - intros N y. destruct (in_list ((fvL (lmlc M1)) ++ (fvL (lmlc M2))) y) eqn:eq.
+    + simpl. assert (eq' : in_list (fvL (lmlc M1) ++ fvL (lmlc M2)) y = true). { apply eq. } apply fresh_spec in eq. rewrite Nat.eqb_sym. rewrite eq.
+      assert (H: y =? fresh (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)) :: fvL (lmlc M1) ++ fvL (lmlc M2)) = false).
+      {
+        assert (H' : in_list ((fresh (fvL (lmlc M1) ++ fvL (lmlc M2))) :: fvL (lmlc M1) ++ fvL (lmlc M2)) y = true).
+        {
+          simpl. rewrite Nat.eqb_sym. rewrite eq. apply eq'.
+        }
+        apply fresh_spec in H'. rewrite Nat.eqb_sym. apply H'.
+      }
+      rewrite H. unfold church_plus. assert (eqalpha:
+Labs (fresh (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y))))
+  (Labs
+     (fresh
+        (fresh (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y)))
+         :: fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y))))
+     (Lappl
+        (Lappl (lmlc (ml_substitution M2 N y))
+           (Lvar
+              (fresh
+                 (fresh (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y)))
+                  :: fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y))))))
+        (Lappl
+           (Lappl (lmlc (ml_substitution M1 N y))
+              (Lvar
+                 (fresh
+                    (fresh
+                       (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y)))
+                     :: fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y))))))
+           (Lvar
+              (fresh (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y)))))))) ~a
+Labs (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)))
+  (Labs (fresh (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)) :: fvL (lmlc M1) ++ fvL (lmlc M2)))
+     (Lappl
+        (Lappl (substitution (lmlc M2) (lmlc N) y)
+           (Lvar (fresh (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)) :: fvL (lmlc M1) ++ fvL (lmlc M2)))))
+        (Lappl
+           (Lappl (substitution (lmlc M1) (lmlc N) y)
+              (Lvar
+                 (fresh (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)) :: fvL (lmlc M1) ++ fvL (lmlc M2)))))
+           (Lvar (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)))))))).
+    {
+      apply alpha_rename with (x := fresh (fvL (lmlc (ml_substitution M1 N y)) ++ fvL (lmlc (ml_substitution M2 N y))))(y := fresh (fvL (lmlc M1) ++ fvL (lmlc M2))).
+    }
 (* M = M1 - M2 *)
   -
 (* M = M1 * M2 *)

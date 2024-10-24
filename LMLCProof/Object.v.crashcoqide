@@ -1,7 +1,7 @@
 From LMLCProof Require Import Utils Source.
 From Coq Require Import Lists.List.
 Require Import PeanoNat.
-Import ListNotations.
+Import ListNotations. Print le.
 
 Inductive lambda_term : Type :=
   | Lvar (x : var)
@@ -45,6 +45,17 @@ Fixpoint fvL (M : lambda_term) : list var := match M with
   | Labs x M' => remove_nat (fvL M') x
   | Lappl M' N' => (fvL M') ++ (fvL N')
 end.
+
+Inductive alpha_equivalence : lambda_term -> lambda_term -> Prop :=
+  | alpha_context_labs : forall (M : lambda_term) (N : lambda_term) (x:var), alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs x N)
+  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term), alpha_equivalence (Lappl M N) (Lappl M' N')
+  | alpha_rename : forall (M N : lambda_term) (x y:var), alpha_equivalence M N ->
+                                                         in_list (fvL M) y = false ->
+                                                         alpha_equivalence (Labs x M) (Labs y (substitution N (Lvar y) x)).
+
+Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
+
+Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
 (* Basic terms constructors *)
 
