@@ -35,6 +35,7 @@ Notation "M ->ml N" := (ml_reduction M N) (at level 50).
 Notation "M ->b* N" := (beta_star M N) (at level 50).
 Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
 Notation "M [ N / x ]" := (substitution M N x) (at level 40).
+Notation "M ml[ N / x ]" := (ml_substitution M N x) (at level 40).
 
 Lemma bredstar_cont_lambda : forall (x : var) (M N : lambda_term), M ->b* N -> (Labs x M) ->b* (Labs x N).
 Proof. Admitted.

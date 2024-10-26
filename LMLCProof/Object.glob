@@ -1,4 +1,4 @@
-DIGEST 609ae1198b7f1533356cc66970392e35
+DIGEST 16b662b2ff7589e2b41d35eb716a963c
 FLMLCProof.Object
 R30:34 LMLCProof.Utils <> <> lib
 R36:41 LMLCProof.Source <> <> lib
@@ -181,446 +181,448 @@ R1720:1730 LMLCProof.Object <> ml_red_star def
 not 1704:1704 <> :::x_'->ml*'_x
 R1779:1790 LMLCProof.Object <> substitution def
 not 1761:1761 <> :::x_'['_x_'/'_x_']'
-prf 1821:1840 <> bredstar_cont_lambda
-R1856:1858 LMLCProof.Source <> var def
-binder 1852:1852 <> x:37
-R1868:1878 LMLCProof.Object <> lambda_term ind
-binder 1862:1862 <> M:38
-binder 1864:1864 <> N:39
-R1890:1893 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R1894:1894 LMLCProof.Object <> :::x_'->b*'_x not
-R1903:1910 LMLCProof.Object <> :::x_'->b*'_x not
-R1919:1919 LMLCProof.Object <> :::x_'->b*'_x not
-R1895:1898 LMLCProof.Object <> Labs constr
-R1902:1902 LMLCProof.Object <> M:38 var
-R1900:1900 LMLCProof.Object <> x:37 var
-R1911:1914 LMLCProof.Object <> Labs constr
-R1918:1918 LMLCProof.Object <> N:39 var
-R1916:1916 LMLCProof.Object <> x:37 var
-R1883:1888 LMLCProof.Object <> :::x_'->b*'_x not
-R1882:1882 LMLCProof.Object <> M:38 var
-R1889:1889 LMLCProof.Object <> N:39 var
-prf 1946:1963 <> bredstar_cont_appl
-R1987:1997 LMLCProof.Object <> lambda_term ind
-binder 1975:1975 <> M:40
-binder 1977:1978 <> M':41
-binder 1980:1980 <> N:42
-binder 1982:1983 <> N':43
-R2010:2013 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2023:2026 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2036:2041 LMLCProof.Object <> :::x_'->b*'_x not
-R2027:2031 LMLCProof.Object <> Lappl constr
-R2035:2035 LMLCProof.Object <> N:42 var
-R2033:2033 LMLCProof.Object <> M:40 var
-R2042:2046 LMLCProof.Object <> Lappl constr
-R2051:2052 LMLCProof.Object <> N':43 var
-R2048:2049 LMLCProof.Object <> M':41 var
-R2015:2020 LMLCProof.Object <> :::x_'->b*'_x not
-R2014:2014 LMLCProof.Object <> N:42 var
-R2021:2022 LMLCProof.Object <> N':43 var
-R2002:2007 LMLCProof.Object <> :::x_'->b*'_x not
-R2001:2001 LMLCProof.Object <> M:40 var
-R2008:2009 LMLCProof.Object <> M':41 var
-prf 2079:2097 <> bredstar_cont_subst
-R2113:2115 LMLCProof.Source <> var def
-binder 2109:2109 <> x:44
-R2131:2141 LMLCProof.Object <> lambda_term ind
-binder 2119:2119 <> M:45
-binder 2121:2122 <> M':46
-binder 2124:2124 <> N:47
-binder 2126:2127 <> N':48
-R2154:2157 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2167:2170 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2189:2194 LMLCProof.Object <> :::x_'->b*'_x not
-R2171:2182 LMLCProof.Object <> substitution def
-R2188:2188 LMLCProof.Object <> x:44 var
-R2186:2186 LMLCProof.Object <> N:47 var
-R2184:2184 LMLCProof.Object <> M:45 var
-R2195:2206 LMLCProof.Object <> substitution def
-R2214:2214 LMLCProof.Object <> x:44 var
-R2211:2212 LMLCProof.Object <> N':48 var
-R2208:2209 LMLCProof.Object <> M':46 var
-R2159:2164 LMLCProof.Object <> :::x_'->b*'_x not
-R2158:2158 LMLCProof.Object <> N:47 var
-R2165:2166 LMLCProof.Object <> N':48 var
-R2146:2151 LMLCProof.Object <> :::x_'->b*'_x not
-R2145:2145 LMLCProof.Object <> M:45 var
-R2152:2153 LMLCProof.Object <> M':46 var
-def 2266:2268 <> fvL
-R2275:2285 LMLCProof.Object <> lambda_term ind
-binder 2271:2271 <> M:49
-R2290:2293 Coq.Init.Datatypes <> list ind
-R2295:2297 LMLCProof.Source <> var def
-R2308:2308 LMLCProof.Object <> M:49 var
-R2319:2322 LMLCProof.Object <> Lvar constr
-R2329:2329 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
-R2331:2331 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
-R2337:2340 LMLCProof.Object <> Labs constr
-R2350:2359 LMLCProof.Utils <> remove_nat def
-R2362:2364 LMLCProof.Object <> fvL:50 def
-R2376:2380 LMLCProof.Object <> Lappl constr
-R2391:2391 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R2398:2403 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R2410:2410 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R2392:2394 LMLCProof.Object <> fvL:50 def
-R2404:2406 LMLCProof.Object <> fvL:50 def
-ind 2429:2445 <> alpha_equivalence
-constr 2491:2508 <> alpha_context_labs
-constr 2633:2650 <> alpha_context_appl
-constr 2784:2795 <> alpha_rename
-R2460:2463 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2475:2478 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2464:2474 LMLCProof.Object <> lambda_term ind
-R2449:2459 LMLCProof.Object <> lambda_term ind
-R2524:2534 LMLCProof.Object <> lambda_term ind
-binder 2520:2520 <> M:54
-R2542:2552 LMLCProof.Object <> lambda_term ind
-binder 2538:2538 <> N:55
-R2558:2560 LMLCProof.Source <> var def
-binder 2556:2556 <> x:56
-R2585:2588 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2589:2605 LMLCProof.Object <> alpha_equivalence:52 ind
-R2619:2622 LMLCProof.Object <> Labs constr
-R2626:2626 LMLCProof.Object <> N:55 var
-R2624:2624 LMLCProof.Object <> x:56 var
-R2608:2611 LMLCProof.Object <> Labs constr
-R2615:2615 LMLCProof.Object <> M:54 var
-R2613:2613 LMLCProof.Object <> x:56 var
-R2564:2580 LMLCProof.Object <> alpha_equivalence:52 ind
-R2584:2584 LMLCProof.Object <> N:55 var
-R2582:2582 LMLCProof.Object <> M:54 var
-R2666:2676 LMLCProof.Object <> lambda_term ind
-binder 2662:2662 <> M:57
-R2684:2694 LMLCProof.Object <> lambda_term ind
-binder 2680:2680 <> N:58
-R2703:2713 LMLCProof.Object <> lambda_term ind
-binder 2698:2699 <> M':59
-R2722:2732 LMLCProof.Object <> lambda_term ind
-binder 2717:2718 <> N':60
-R2736:2752 LMLCProof.Object <> alpha_equivalence:52 ind
-R2767:2771 LMLCProof.Object <> Lappl constr
-R2776:2777 LMLCProof.Object <> N':60 var
-R2773:2774 LMLCProof.Object <> M':59 var
-R2755:2759 LMLCProof.Object <> Lappl constr
-R2763:2763 LMLCProof.Object <> N:58 var
-R2761:2761 LMLCProof.Object <> M:57 var
-R2813:2823 LMLCProof.Object <> lambda_term ind
-binder 2807:2807 <> M:61
-binder 2809:2809 <> N:62
-R2831:2833 LMLCProof.Source <> var def
-binder 2827:2827 <> x:63
-binder 2829:2829 <> y:64
-R2852:2855 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2877:2880 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R2881:2897 LMLCProof.Object <> alpha_equivalence:52 ind
-R2911:2914 LMLCProof.Object <> Labs constr
-R2919:2930 LMLCProof.Object <> substitution def
-R2943:2943 LMLCProof.Object <> x:63 var
-R2935:2938 LMLCProof.Object <> Lvar constr
-R2940:2940 LMLCProof.Object <> y:64 var
-R2932:2932 LMLCProof.Object <> N:62 var
-R2916:2916 LMLCProof.Object <> y:64 var
-R2900:2903 LMLCProof.Object <> Labs constr
-R2907:2907 LMLCProof.Object <> M:61 var
-R2905:2905 LMLCProof.Object <> x:63 var
-R2856:2872 LMLCProof.Object <> alpha_equivalence:52 ind
-R2876:2876 LMLCProof.Object <> N:62 var
-R2874:2874 LMLCProof.Object <> M:61 var
-R2837:2838 Coq.Init.Logic <> ::type_scope:'~'_x not
-R2851:2851 Coq.Init.Logic <> ::type_scope:'~'_x not
-R2839:2840 Coq.Lists.List <> In def
-R2845:2847 LMLCProof.Object <> fvL def
-R2849:2849 LMLCProof.Object <> N:62 var
-R2842:2842 LMLCProof.Object <> y:64 var
-R2971:2987 LMLCProof.Object <> alpha_equivalence ind
-not 2958:2958 <> :::x_'~a'_x
-ax 3016:3025 <> alpha_quot
-R3043:3053 LMLCProof.Object <> lambda_term ind
-binder 3037:3037 <> M:65
-binder 3039:3039 <> N:66
-R3063:3066 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R3068:3070 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R3067:3067 LMLCProof.Object <> M:65 var
-R3071:3071 LMLCProof.Object <> N:66 var
-R3058:3061 LMLCProof.Object <> :::x_'~a'_x not
-R3057:3057 LMLCProof.Object <> M:65 var
-R3062:3062 LMLCProof.Object <> N:66 var
-def 3132:3142 <> church_true
-R3147:3150 LMLCProof.Object <> Labs constr
-R3155:3158 LMLCProof.Object <> Labs constr
-R3163:3166 LMLCProof.Object <> Lvar constr
-def 3184:3195 <> church_false
-R3200:3203 LMLCProof.Object <> Labs constr
-R3208:3211 LMLCProof.Object <> Labs constr
-R3216:3219 LMLCProof.Object <> Lvar constr
-def 3237:3245 <> church_if
-R3256:3266 LMLCProof.Object <> lambda_term ind
-binder 3248:3248 <> c:68
-binder 3250:3250 <> t:69
-binder 3252:3252 <> e:70
-R3272:3276 LMLCProof.Object <> Lappl constr
-R3290:3290 LMLCProof.Object <> e:70 var
-R3279:3283 LMLCProof.Object <> Lappl constr
-R3287:3287 LMLCProof.Object <> t:69 var
-R3285:3285 LMLCProof.Object <> c:68 var
-def 3304:3313 <> church_and
-R3324:3334 LMLCProof.Object <> lambda_term ind
-binder 3316:3317 <> b1:71
-binder 3319:3320 <> b2:72
-R3340:3348 LMLCProof.Object <> church_if def
-R3356:3367 LMLCProof.Object <> church_false def
-R3353:3354 LMLCProof.Object <> b2:72 var
-R3350:3351 LMLCProof.Object <> b1:71 var
-def 3381:3389 <> church_or
-R3400:3410 LMLCProof.Object <> lambda_term ind
-binder 3392:3393 <> b1:73
-binder 3395:3396 <> b2:74
-R3416:3424 LMLCProof.Object <> church_if def
-R3441:3442 LMLCProof.Object <> b2:74 var
-R3429:3439 LMLCProof.Object <> church_true def
-R3426:3427 LMLCProof.Object <> b1:73 var
-def 3470:3480 <> church_pair
-R3487:3497 LMLCProof.Object <> lambda_term ind
-binder 3483:3483 <> M:75
-R3505:3515 LMLCProof.Object <> lambda_term ind
-binder 3501:3501 <> N:76
-R3520:3530 LMLCProof.Object <> lambda_term ind
-R3546:3550 LMLCProof.Source <> fresh def
-R3553:3553 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R3559:3564 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R3570:3570 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R3554:3556 LMLCProof.Object <> fvL def
-R3558:3558 LMLCProof.Object <> M:75 var
-R3565:3567 LMLCProof.Object <> fvL def
-R3569:3569 LMLCProof.Object <> N:76 var
-binder 3541:3541 <> x:77
-R3578:3581 LMLCProof.Object <> Labs constr
-R3586:3590 LMLCProof.Object <> Lappl constr
-R3611:3611 LMLCProof.Object <> N:76 var
-R3593:3597 LMLCProof.Object <> Lappl constr
-R3608:3608 LMLCProof.Object <> M:75 var
-R3600:3603 LMLCProof.Object <> Lvar constr
-R3605:3605 LMLCProof.Object <> x:77 var
-R3583:3583 LMLCProof.Object <> x:77 var
-def 3626:3635 <> church_fst
-R3642:3652 LMLCProof.Object <> lambda_term ind
-binder 3638:3638 <> P:78
-R3657:3667 LMLCProof.Object <> lambda_term ind
-R3672:3676 LMLCProof.Object <> Lappl constr
-R3681:3684 LMLCProof.Object <> Labs constr
-R3689:3692 LMLCProof.Object <> Labs constr
-R3697:3700 LMLCProof.Object <> Lvar constr
-R3678:3678 LMLCProof.Object <> P:78 var
-def 3719:3728 <> church_snd
-R3735:3745 LMLCProof.Object <> lambda_term ind
-binder 3731:3731 <> P:79
-R3750:3760 LMLCProof.Object <> lambda_term ind
-R3765:3769 LMLCProof.Object <> Lappl constr
-R3774:3777 LMLCProof.Object <> Labs constr
-R3782:3785 LMLCProof.Object <> Labs constr
-R3790:3793 LMLCProof.Object <> Lvar constr
-R3771:3771 LMLCProof.Object <> P:79 var
-def 3825:3839 <> church_int_free
-R3846:3848 Coq.Init.Datatypes <> nat ind
-binder 3842:3842 <> n:80
-R3853:3863 LMLCProof.Object <> lambda_term ind
-R3874:3874 LMLCProof.Object <> n:80 var
-R3890:3893 LMLCProof.Object <> Lvar constr
-R3901:3901 Coq.Init.Datatypes <> S constr
-R3909:3913 LMLCProof.Object <> Lappl constr
-R3925:3939 LMLCProof.Object <> church_int_free:81 def
-R3916:3919 LMLCProof.Object <> Lvar constr
-def 3961:3970 <> church_int
-R3977:3979 Coq.Init.Datatypes <> nat ind
-binder 3973:3973 <> n:83
-R3984:3994 LMLCProof.Object <> lambda_term ind
-R3999:4002 LMLCProof.Object <> Labs constr
-R4007:4010 LMLCProof.Object <> Labs constr
-R4015:4029 LMLCProof.Object <> church_int_free def
-R4031:4031 LMLCProof.Object <> n:83 var
-def 4047:4057 <> church_succ
-R4064:4074 LMLCProof.Object <> lambda_term ind
-binder 4060:4060 <> N:84
-R4079:4089 LMLCProof.Object <> lambda_term ind
-R4098:4101 LMLCProof.Object <> Labs constr
-R4106:4109 LMLCProof.Object <> Labs constr
-R4114:4117 LMLCProof.Object <> Labs constr
-R4136:4140 LMLCProof.Object <> Lappl constr
-R4170:4174 LMLCProof.Object <> Lappl constr
-R4251:4254 LMLCProof.Object <> Lvar constr
-R4177:4181 LMLCProof.Object <> Lappl constr
-R4223:4226 LMLCProof.Object <> Lvar constr
-R4184:4187 LMLCProof.Object <> Lvar constr
-R4143:4146 LMLCProof.Object <> Lvar constr
-def 4301:4312 <> church_succ2
-R4319:4329 LMLCProof.Object <> lambda_term ind
-binder 4315:4315 <> N:85
-R4334:4344 LMLCProof.Object <> lambda_term ind
-R4357:4357 LMLCProof.Object <> N:85 var
-R4368:4371 LMLCProof.Object <> Lvar constr
-R4378:4378 LMLCProof.Object <> N:85 var
-R4384:4388 LMLCProof.Object <> Lappl constr
-R4397:4397 LMLCProof.Object <> N:85 var
-R4403:4406 LMLCProof.Object <> Labs constr
-R4451:4454 LMLCProof.Object <> Lvar constr
-R4461:4461 LMLCProof.Object <> N:85 var
-R4483:4487 LMLCProof.Object <> Lappl constr
-R4496:4496 LMLCProof.Object <> N:85 var
-R4518:4521 LMLCProof.Object <> Labs constr
-R4532:4535 LMLCProof.Object <> Labs constr
-R4540:4543 LMLCProof.Object <> Labs constr
-R4548:4552 LMLCProof.Object <> Lappl constr
-R4555:4558 LMLCProof.Object <> Lvar constr
-def 4609:4619 <> church_pred
-R4626:4636 LMLCProof.Object <> lambda_term ind
-binder 4622:4622 <> N:88
-R4641:4651 LMLCProof.Object <> lambda_term ind
-R4658:4667 LMLCProof.Object <> church_snd def
-R4672:4676 LMLCProof.Object <> Lappl constr
-R4881:4891 LMLCProof.Object <> church_pair def
-R4909:4918 LMLCProof.Object <> church_int def
-R4894:4903 LMLCProof.Object <> church_int def
-R4679:4683 LMLCProof.Object <> Lappl constr
-R4700:4703 LMLCProof.Object <> Labs constr
-R4708:4711 LMLCProof.Object <> Labs constr
-R4742:4746 LMLCProof.Object <> Lappl constr
-R4834:4844 LMLCProof.Object <> church_succ def
-R4847:4856 LMLCProof.Object <> church_snd def
-R4859:4862 LMLCProof.Object <> Lvar constr
-R4749:4753 LMLCProof.Object <> Lappl constr
-R4765:4776 LMLCProof.Object <> church_succ2 def
+R1843:1857 LMLCProof.Source <> ml_substitution def
+not 1823:1823 <> :::x_'ml['_x_'/'_x_']'
+prf 1942:1961 <> bredstar_cont_lambda
+R1977:1979 LMLCProof.Source <> var def
+binder 1973:1973 <> x:37
+R1989:1999 LMLCProof.Object <> lambda_term ind
+binder 1983:1983 <> M:38
+binder 1985:1985 <> N:39
+R2011:2014 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2015:2015 LMLCProof.Object <> :::x_'->b*'_x not
+R2024:2031 LMLCProof.Object <> :::x_'->b*'_x not
+R2040:2040 LMLCProof.Object <> :::x_'->b*'_x not
+R2016:2019 LMLCProof.Object <> Labs constr
+R2023:2023 LMLCProof.Object <> M:38 var
+R2021:2021 LMLCProof.Object <> x:37 var
+R2032:2035 LMLCProof.Object <> Labs constr
+R2039:2039 LMLCProof.Object <> N:39 var
+R2037:2037 LMLCProof.Object <> x:37 var
+R2004:2009 LMLCProof.Object <> :::x_'->b*'_x not
+R2003:2003 LMLCProof.Object <> M:38 var
+R2010:2010 LMLCProof.Object <> N:39 var
+prf 2067:2084 <> bredstar_cont_appl
+R2108:2118 LMLCProof.Object <> lambda_term ind
+binder 2096:2096 <> M:40
+binder 2098:2099 <> M':41
+binder 2101:2101 <> N:42
+binder 2103:2104 <> N':43
+R2131:2134 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2144:2147 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2157:2162 LMLCProof.Object <> :::x_'->b*'_x not
+R2148:2152 LMLCProof.Object <> Lappl constr
+R2156:2156 LMLCProof.Object <> N:42 var
+R2154:2154 LMLCProof.Object <> M:40 var
+R2163:2167 LMLCProof.Object <> Lappl constr
+R2172:2173 LMLCProof.Object <> N':43 var
+R2169:2170 LMLCProof.Object <> M':41 var
+R2136:2141 LMLCProof.Object <> :::x_'->b*'_x not
+R2135:2135 LMLCProof.Object <> N:42 var
+R2142:2143 LMLCProof.Object <> N':43 var
+R2123:2128 LMLCProof.Object <> :::x_'->b*'_x not
+R2122:2122 LMLCProof.Object <> M:40 var
+R2129:2130 LMLCProof.Object <> M':41 var
+prf 2200:2218 <> bredstar_cont_subst
+R2234:2236 LMLCProof.Source <> var def
+binder 2230:2230 <> x:44
+R2252:2262 LMLCProof.Object <> lambda_term ind
+binder 2240:2240 <> M:45
+binder 2242:2243 <> M':46
+binder 2245:2245 <> N:47
+binder 2247:2248 <> N':48
+R2275:2278 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2288:2291 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2310:2315 LMLCProof.Object <> :::x_'->b*'_x not
+R2292:2303 LMLCProof.Object <> substitution def
+R2309:2309 LMLCProof.Object <> x:44 var
+R2307:2307 LMLCProof.Object <> N:47 var
+R2305:2305 LMLCProof.Object <> M:45 var
+R2316:2327 LMLCProof.Object <> substitution def
+R2335:2335 LMLCProof.Object <> x:44 var
+R2332:2333 LMLCProof.Object <> N':48 var
+R2329:2330 LMLCProof.Object <> M':46 var
+R2280:2285 LMLCProof.Object <> :::x_'->b*'_x not
+R2279:2279 LMLCProof.Object <> N:47 var
+R2286:2287 LMLCProof.Object <> N':48 var
+R2267:2272 LMLCProof.Object <> :::x_'->b*'_x not
+R2266:2266 LMLCProof.Object <> M:45 var
+R2273:2274 LMLCProof.Object <> M':46 var
+def 2387:2389 <> fvL
+R2396:2406 LMLCProof.Object <> lambda_term ind
+binder 2392:2392 <> M:49
+R2411:2414 Coq.Init.Datatypes <> list ind
+R2416:2418 LMLCProof.Source <> var def
+R2429:2429 LMLCProof.Object <> M:49 var
+R2440:2443 LMLCProof.Object <> Lvar constr
+R2450:2450 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2452:2452 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2458:2461 LMLCProof.Object <> Labs constr
+R2471:2480 LMLCProof.Utils <> remove_nat def
+R2483:2485 LMLCProof.Object <> fvL:50 def
+R2497:2501 LMLCProof.Object <> Lappl constr
+R2512:2512 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R2519:2524 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R2531:2531 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R2513:2515 LMLCProof.Object <> fvL:50 def
+R2525:2527 LMLCProof.Object <> fvL:50 def
+ind 2550:2566 <> alpha_equivalence
+constr 2612:2629 <> alpha_context_labs
+constr 2754:2771 <> alpha_context_appl
+constr 2905:2916 <> alpha_rename
+R2581:2584 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2596:2599 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2585:2595 LMLCProof.Object <> lambda_term ind
+R2570:2580 LMLCProof.Object <> lambda_term ind
+R2645:2655 LMLCProof.Object <> lambda_term ind
+binder 2641:2641 <> M:54
+R2663:2673 LMLCProof.Object <> lambda_term ind
+binder 2659:2659 <> N:55
+R2679:2681 LMLCProof.Source <> var def
+binder 2677:2677 <> x:56
+R2706:2709 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2710:2726 LMLCProof.Object <> alpha_equivalence:52 ind
+R2740:2743 LMLCProof.Object <> Labs constr
+R2747:2747 LMLCProof.Object <> N:55 var
+R2745:2745 LMLCProof.Object <> x:56 var
+R2729:2732 LMLCProof.Object <> Labs constr
+R2736:2736 LMLCProof.Object <> M:54 var
+R2734:2734 LMLCProof.Object <> x:56 var
+R2685:2701 LMLCProof.Object <> alpha_equivalence:52 ind
+R2705:2705 LMLCProof.Object <> N:55 var
+R2703:2703 LMLCProof.Object <> M:54 var
+R2787:2797 LMLCProof.Object <> lambda_term ind
+binder 2783:2783 <> M:57
+R2805:2815 LMLCProof.Object <> lambda_term ind
+binder 2801:2801 <> N:58
+R2824:2834 LMLCProof.Object <> lambda_term ind
+binder 2819:2820 <> M':59
+R2843:2853 LMLCProof.Object <> lambda_term ind
+binder 2838:2839 <> N':60
+R2857:2873 LMLCProof.Object <> alpha_equivalence:52 ind
+R2888:2892 LMLCProof.Object <> Lappl constr
+R2897:2898 LMLCProof.Object <> N':60 var
+R2894:2895 LMLCProof.Object <> M':59 var
+R2876:2880 LMLCProof.Object <> Lappl constr
+R2884:2884 LMLCProof.Object <> N:58 var
+R2882:2882 LMLCProof.Object <> M:57 var
+R2934:2944 LMLCProof.Object <> lambda_term ind
+binder 2928:2928 <> M:61
+binder 2930:2930 <> N:62
+R2952:2954 LMLCProof.Source <> var def
+binder 2948:2948 <> x:63
+binder 2950:2950 <> y:64
+R2973:2976 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2998:3001 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3002:3018 LMLCProof.Object <> alpha_equivalence:52 ind
+R3032:3035 LMLCProof.Object <> Labs constr
+R3040:3051 LMLCProof.Object <> substitution def
+R3064:3064 LMLCProof.Object <> x:63 var
+R3056:3059 LMLCProof.Object <> Lvar constr
+R3061:3061 LMLCProof.Object <> y:64 var
+R3053:3053 LMLCProof.Object <> N:62 var
+R3037:3037 LMLCProof.Object <> y:64 var
+R3021:3024 LMLCProof.Object <> Labs constr
+R3028:3028 LMLCProof.Object <> M:61 var
+R3026:3026 LMLCProof.Object <> x:63 var
+R2977:2993 LMLCProof.Object <> alpha_equivalence:52 ind
+R2997:2997 LMLCProof.Object <> N:62 var
+R2995:2995 LMLCProof.Object <> M:61 var
+R2958:2959 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2972:2972 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2960:2961 Coq.Lists.List <> In def
+R2966:2968 LMLCProof.Object <> fvL def
+R2970:2970 LMLCProof.Object <> N:62 var
+R2963:2963 LMLCProof.Object <> y:64 var
+R3092:3108 LMLCProof.Object <> alpha_equivalence ind
+not 3079:3079 <> :::x_'~a'_x
+ax 3137:3146 <> alpha_quot
+R3164:3174 LMLCProof.Object <> lambda_term ind
+binder 3158:3158 <> M:65
+binder 3160:3160 <> N:66
+R3184:3187 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3189:3191 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3188:3188 LMLCProof.Object <> M:65 var
+R3192:3192 LMLCProof.Object <> N:66 var
+R3179:3182 LMLCProof.Object <> :::x_'~a'_x not
+R3178:3178 LMLCProof.Object <> M:65 var
+R3183:3183 LMLCProof.Object <> N:66 var
+def 3253:3263 <> church_true
+R3268:3271 LMLCProof.Object <> Labs constr
+R3276:3279 LMLCProof.Object <> Labs constr
+R3284:3287 LMLCProof.Object <> Lvar constr
+def 3305:3316 <> church_false
+R3321:3324 LMLCProof.Object <> Labs constr
+R3329:3332 LMLCProof.Object <> Labs constr
+R3337:3340 LMLCProof.Object <> Lvar constr
+def 3358:3366 <> church_if
+R3377:3387 LMLCProof.Object <> lambda_term ind
+binder 3369:3369 <> c:68
+binder 3371:3371 <> t:69
+binder 3373:3373 <> e:70
+R3393:3397 LMLCProof.Object <> Lappl constr
+R3411:3411 LMLCProof.Object <> e:70 var
+R3400:3404 LMLCProof.Object <> Lappl constr
+R3408:3408 LMLCProof.Object <> t:69 var
+R3406:3406 LMLCProof.Object <> c:68 var
+def 3425:3434 <> church_and
+R3445:3455 LMLCProof.Object <> lambda_term ind
+binder 3437:3438 <> b1:71
+binder 3440:3441 <> b2:72
+R3461:3469 LMLCProof.Object <> church_if def
+R3477:3488 LMLCProof.Object <> church_false def
+R3474:3475 LMLCProof.Object <> b2:72 var
+R3471:3472 LMLCProof.Object <> b1:71 var
+def 3502:3510 <> church_or
+R3521:3531 LMLCProof.Object <> lambda_term ind
+binder 3513:3514 <> b1:73
+binder 3516:3517 <> b2:74
+R3537:3545 LMLCProof.Object <> church_if def
+R3562:3563 LMLCProof.Object <> b2:74 var
+R3550:3560 LMLCProof.Object <> church_true def
+R3547:3548 LMLCProof.Object <> b1:73 var
+def 3591:3601 <> church_pair
+R3608:3618 LMLCProof.Object <> lambda_term ind
+binder 3604:3604 <> M:75
+R3626:3636 LMLCProof.Object <> lambda_term ind
+binder 3622:3622 <> N:76
+R3641:3651 LMLCProof.Object <> lambda_term ind
+R3667:3671 LMLCProof.Source <> fresh def
+R3674:3674 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3680:3685 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3691:3691 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3675:3677 LMLCProof.Object <> fvL def
+R3679:3679 LMLCProof.Object <> M:75 var
+R3686:3688 LMLCProof.Object <> fvL def
+R3690:3690 LMLCProof.Object <> N:76 var
+binder 3662:3662 <> x:77
+R3699:3702 LMLCProof.Object <> Labs constr
+R3707:3711 LMLCProof.Object <> Lappl constr
+R3732:3732 LMLCProof.Object <> N:76 var
+R3714:3718 LMLCProof.Object <> Lappl constr
+R3729:3729 LMLCProof.Object <> M:75 var
+R3721:3724 LMLCProof.Object <> Lvar constr
+R3726:3726 LMLCProof.Object <> x:77 var
+R3704:3704 LMLCProof.Object <> x:77 var
+def 3747:3756 <> church_fst
+R3763:3773 LMLCProof.Object <> lambda_term ind
+binder 3759:3759 <> P:78
+R3778:3788 LMLCProof.Object <> lambda_term ind
+R3793:3797 LMLCProof.Object <> Lappl constr
+R3802:3805 LMLCProof.Object <> Labs constr
+R3810:3813 LMLCProof.Object <> Labs constr
+R3818:3821 LMLCProof.Object <> Lvar constr
+R3799:3799 LMLCProof.Object <> P:78 var
+def 3840:3849 <> church_snd
+R3856:3866 LMLCProof.Object <> lambda_term ind
+binder 3852:3852 <> P:79
+R3871:3881 LMLCProof.Object <> lambda_term ind
+R3886:3890 LMLCProof.Object <> Lappl constr
+R3895:3898 LMLCProof.Object <> Labs constr
+R3903:3906 LMLCProof.Object <> Labs constr
+R3911:3914 LMLCProof.Object <> Lvar constr
+R3892:3892 LMLCProof.Object <> P:79 var
+def 3946:3960 <> church_int_free
+R3967:3969 Coq.Init.Datatypes <> nat ind
+binder 3963:3963 <> n:80
+R3974:3984 LMLCProof.Object <> lambda_term ind
+R3995:3995 LMLCProof.Object <> n:80 var
+R4011:4014 LMLCProof.Object <> Lvar constr
+R4022:4022 Coq.Init.Datatypes <> S constr
+R4030:4034 LMLCProof.Object <> Lappl constr
+R4046:4060 LMLCProof.Object <> church_int_free:81 def
+R4037:4040 LMLCProof.Object <> Lvar constr
+def 4082:4091 <> church_int
+R4098:4100 Coq.Init.Datatypes <> nat ind
+binder 4094:4094 <> n:83
+R4105:4115 LMLCProof.Object <> lambda_term ind
+R4120:4123 LMLCProof.Object <> Labs constr
+R4128:4131 LMLCProof.Object <> Labs constr
+R4136:4150 LMLCProof.Object <> church_int_free def
+R4152:4152 LMLCProof.Object <> n:83 var
+def 4168:4178 <> church_succ
+R4185:4195 LMLCProof.Object <> lambda_term ind
+binder 4181:4181 <> N:84
+R4200:4210 LMLCProof.Object <> lambda_term ind
+R4219:4222 LMLCProof.Object <> Labs constr
+R4227:4230 LMLCProof.Object <> Labs constr
+R4235:4238 LMLCProof.Object <> Labs constr
+R4257:4261 LMLCProof.Object <> Lappl constr
+R4291:4295 LMLCProof.Object <> Lappl constr
+R4372:4375 LMLCProof.Object <> Lvar constr
+R4298:4302 LMLCProof.Object <> Lappl constr
+R4344:4347 LMLCProof.Object <> Lvar constr
+R4305:4308 LMLCProof.Object <> Lvar constr
+R4264:4267 LMLCProof.Object <> Lvar constr
+def 4422:4433 <> church_succ2
+R4440:4450 LMLCProof.Object <> lambda_term ind
+binder 4436:4436 <> N:85
+R4455:4465 LMLCProof.Object <> lambda_term ind
+R4478:4478 LMLCProof.Object <> N:85 var
+R4489:4492 LMLCProof.Object <> Lvar constr
+R4499:4499 LMLCProof.Object <> N:85 var
+R4505:4509 LMLCProof.Object <> Lappl constr
+R4518:4518 LMLCProof.Object <> N:85 var
+R4524:4527 LMLCProof.Object <> Labs constr
+R4572:4575 LMLCProof.Object <> Lvar constr
+R4582:4582 LMLCProof.Object <> N:85 var
+R4604:4608 LMLCProof.Object <> Lappl constr
+R4617:4617 LMLCProof.Object <> N:85 var
+R4639:4642 LMLCProof.Object <> Labs constr
+R4653:4656 LMLCProof.Object <> Labs constr
+R4661:4664 LMLCProof.Object <> Labs constr
+R4669:4673 LMLCProof.Object <> Lappl constr
+R4676:4679 LMLCProof.Object <> Lvar constr
+def 4730:4740 <> church_pred
+R4747:4757 LMLCProof.Object <> lambda_term ind
+binder 4743:4743 <> N:88
+R4762:4772 LMLCProof.Object <> lambda_term ind
 R4779:4788 LMLCProof.Object <> church_snd def
-R4791:4794 LMLCProof.Object <> Lvar constr
-R4756:4759 LMLCProof.Object <> Lvar constr
-R4685:4685 LMLCProof.Object <> N:88 var
-def 4938:4948 <> church_plus
-R4957:4967 LMLCProof.Object <> lambda_term ind
-binder 4951:4951 <> M:89
-binder 4953:4953 <> N:90
-R4972:4982 LMLCProof.Object <> lambda_term ind
-R4996:5000 LMLCProof.Source <> fresh def
-R5003:5003 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5009:5014 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5020:5020 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5004:5006 LMLCProof.Object <> fvL def
-R5008:5008 LMLCProof.Object <> M:89 var
-R5015:5017 LMLCProof.Object <> fvL def
-R5019:5019 LMLCProof.Object <> N:90 var
-binder 4991:4991 <> x:91
-R5035:5039 LMLCProof.Source <> fresh def
-R5043:5045 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
-R5064:5064 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
-R5042:5042 LMLCProof.Object <> x:91 var
-R5046:5046 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5052:5057 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5063:5063 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5047:5049 LMLCProof.Object <> fvL def
-R5051:5051 LMLCProof.Object <> M:89 var
-R5058:5060 LMLCProof.Object <> fvL def
-R5062:5062 LMLCProof.Object <> N:90 var
-binder 5030:5030 <> y:92
-R5101:5104 LMLCProof.Object <> Labs constr
-R5109:5112 LMLCProof.Object <> Labs constr
-R5167:5171 LMLCProof.Object <> Lappl constr
-R5248:5252 LMLCProof.Object <> Lappl constr
-R5336:5339 LMLCProof.Object <> Lvar constr
-R5341:5341 LMLCProof.Object <> x:91 var
-R5255:5259 LMLCProof.Object <> Lappl constr
-R5264:5267 LMLCProof.Object <> Lvar constr
-R5269:5269 LMLCProof.Object <> y:92 var
-R5261:5261 LMLCProof.Object <> M:89 var
-R5174:5178 LMLCProof.Object <> Lappl constr
-R5183:5186 LMLCProof.Object <> Lvar constr
-R5188:5188 LMLCProof.Object <> y:92 var
-R5180:5180 LMLCProof.Object <> N:90 var
-R5114:5114 LMLCProof.Object <> y:92 var
-R5106:5106 LMLCProof.Object <> x:91 var
-def 5406:5417 <> church_minus
-R5426:5436 LMLCProof.Object <> lambda_term ind
-binder 5420:5420 <> M:93
-binder 5422:5422 <> N:94
-R5441:5451 LMLCProof.Object <> lambda_term ind
-R5462:5466 LMLCProof.Object <> Lappl constr
-R5510:5510 LMLCProof.Object <> N:94 var
-R5469:5473 LMLCProof.Object <> Lappl constr
-R5478:5481 LMLCProof.Object <> Labs constr
-R5486:5496 LMLCProof.Object <> church_pred def
-R5499:5502 LMLCProof.Object <> Lvar constr
-R5475:5475 LMLCProof.Object <> M:93 var
-def 5524:5535 <> church_times
-R5544:5554 LMLCProof.Object <> lambda_term ind
-binder 5538:5538 <> M:95
-binder 5540:5540 <> N:96
-R5559:5569 LMLCProof.Object <> lambda_term ind
-R5583:5587 LMLCProof.Source <> fresh def
-R5590:5590 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5596:5601 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5607:5607 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5591:5593 LMLCProof.Object <> fvL def
-R5595:5595 LMLCProof.Object <> M:95 var
-R5602:5604 LMLCProof.Object <> fvL def
-R5606:5606 LMLCProof.Object <> N:96 var
-binder 5578:5578 <> x:97
-R5622:5626 LMLCProof.Source <> fresh def
-R5630:5632 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
-R5651:5651 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
-R5629:5629 LMLCProof.Object <> x:97 var
-R5633:5633 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5639:5644 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5650:5650 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
-R5634:5636 LMLCProof.Object <> fvL def
-R5638:5638 LMLCProof.Object <> M:95 var
-R5645:5647 LMLCProof.Object <> fvL def
-R5649:5649 LMLCProof.Object <> N:96 var
-binder 5617:5617 <> y:98
-R5688:5691 LMLCProof.Object <> Labs constr
-R5696:5699 LMLCProof.Object <> Labs constr
-R5754:5758 LMLCProof.Object <> Lappl constr
-R5835:5839 LMLCProof.Object <> Lappl constr
-R5923:5926 LMLCProof.Object <> Lvar constr
-R5928:5928 LMLCProof.Object <> y:98 var
-R5842:5846 LMLCProof.Object <> Lappl constr
-R5851:5854 LMLCProof.Object <> Lvar constr
-R5856:5856 LMLCProof.Object <> x:97 var
-R5848:5848 LMLCProof.Object <> M:95 var
-R5761:5765 LMLCProof.Object <> Lappl constr
-R5770:5773 LMLCProof.Object <> Lvar constr
-R5775:5775 LMLCProof.Object <> x:97 var
-R5767:5767 LMLCProof.Object <> N:96 var
-R5701:5701 LMLCProof.Object <> y:98 var
-R5693:5693 LMLCProof.Object <> x:97 var
-def 5993:6002 <> church_gtz
-R6009:6019 LMLCProof.Object <> lambda_term ind
-binder 6005:6005 <> M:99
-R6024:6034 LMLCProof.Object <> lambda_term ind
-R6039:6043 LMLCProof.Object <> Lappl constr
-R6077:6088 LMLCProof.Object <> church_false def
-R6046:6050 LMLCProof.Object <> Lappl constr
-R6055:6058 LMLCProof.Object <> Labs constr
-R6062:6072 LMLCProof.Object <> church_true def
-R6052:6052 LMLCProof.Object <> M:99 var
-def 6127:6146 <> turing_fixpoint_half
-R6150:6160 LMLCProof.Object <> lambda_term ind
-R6190:6193 LMLCProof.Object <> Labs constr
-R6198:6201 LMLCProof.Object <> Labs constr
-R6206:6210 LMLCProof.Object <> Lappl constr
-R6222:6226 LMLCProof.Object <> Lappl constr
-R6255:6258 LMLCProof.Object <> Lvar constr
-R6229:6233 LMLCProof.Object <> Lappl constr
-R6245:6248 LMLCProof.Object <> Lvar constr
-R6236:6239 LMLCProof.Object <> Lvar constr
-R6213:6216 LMLCProof.Object <> Lvar constr
-def 6279:6293 <> turing_fixpoint
-R6297:6307 LMLCProof.Object <> lambda_term ind
-R6312:6316 LMLCProof.Object <> Lappl constr
-R6339:6358 LMLCProof.Object <> turing_fixpoint_half def
-R6318:6337 LMLCProof.Object <> turing_fixpoint_half def
-def 6373:6395 <> turing_fixpoint_applied
-R6402:6412 LMLCProof.Object <> lambda_term ind
-binder 6398:6398 <> M:100
-R6417:6427 LMLCProof.Object <> lambda_term ind
-R6432:6436 LMLCProof.Object <> Lappl constr
-R6441:6445 LMLCProof.Object <> Lappl constr
-R6465:6465 LMLCProof.Object <> M:100 var
-R6448:6462 LMLCProof.Object <> turing_fixpoint def
-R6438:6438 LMLCProof.Object <> M:100 var
+R4793:4797 LMLCProof.Object <> Lappl constr
+R5002:5012 LMLCProof.Object <> church_pair def
+R5030:5039 LMLCProof.Object <> church_int def
+R5015:5024 LMLCProof.Object <> church_int def
+R4800:4804 LMLCProof.Object <> Lappl constr
+R4821:4824 LMLCProof.Object <> Labs constr
+R4829:4832 LMLCProof.Object <> Labs constr
+R4863:4867 LMLCProof.Object <> Lappl constr
+R4955:4965 LMLCProof.Object <> church_succ def
+R4968:4977 LMLCProof.Object <> church_snd def
+R4980:4983 LMLCProof.Object <> Lvar constr
+R4870:4874 LMLCProof.Object <> Lappl constr
+R4886:4897 LMLCProof.Object <> church_succ2 def
+R4900:4909 LMLCProof.Object <> church_snd def
+R4912:4915 LMLCProof.Object <> Lvar constr
+R4877:4880 LMLCProof.Object <> Lvar constr
+R4806:4806 LMLCProof.Object <> N:88 var
+def 5059:5069 <> church_plus
+R5078:5088 LMLCProof.Object <> lambda_term ind
+binder 5072:5072 <> M:89
+binder 5074:5074 <> N:90
+R5093:5103 LMLCProof.Object <> lambda_term ind
+R5117:5121 LMLCProof.Source <> fresh def
+R5124:5124 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5130:5135 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5141:5141 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5125:5127 LMLCProof.Object <> fvL def
+R5129:5129 LMLCProof.Object <> M:89 var
+R5136:5138 LMLCProof.Object <> fvL def
+R5140:5140 LMLCProof.Object <> N:90 var
+binder 5112:5112 <> x:91
+R5156:5160 LMLCProof.Source <> fresh def
+R5164:5166 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R5185:5185 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R5163:5163 LMLCProof.Object <> x:91 var
+R5167:5167 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5173:5178 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5184:5184 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5168:5170 LMLCProof.Object <> fvL def
+R5172:5172 LMLCProof.Object <> M:89 var
+R5179:5181 LMLCProof.Object <> fvL def
+R5183:5183 LMLCProof.Object <> N:90 var
+binder 5151:5151 <> y:92
+R5222:5225 LMLCProof.Object <> Labs constr
+R5230:5233 LMLCProof.Object <> Labs constr
+R5288:5292 LMLCProof.Object <> Lappl constr
+R5369:5373 LMLCProof.Object <> Lappl constr
+R5457:5460 LMLCProof.Object <> Lvar constr
+R5462:5462 LMLCProof.Object <> x:91 var
+R5376:5380 LMLCProof.Object <> Lappl constr
+R5385:5388 LMLCProof.Object <> Lvar constr
+R5390:5390 LMLCProof.Object <> y:92 var
+R5382:5382 LMLCProof.Object <> M:89 var
+R5295:5299 LMLCProof.Object <> Lappl constr
+R5304:5307 LMLCProof.Object <> Lvar constr
+R5309:5309 LMLCProof.Object <> y:92 var
+R5301:5301 LMLCProof.Object <> N:90 var
+R5235:5235 LMLCProof.Object <> y:92 var
+R5227:5227 LMLCProof.Object <> x:91 var
+def 5527:5538 <> church_minus
+R5547:5557 LMLCProof.Object <> lambda_term ind
+binder 5541:5541 <> M:93
+binder 5543:5543 <> N:94
+R5562:5572 LMLCProof.Object <> lambda_term ind
+R5583:5587 LMLCProof.Object <> Lappl constr
+R5631:5631 LMLCProof.Object <> N:94 var
+R5590:5594 LMLCProof.Object <> Lappl constr
+R5599:5602 LMLCProof.Object <> Labs constr
+R5607:5617 LMLCProof.Object <> church_pred def
+R5620:5623 LMLCProof.Object <> Lvar constr
+R5596:5596 LMLCProof.Object <> M:93 var
+def 5645:5656 <> church_times
+R5665:5675 LMLCProof.Object <> lambda_term ind
+binder 5659:5659 <> M:95
+binder 5661:5661 <> N:96
+R5680:5690 LMLCProof.Object <> lambda_term ind
+R5704:5708 LMLCProof.Source <> fresh def
+R5711:5711 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5717:5722 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5728:5728 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5712:5714 LMLCProof.Object <> fvL def
+R5716:5716 LMLCProof.Object <> M:95 var
+R5723:5725 LMLCProof.Object <> fvL def
+R5727:5727 LMLCProof.Object <> N:96 var
+binder 5699:5699 <> x:97
+R5743:5747 LMLCProof.Source <> fresh def
+R5751:5753 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R5772:5772 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R5750:5750 LMLCProof.Object <> x:97 var
+R5754:5754 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5760:5765 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5771:5771 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5755:5757 LMLCProof.Object <> fvL def
+R5759:5759 LMLCProof.Object <> M:95 var
+R5766:5768 LMLCProof.Object <> fvL def
+R5770:5770 LMLCProof.Object <> N:96 var
+binder 5738:5738 <> y:98
+R5809:5812 LMLCProof.Object <> Labs constr
+R5817:5820 LMLCProof.Object <> Labs constr
+R5875:5879 LMLCProof.Object <> Lappl constr
+R5956:5960 LMLCProof.Object <> Lappl constr
+R6044:6047 LMLCProof.Object <> Lvar constr
+R6049:6049 LMLCProof.Object <> y:98 var
+R5963:5967 LMLCProof.Object <> Lappl constr
+R5972:5975 LMLCProof.Object <> Lvar constr
+R5977:5977 LMLCProof.Object <> x:97 var
+R5969:5969 LMLCProof.Object <> M:95 var
+R5882:5886 LMLCProof.Object <> Lappl constr
+R5891:5894 LMLCProof.Object <> Lvar constr
+R5896:5896 LMLCProof.Object <> x:97 var
+R5888:5888 LMLCProof.Object <> N:96 var
+R5822:5822 LMLCProof.Object <> y:98 var
+R5814:5814 LMLCProof.Object <> x:97 var
+def 6114:6123 <> church_gtz
+R6130:6140 LMLCProof.Object <> lambda_term ind
+binder 6126:6126 <> M:99
+R6145:6155 LMLCProof.Object <> lambda_term ind
+R6160:6164 LMLCProof.Object <> Lappl constr
+R6198:6209 LMLCProof.Object <> church_false def
+R6167:6171 LMLCProof.Object <> Lappl constr
+R6176:6179 LMLCProof.Object <> Labs constr
+R6183:6193 LMLCProof.Object <> church_true def
+R6173:6173 LMLCProof.Object <> M:99 var
+def 6248:6267 <> turing_fixpoint_half
+R6271:6281 LMLCProof.Object <> lambda_term ind
+R6311:6314 LMLCProof.Object <> Labs constr
+R6319:6322 LMLCProof.Object <> Labs constr
+R6327:6331 LMLCProof.Object <> Lappl constr
+R6343:6347 LMLCProof.Object <> Lappl constr
+R6376:6379 LMLCProof.Object <> Lvar constr
+R6350:6354 LMLCProof.Object <> Lappl constr
+R6366:6369 LMLCProof.Object <> Lvar constr
+R6357:6360 LMLCProof.Object <> Lvar constr
+R6334:6337 LMLCProof.Object <> Lvar constr
+def 6400:6414 <> turing_fixpoint
+R6418:6428 LMLCProof.Object <> lambda_term ind
+R6433:6437 LMLCProof.Object <> Lappl constr
+R6460:6479 LMLCProof.Object <> turing_fixpoint_half def
+R6439:6458 LMLCProof.Object <> turing_fixpoint_half def
+def 6494:6516 <> turing_fixpoint_applied
+R6523:6533 LMLCProof.Object <> lambda_term ind
+binder 6519:6519 <> M:100
+R6538:6548 LMLCProof.Object <> lambda_term ind
+R6553:6557 LMLCProof.Object <> Lappl constr
+R6562:6566 LMLCProof.Object <> Lappl constr
+R6586:6586 LMLCProof.Object <> M:100 var
+R6569:6583 LMLCProof.Object <> turing_fixpoint def
+R6559:6559 LMLCProof.Object <> M:100 var

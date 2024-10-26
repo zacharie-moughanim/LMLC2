@@ -217,12 +217,6 @@ Proof. induction x as[|x' IHx].
     + simpl. intro H. apply IHx in H. rewrite H. reflexivity.
 Qed.
 
-Lemma ltb_to_lt : forall (n m : nat), n <? m = true -> n < m.
-Proof. Admitted.
-
-Lemma leb_to_le : forall (n m : nat), n <=? m = true -> n <= m.
-Proof. Admitted.
-
 Lemma leb_to_ltb : forall (n m : nat), n <=? m = false -> m <? n = true.
 Proof. induction n as [|n' IHn].
   - intros m H. simpl in H. discriminate H.
@@ -244,8 +238,6 @@ Proof. intros *. intros H. induction l as [|h t IHt].
       * simpl. rewrite eqyh. reflexivity.
       * simpl. rewrite eqyh. apply IHt.
 Qed.
-
-
 
 
 

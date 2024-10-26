@@ -17,6 +17,3 @@ module Prettyprint = LMLCv2__Prettyprint
 
 (** @canonical LMLCv2.Transpiler *)
 module Transpiler = LMLCv2__Transpiler
-
-(** @canonical LMLCv2.Try *)
-module Try = LMLCv2__Try
