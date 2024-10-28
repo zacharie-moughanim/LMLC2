@@ -176,10 +176,10 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
   - admit.
 (* M = fst P *)
   - intros. simpl. rewrite IHfst. destruct (x =? 1) eqn:eqx1.
-    + reflexivity.
+    + admit.
     + destruct (x =? 2) eqn:eqx2.
-      * reflexivity.
-      * reflexivity.
+      * admit.
+      * admit.
 (* M = snd P *)
   - intros. simpl. rewrite IHsnd. destruct (x =? 1) eqn:eqx1.
     + reflexivity.
@@ -347,7 +347,7 @@ Labs (fresh (fvML P1 ++ fvML P1' ++ fvML P2))
     + apply IHpair.
   - simpl. apply bredstar_cont_appl.
     + apply IHfst.
-    + apply refl.
+    + admit.
   - simpl. apply bredstar_cont_appl.
     + apply IHsnd.
     + apply refl.
@@ -391,22 +391,27 @@ Labs (fresh (fvML P1 ++ fvML P1' ++ fvML P2))
 (* fold induction step case *)
   - admit.
 (* fst case *)
-  - simpl. apply trans with (y := Lappl (Lappl (Labs 1 (Labs 2 (Lvar 1))) (lmlc P1)) (lmlc P2)).
-    + apply onestep. assert (Lappl (Lappl (Labs 1 (Labs 2 (Lvar 1))) (lmlc P1)) (lmlc P2) =
+  - simpl. apply trans with (y := Lappl (Lappl (Labs 1 (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1))) (lmlc P1)) (lmlc P2)).
+    + apply onestep. assert (Lappl (Lappl (Labs 1 (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1))) (lmlc P1)) (lmlc P2) =
                              substitution (Lappl (Lappl (Lvar (fresh (fvML P1 ++ fvML P2))) (lmlc P1)) (lmlc P2))
-                             (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2))).
-      * simpl. rewrite Nat.eqb_refl. assert (substitution (lmlc P1) (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P1).
-        { apply substitution_fresh_l. admit. } assert (substitution (lmlc P2) (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P2).
-        { admit. } rewrite H. rewrite H0. reflexivity.
+                             (Labs 1 (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1))) (fresh (fvML P1 ++ fvML P2))).
+      * simpl. rewrite Nat.eqb_refl. assert (substitution (lmlc P1) (Labs 1 (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P1).
+        { apply substitution_fresh_l. apply Bool.not_true_iff_false. intro H. apply in_list_app3 with (l2 := fvL (lmlc P2)) in H.
+          rewrite fvML_L in H. rewrite fvML_L in H. apply fresh_spec in H. rewrite Nat.eqb_refl in H. discriminate H.
+        } assert (substitution (lmlc P2) (Labs 1 (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P2).
+        { apply substitution_fresh_l. apply Bool.not_true_iff_false. intro G. apply in_list_app3 with (l2 := fvL (lmlc P1)) in G.
+          rewrite fvML_L in G. rewrite fvML_L in G. rewrite in_list_app_comm in G. apply fresh_spec in G. rewrite Nat.eqb_refl in G. discriminate G.
+        } rewrite H. rewrite H0. reflexivity.
       * rewrite H. apply redex_contraction.
-    + apply trans with (y := Lappl (Labs 2 (lmlc P1)) (lmlc P2)).
+    + apply trans with (y := Lappl (Labs (fresh (fvML P1 ++ fvML P2)) (lmlc P1)) (lmlc P2)).
       * apply bredstar_cont_appl.
-        -- apply onestep. assert (Labs 2 (lmlc P1) = substitution (Labs 2 (Lvar 1)) (lmlc P1) 1).
-            { reflexivity. } rewrite H. apply redex_contraction.
+        -- apply onestep. assert (Labs (fresh (fvML P1 ++ fvML P2)) (lmlc P1) = substitution (Labs (fresh (fvML P1 ++ fvML P2)) (Lvar 1)) (lmlc P1) 1).
+            { simpl.  } rewrite H. apply redex_contraction.
         -- apply refl.
-      * apply onestep. assert (lmlc P1 = substitution (lmlc P1) (lmlc P2) 2). { admit. (* actually, this admit is false
-        indeed, we ought to add a fresh variables for fst *)} rewrite H.
-        assert (Lappl (Labs 2 (substitution (lmlc P1) (lmlc P2) 2)) = Lappl (Labs 2 (lmlc P1))). { rewrite <- H. reflexivity. }
+      * apply onestep. assert (lmlc P1 = substitution (lmlc P1) (lmlc P2) (fresh (fvML P1 ++ fvML P2))). {
+          admit.
+        } rewrite H.
+        assert (Lappl (Labs (fresh (fvML P1 ++ fvML P2)) (substitution (lmlc P1) (lmlc P2) (fresh (fvML P1 ++ fvML P2)))) = Lappl (Labs (fresh (fvML P1 ++ fvML P2)) (lmlc P1))). { rewrite <- H. reflexivity. }
         rewrite H0. apply redex_contraction.
 (* snd case *)
   - simpl. apply trans with (y := Lappl (Lappl (Labs 1 (Labs 2 (Lvar 2))) (lmlc P1)) (lmlc P2)).

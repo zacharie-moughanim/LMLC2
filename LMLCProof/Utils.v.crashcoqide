@@ -239,5 +239,13 @@ Proof. intros *. intros H. induction l as [|h t IHt].
       * simpl. rewrite eqyh. apply IHt.
 Qed.
 
+Lemma in_list_app3 : forall (x : nat) (l1 l2 : list nat), in_list l1 x = true -> in_list (l1++l2) x = true.
+Proof. intro. induction l1 as [|h1 t1].
+  - simpl. intros. discriminate H.
+  - simpl. intros. destruct (x =? h1).
+    + reflexivity.
+    + apply IHt1. apply H.
+Qed.
 
-
+Lemma in_list_app_comm : forall (x : nat) (l1 l2 : list nat), in_list (l1++l2) x = true <-> in_list (l2++l1) x = true.
+Proof. Admitted.

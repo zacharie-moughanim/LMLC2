@@ -176,10 +176,10 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
   - admit.
 (* M = fst P *)
   - intros. simpl. rewrite IHfst. destruct (x =? 1) eqn:eqx1.
-    + reflexivity.
+    + admit.
     + destruct (x =? 2) eqn:eqx2.
-      * reflexivity.
-      * reflexivity.
+      * admit.
+      * admit.
 (* M = snd P *)
   - intros. simpl. rewrite IHsnd. destruct (x =? 1) eqn:eqx1.
     + reflexivity.
@@ -347,11 +347,98 @@ Labs (fresh (fvML P1 ++ fvML P1' ++ fvML P2))
     + apply IHpair.
   - simpl. apply bredstar_cont_appl.
     + apply IHfst.
-    + apply refl.
+    + admit.
   - simpl. apply bredstar_cont_appl.
     + apply IHsnd.
     + apply refl.
 (* redex case *)
   - simpl. rewrite lmlc_substitution. apply onestep. apply redex_contraction.
 (* fixfun case *)
-  - simpl. unfold turing_fixpoint_applied.
+  - simpl. unfold turing_fixpoint_applied. apply bredstar_cont_appl.
+    + apply refl.
+    + apply trans with (y := Lappl (Labs 0 (Lappl (Lvar 0) (Lappl turing_fixpoint (Lvar 0)))) (Labs f (Labs x (lmlc M)))).
+      * unfold turing_fixpoint. apply bredstar_cont_appl.
+        -- apply onestep. apply redex_contraction.
+        -- apply refl.
+      * apply onestep. apply redex_contraction.
+(* plus case *)
+  - admit.
+(* minus case *)
+  - admit.
+(* times case *)
+  - admit.
+(* greather than zero case *)
+  - destruct (0 <? n) eqn:ineqn.
+    + simpl. apply Nat.ltb_lt in ineqn. admit.
+    + apply Nat.ltb_nlt in ineqn. apply Nat.nlt_ge in ineqn. inversion ineqn. simpl. unfold church_gtz.
+      unfold church_int. unfold church_int_free. apply trans with (y := Lappl (Labs 0 (Lvar 0)) (church_false)).
+      * assert ((Labs 0 (Lvar 0)) = substitution (Labs 0 (Lvar 0)) (Labs 0 church_true) 1). { reflexivity. }
+        rewrite H0. assert (Lappl (Lappl (Labs 1 (substitution (Labs 0 (Lvar 0)) (Labs 0 church_true) 1)) (Labs 0 church_true)) = Lappl (Lappl (Labs 1 (Labs 0 (Lvar 0))) (Labs 0 church_true))).
+        { reflexivity. } rewrite H1. apply bredstar_cont_appl.
+        -- apply onestep. apply redex_contraction.
+        -- apply refl.
+      * apply onestep. assert (church_false = substitution (Lvar 0) church_false 0). { reflexivity. }
+        rewrite H0. assert (Lappl (Labs 0 (Lvar 0)) (substitution (Lvar 0) church_false 0) = Lappl (Labs 0 (Lvar 0)) (church_false)).
+        { rewrite <- H0. reflexivity. } rewrite H1. apply redex_contraction.
+(* fold base case *)
+  - simpl. apply trans with (y := (Lappl (Labs 1 (Lvar 1)) (lmlc INIT))).
+    + apply bredstar_cont_appl.
+      * assert (Labs 1 (Lvar 1) = substitution (Labs 1 (Lvar 1)) (lmlc FOO) 0). { reflexivity. } rewrite H.
+        assert (Lappl (Labs 0 (substitution (Labs 1 (Lvar 1)) (lmlc FOO) 0)) (lmlc FOO) = Lappl (Labs 0 (Labs 1 (Lvar 1))) (lmlc FOO) ).
+        { reflexivity. } rewrite H0. apply onestep. apply redex_contraction.
+      * apply refl.
+    + apply onestep. apply redex_contraction.
+(* fold induction step case *)
+  - admit.
+(* fst case *)
+  - simpl. apply trans with (y := Lappl (Lappl (Labs 1 (Labs 2 (Lvar 1))) (lmlc P1)) (lmlc P2)).
+    + apply onestep. assert (Lappl (Lappl (Labs 1 (Labs 2 (Lvar 1))) (lmlc P1)) (lmlc P2) =
+                             substitution (Lappl (Lappl (Lvar (fresh (fvML P1 ++ fvML P2))) (lmlc P1)) (lmlc P2))
+                             (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2))).
+      * simpl. rewrite Nat.eqb_refl. assert (substitution (lmlc P1) (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P1).
+        { apply substitution_fresh_l. apply Bool.not_true_iff_false. intro H. apply in_list_app3 with (l2 := fvL (lmlc P2)) in H.
+          rewrite fvML_L in H. rewrite fvML_L in H. apply fresh_spec in H. rewrite Nat.eqb_refl in H. discriminate H.
+        } assert (substitution (lmlc P2) (Labs 1 (Labs 2 (Lvar 1))) (fresh (fvML P1 ++ fvML P2)) = lmlc P2).
+        { apply substitution_fresh_l. apply Bool.not_true_iff_false. intro G. apply in_list_app3 with (l2 := fvL (lmlc P1)) in G.
+          rewrite fvML_L in G. rewrite fvML_L in G. rewrite in_list_app_comm in G. apply fresh_spec in G. rewrite Nat.eqb_refl in G. discriminate G.
+        } rewrite H. rewrite H0. reflexivity.
+      * rewrite H. admit.
+    + apply trans with (y := Lappl (Labs 2 (lmlc P1)) (lmlc P2)).
+      * apply bredstar_cont_appl.
+        -- apply onestep. assert (Labs 2 (lmlc P1) = substitution (Labs 2 (Lvar 1)) (lmlc P1) 1).
+            { reflexivity. } rewrite H. apply redex_contraction.
+        -- apply refl.
+      * apply onestep. assert (lmlc P1 = substitution (lmlc P1) (lmlc P2) 2). {
+        
+        } rewrite H.
+        assert (Lappl (Labs 2 (substitution (lmlc P1) (lmlc P2) 2)) = Lappl (Labs 2 (lmlc P1))). { rewrite <- H. reflexivity. }
+        rewrite H0. apply redex_contraction.
+(* snd case *)
+  - simpl. apply trans with (y := Lappl (Lappl (Labs 1 (Labs 2 (Lvar 2))) (lmlc P1)) (lmlc P2)).
+    + apply onestep. assert (Lappl (Lappl (Labs 1 (Labs 2 (Lvar 2))) (lmlc P1)) (lmlc P2) =
+                             substitution (Lappl (Lappl (Lvar (fresh (fvML P1 ++ fvML P2))) (lmlc P1)) (lmlc P2))
+                             (Labs 1 (Labs 2 (Lvar 2))) (fresh (fvML P1 ++ fvML P2))).
+      * simpl. rewrite Nat.eqb_refl. assert (substitution (lmlc P1) (Labs 1 (Labs 2 (Lvar 2))) (fresh (fvML P1 ++ fvML P2)) = lmlc P1).
+        { admit. } assert (substitution (lmlc P2) (Labs 1 (Labs 2 (Lvar 2))) (fresh (fvML P1 ++ fvML P2)) = lmlc P2).
+        { admit. } rewrite H. rewrite H0. reflexivity.
+      * rewrite H. apply redex_contraction.
+    + apply trans with (y := Lappl (Labs 2 (Lvar 2)) (lmlc P2)).
+      * apply bredstar_cont_appl.
+        -- apply onestep. assert (Labs 2 (Lvar 2) = substitution (Labs 2 (Lvar 2)) (lmlc P1) 1).
+            { reflexivity. } rewrite H. apply redex_contraction.
+        -- apply refl.
+      * apply onestep. assert (lmlc P2 = substitution (Lvar 2) (lmlc P2) 2). { reflexivity. } rewrite H.
+        assert (Lappl (Labs 2 (Lvar 2)) (substitution (Lvar 2) (lmlc P2) 2) = Lappl (Labs 2 (Lvar 2)) (lmlc P2) ). { rewrite <- H. reflexivity. }
+        rewrite H0. apply redex_contraction.
+
+
+
+
+
+
+
+
+
+
+
+
