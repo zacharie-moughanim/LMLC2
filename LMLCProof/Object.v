@@ -54,12 +54,23 @@ Fixpoint fvL (M : lambda_term) : list var := match M with
 end.
 
 Inductive alpha_equivalence : lambda_term -> lambda_term -> Prop :=
+  | alpha_context_var : forall (x : var), alpha_equivalence (Lvar x) (Lvar x)
   | alpha_context_labs : forall (M : lambda_term) (N : lambda_term) (x:var), alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs x N)
-  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term), alpha_equivalence (Lappl M N) (Lappl M' N')
-  | alpha_rename : forall (M N : lambda_term) (x y:var), ~(In y (fvL N)) -> alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs y (substitution N (Lvar y) x)).
+  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term),
+                                alpha_equivalence M M' -> alpha_equivalence N N' ->
+                                                              alpha_equivalence (Lappl M N) (Lappl M' N')
+  | alpha_rename : forall (M N new_N : lambda_term) (x new_x:var), ~(In new_x (fvL N)) -> alpha_equivalence M N ->
+                          new_N = substitution N (Lvar new_x) x  -> alpha_equivalence (Labs x M) (Labs new_x new_N).
 
 Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
 
+Lemma alpha_refl : forall (M : lambda_term), M ~a M.
+Proof. induction M.
+  - apply alpha_context_var.
+  - apply alpha_context_appl. apply IHM1. apply IHM2.
+  - apply alpha_context_labs. apply IHM.
+Qed.
+  
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
 Lemma fresh_of_fresh_is_fresh : forall (x : nat) (l : list nat), x = fresh l -> in_list l (fresh [x]) = false.

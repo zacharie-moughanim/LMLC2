@@ -134,7 +134,7 @@ Proof. induction l as [|h t IHt].
     + rewrite <- IHt. apply leb_to_ltb in ineqhn. apply Nat.ltb_lt in ineqhn. apply ineqhn.
 Qed.
 
-Lemma fresh_aux_spec2 : forall (l : list nat) (n x : nat), in_list l x = true ->x < fresh_aux l n.
+Lemma fresh_aux_spec2 : forall (l : list nat) (n x : nat), in_list l x = true -> x < fresh_aux l n.
 Proof. induction l as [|h t IHt].
   - discriminate.
   - intros n x H. simpl in H. simpl. destruct (x =? h) eqn:eqxh.

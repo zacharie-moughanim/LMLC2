@@ -62,6 +62,14 @@ Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
 
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
+Lemma fresh_of_fresh_is_fresh : forall (x : nat) (l : list nat), x = fresh l -> in_list l (fresh [x]) = false.
+Proof. assert (forall l  y,  in_list l y = true -> y < (fresh l)). { intros l y G. unfold fresh. apply fresh_aux_spec2. apply G. }
+       assert (forall l x y, in_list l y = true -> fresh l <= x -> y < x). { intros. apply Lt.lt_le_trans with (m := fresh l). apply H. apply H0. apply H1. }
+       clear H. intros x l G. apply not_in_neq. intros. apply Nat.lt_neq. apply (H0 l).
+       apply H. rewrite <- G. apply Nat.lt_le_incl. apply (H0 [x]). simpl. rewrite Nat.eqb_refl. reflexivity.
+       apply Le.le_refl.
+Qed.
+
 (* Basic terms constructors *)
 
 (* Boolean *)
