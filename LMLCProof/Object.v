@@ -70,7 +70,10 @@ Proof. induction M.
   - apply alpha_context_appl. apply IHM1. apply IHM2.
   - apply alpha_context_labs. apply IHM.
 Qed.
-  
+
+Lemma alpha_sym : forall (M N : lambda_term), M ~a N -> N ~a M.
+Proof. Admitted.
+
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
 Lemma fresh_of_fresh_is_fresh : forall (x : nat) (l : list nat), x = fresh l -> in_list l (fresh [x]) = false.

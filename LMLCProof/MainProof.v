@@ -210,8 +210,26 @@ If you want to destruct :
 
 *)
 
+Lemma beta_alpha : forall (M M' N N' : lambda_term), M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
+Proof. intros. apply alpha_quot in H0. apply alpha_quot in H1. rewrite <- H0. rewrite <- H1.
+  apply H. Qed.
+
+Lemma beta_alpha_toplvl : forall (M N : lambda_term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
+        Labs z (substitution M (Lvar z) x) ->b* Labs z (substitution N (Lvar z) y) -> Labs x M ->b* Labs y N.
+Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution M (Lvar z) x)) (N := Labs z (substitution N (Lvar z) y)).
+  - apply H0.
+  - apply alpha_sym. apply alpha_rename with (N := M).
+    + apply H.
+    + apply alpha_refl.
+    + reflexivity.
+  - apply alpha_sym. apply alpha_rename with (N := N).
+    + apply G.
+    + apply alpha_refl.
+    + reflexivity.
+Qed.
+
 Theorem lmlc_is_correct : forall (M N : ml_term), M ->ml N -> (lmlc M) ->b* (lmlc N).
-Proof. intros. Print ml_reduction.
+Proof. intros.
 induction H as
 [
     x M M' HM IHfun_contextual
@@ -285,7 +303,7 @@ induction H as
   - simpl. apply bredstar_cont_appl.
     + apply refl.
     + apply IHif_contextual.
-  - simpl. apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply bredstar_cont_appl.
+  - simpl. apply beta_alpha. apply apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply bredstar_cont_appl.
     + apply bredstar_cont_appl.
       * apply refl.
       * apply IHcons_contextual.
