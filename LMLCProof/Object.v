@@ -15,7 +15,7 @@ Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M wit
 end.
 
 Inductive beta_reduction : lambda_term -> lambda_term -> Prop :=
-  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x M)
+  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x N)
   | contextual_function : forall (M N M' : lambda_term), beta_reduction M M' -> beta_reduction (Lappl M N) (Lappl M' N)
   | contextual_argument : forall (M N N' : lambda_term), beta_reduction N N' -> beta_reduction (Lappl M N) (Lappl M N')
   | redex_contraction : forall (x : var) (M N : lambda_term), beta_reduction (Lappl (Labs x M) N) (substitution M N x)

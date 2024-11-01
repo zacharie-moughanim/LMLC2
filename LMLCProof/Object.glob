@@ -1,4 +1,4 @@
-DIGEST 6a69b2e539ac1a07d3b8f56c9a092b3a
+DIGEST ffbf59ff745bb39563d1f8a700f7d0d7
 FLMLCProof.Object
 R30:34 LMLCProof.Utils <> <> lib
 R36:41 LMLCProof.Source <> <> lib
@@ -65,7 +65,7 @@ binder 661:661 <> N:17
 R697:700 Coq.Init.Logic <> ::type_scope:x_'->'_x not
 R701:714 LMLCProof.Object <> beta_reduction:13 ind
 R728:731 LMLCProof.Object <> Labs constr
-R735:735 LMLCProof.Object <> M:16 var
+R735:735 LMLCProof.Object <> N:17 var
 R733:733 LMLCProof.Object <> x:15 var
 R717:720 LMLCProof.Object <> Labs constr
 R724:724 LMLCProof.Object <> M:16 var

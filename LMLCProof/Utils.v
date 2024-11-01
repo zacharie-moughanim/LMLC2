@@ -272,3 +272,15 @@ Proof. intros. split.
       * apply IHt. intros. apply H. simpl. destruct (y =? h) eqn:eqyh. reflexivity. apply H0.
 Qed.
 
+Lemma in_list_remove : forall (x y : nat) (l : list nat), in_list (remove_nat l y) x = false -> x <> y
+                                                                        -> in_list l x = false.
+Proof. intros. induction l as [|h t IHt].
+  - reflexivity.
+  - simpl. simpl in H. destruct (y =? h) eqn:eqyh.
+    + apply Nat.eqb_eq in eqyh. rewrite <- eqyh. apply Nat.eqb_neq in H0. rewrite H0. apply IHt.
+      apply H.
+    + destruct (x =? h) eqn:eqxh.
+      * simpl in H. rewrite eqxh in H. apply H.
+      * apply IHt. simpl in H. rewrite eqxh in H. apply H.
+Qed.
+

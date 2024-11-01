@@ -34,14 +34,6 @@ Proof.
   - simpl. rewrite minus_n_0. reflexivity.
 Qed.
 
-Lemma le_n_plus_n_m : forall (n m : nat), 1 <= m -> n <= n + m - 1.
-Proof.
-  intros n.
-  induction n as [|n' IHn'].
-  - intros m H. simpl. apply all_positive_more_than_zero.
-  - simpl. intros m H. apply IHn' in H as H'. rewrite minus_n_0. apply le_n_S in H'.
-Admitted.
-
 Lemma succ_church : forall n : nat,
   church_succ2 (church_int n) = church_int (S n).
 Proof.
@@ -50,9 +42,6 @@ Proof.
   - reflexivity.
   - reflexivity.
 Qed.
-
-Example test1 : forall (n m : nat), Nat.pred (S n - m) = n - m.
-Proof. Admitted.
 
 Example H3Modif : forall (n0 : nat) (h0 : lambda_term) (ht0 : lambda_term) (tlt0 : list lambda_term),
      (forall n : nat,
@@ -76,30 +65,85 @@ Proof. intros *. intro H3. apply H3. Qed.
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. apply trans. Qed.
 
-Lemma beta_subset_beta_star : forall (M N : lambda_term), M ->b N -> M ->b* N.
-Proof. intros M N H. apply onestep. apply H. Qed.
-
 Lemma beta_star_contextual_abs :
   forall (x : var) (M M': lambda_term), M ->b* M' -> Labs x M ->b* Labs x M'.
-Admitted.
+Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep].
+  - apply refl.
+  - apply trans with (y := Labs x M2).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_lambda with (x := x) in Honestep. apply Honestep.
+Qed.
+
+Lemma beta_star_contextual_appl_function :
+  forall (M M' N : lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
+Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M M' Honestep].
+  - apply refl.
+  - apply trans with (y := Lappl M2 N).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_function. apply Honestep.
+Qed.
+
+Lemma beta_star_contextual_appl_argument :
+  forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
+Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHred2|N N' Honestep].
+  - apply refl.
+  - apply trans with (y := Lappl M N2).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_argument. apply Honestep.
+Qed.
 
 Lemma beta_star_contextual_appl :
-  forall (M M' N N': lambda_term), M ->b* M' /\ N ->b* N' -> Lappl M N ->b* Lappl M' N'.
-Admitted.
-
-Lemma beta_star_contextual_appl'l :
-  forall (M M' N: lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
-Admitted.
-
-Lemma beta_star_contextual_appl'r :
-  forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
-Admitted.
+  forall (M M' N N': lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
+Proof. intros *. intros redlhs redrhs. apply trans with (y := Lappl M' N).
+  - apply beta_star_contextual_appl_function. apply redlhs.
+  - apply beta_star_contextual_appl_argument. apply redrhs.
+Qed.
 
 Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
-Proof. intros * H. Admitted.
+Proof. intros M P x H. induction M as [y | M IHM N IHN | y M IHM].
+  - simpl. simpl in H. destruct (x =? y).
+    + inversion H.
+    + reflexivity.
+  - simpl. simpl in H. apply in_list_app1 in H. destruct H as [H1 H2].
+    rewrite IHM. rewrite IHN. reflexivity. apply H2. apply H1.
+  - simpl. destruct (x =? y) eqn:eqxy.
+    + reflexivity.
+    + simpl in H. assert (cont : substitution M P x = M).
+      * apply IHM. apply in_list_remove with (y := y). apply H. apply Nat.eqb_neq. apply eqxy.
+      * rewrite cont. reflexivity.
+Qed.
+
+
+Lemma beta_alpha : forall (M M' N N' : lambda_term), M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
+Proof. intros. apply alpha_quot in H0. apply alpha_quot in H1. rewrite <- H0. rewrite <- H1.
+  apply H. Qed.
+
+Lemma beta_alpha_toplvl : forall (M N : lambda_term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
+        Labs z (substitution M (Lvar z) x) ->b* Labs z (substitution N (Lvar z) y) -> Labs x M ->b* Labs y N.
+Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution M (Lvar z) x)) (N := Labs z (substitution N (Lvar z) y)).
+  - apply H0.
+  - apply alpha_sym. apply alpha_rename with (N := M).
+    + apply H.
+    + apply alpha_refl.
+    + reflexivity.
+  - apply alpha_sym. apply alpha_rename with (N := N).
+    + apply G.
+    + apply alpha_refl.
+    + reflexivity.
+Qed.
+
+Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
+                                    substitution (Labs x M) N y = Labs x (substitution M N y).
+Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
+
+Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
+                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
+Proof. reflexivity. Qed.
 
 (* MAIN PROOF *)
-(* WE NEED ALPHA-EQUIVALENCE... *)
 Lemma lmlc_substitution : forall (M N : ml_term) (x : var),
                           lmlc (ml_substitution M N x) = substitution (lmlc M) (lmlc N) x.
 Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfixfunbody
@@ -183,8 +227,6 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
 (* M = snd P *)
   - admit.
 Admitted.
-(* still a lot of prb with free variables when constructing terms *)
-
 
 (**
 If you want to induct :
@@ -206,33 +248,7 @@ If you want to destruct :
 
 *)
 
-Lemma beta_alpha : forall (M M' N N' : lambda_term), M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
-Proof. intros. apply alpha_quot in H0. apply alpha_quot in H1. rewrite <- H0. rewrite <- H1.
-  apply H. Qed.
-
-Lemma beta_alpha_toplvl : forall (M N : lambda_term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
-        Labs z (substitution M (Lvar z) x) ->b* Labs z (substitution N (Lvar z) y) -> Labs x M ->b* Labs y N.
-Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution M (Lvar z) x)) (N := Labs z (substitution N (Lvar z) y)).
-  - apply H0.
-  - apply alpha_sym. apply alpha_rename with (N := M).
-    + apply H.
-    + apply alpha_refl.
-    + reflexivity.
-  - apply alpha_sym. apply alpha_rename with (N := N).
-    + apply G.
-    + apply alpha_refl.
-    + reflexivity.
-Qed.
-
-Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
-                                    substitution (Labs x M) N y = Labs x (substitution M N y).
-Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
-
-Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
-                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
-Proof. reflexivity. Qed.
-
-Theorem lmlc_is_correct : forall (M N : ml_term), M ->ml N -> (lmlc M) ->b* (lmlc N).
+Theorem lmlc_correct : forall (M N : ml_term), M ->ml N -> (lmlc M) ->b* (lmlc N).
 Proof. intros.
 induction H as
 [
