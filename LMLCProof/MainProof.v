@@ -228,6 +228,14 @@ Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution
     + reflexivity.
 Qed.
 
+Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
+                                    substitution (Labs x M) N y = Labs x (substitution M N y).
+Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
+
+Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
+                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
+Proof. reflexivity. Qed.
+
 Theorem lmlc_is_correct : forall (M N : ml_term), M ->ml N -> (lmlc M) ->b* (lmlc N).
 Proof. intros.
 induction H as
@@ -303,31 +311,30 @@ induction H as
   - simpl. apply bredstar_cont_appl.
     + apply refl.
     + apply IHif_contextual.
-  - simpl. apply beta_alpha. apply apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
-      * apply refl.
-      * apply IHcons_contextual.
-    + apply refl.
-  - simpl. apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply bredstar_cont_appl.
-    + apply refl.
-    + apply bredstar_cont_appl.
-      * apply bredstar_cont_appl.
-        -- apply IHcons_contextual.
-        -- apply refl.
-      * apply refl.
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
-      * apply IHfold_contextual.
-      * apply refl.
-    + apply refl.
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
-      * apply refl.
-      * apply IHfold_contextual.
-    + apply refl.
-  - simpl. apply bredstar_cont_appl.
-    + apply refl.
-    + apply IHfold_contextual.
+  - simpl. remember (fresh [fresh (fvML HD ++ fvML TL)]). remember (fresh (fvML HD ++ fvML TL)).
+      remember (fresh (fvML HD' ++ fvML TL)) as v0'. remember (fresh [v0']) as v'.
+      remember (fresh (fvML HD ++ fvML HD' ++ fvML TL)) as new_v0.
+      apply beta_alpha_toplvl with (z := new_v0).
+    + admit.
+    + admit.
+    + remember (fresh [new_v0]) as new_v. apply bredstar_cont_lambda.
+      rewrite subst_lambda_cont. rewrite subst_lambda_cont.
+      simpl. assert (v =? v0 = false). { admit. } assert (v' =? v0' = false). { admit. } rewrite Nat.eqb_refl.
+      rewrite Nat.eqb_sym. rewrite H. rewrite Nat.eqb_refl. rewrite Nat.eqb_sym. rewrite H0.
+      apply beta_alpha_toplvl with (z := fresh [new_v0]).
+      * admit.
+      * admit.
+      * apply bredstar_cont_lambda. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+        assert (v =? new_v0 = false). { admit. } assert (v' =? new_v0 = false). { admit. }
+        rewrite H1. rewrite H2. apply bredstar_cont_appl.
+        -- apply bredstar_cont_appl.
+          ++ apply refl.
+          ++ rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+              rewrite substitution_fresh_l. apply IHcons_contextual. admit. admit. admit. admit.
+        -- admit.
+      * admit.
+      * admit.
+  - admit. (* basically the same as previous case, let's focus on this one first. *)
   - simpl. assert (alpharename1 : Labs (fresh (fvML P1 ++ fvML P2))
   (Lappl (Lappl (Lvar (fresh (fvML P1 ++ fvML P2))) (lmlc P1)) (lmlc P2)) =
 Labs (fresh (fvML P1 ++ fvML P1' ++ fvML P2))
