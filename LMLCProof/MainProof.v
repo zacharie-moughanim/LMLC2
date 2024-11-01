@@ -65,7 +65,7 @@ Proof. intros *. intro H3. apply H3. Qed.
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. apply trans. Qed.
 
-Lemma beta_star_contextual_abs :
+Lemma bredstar_contextual_abs :
   forall (x : var) (M M': lambda_term), M ->b* M' -> Labs x M ->b* Labs x M'.
 Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep].
   - apply refl.
@@ -75,7 +75,7 @@ Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep]
   - apply onestep. apply contextual_lambda with (x := x) in Honestep. apply Honestep.
 Qed.
 
-Lemma beta_star_contextual_appl_function :
+Lemma bredstar_contextual_appl_function :
   forall (M M' N : lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
 Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M M' Honestep].
   - apply refl.
@@ -85,7 +85,7 @@ Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHre
   - apply onestep. apply contextual_function. apply Honestep.
 Qed.
 
-Lemma beta_star_contextual_appl_argument :
+Lemma bredstar_contextual_appl_argument :
   forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
 Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHred2|N N' Honestep].
   - apply refl.
@@ -95,11 +95,11 @@ Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHr
   - apply onestep. apply contextual_argument. apply Honestep.
 Qed.
 
-Lemma beta_star_contextual_appl :
+Lemma bredstar_contextual_appl :
   forall (M M' N N': lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
 Proof. intros *. intros redlhs redrhs. apply trans with (y := Lappl M' N).
-  - apply beta_star_contextual_appl_function. apply redlhs.
-  - apply beta_star_contextual_appl_argument. apply redrhs.
+  - apply bredstar_contextual_appl_function. apply redlhs.
+  - apply bredstar_contextual_appl_argument. apply redrhs.
 Qed.
 
 Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
@@ -165,18 +165,7 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
 (* M = fixfun f x -> M' *)
   - admit.
 (* M = M1 + M2 *)
-  - intros N y. destruct (in_list ((fvL (lmlc M1)) ++ (fvL (lmlc M2))) y) eqn:eq.
-    + simpl. assert (eq' : in_list (fvL (lmlc M1) ++ fvL (lmlc M2)) y = true). { apply eq. } apply fresh_spec in eq. rewrite Nat.eqb_sym. rewrite eq.
-      assert (H: y =? fresh (fresh (fvL (lmlc M1) ++ fvL (lmlc M2)) :: fvL (lmlc M1) ++ fvL (lmlc M2)) = false).
-      {
-        assert (H' : in_list ((fresh (fvL (lmlc M1) ++ fvL (lmlc M2))) :: fvL (lmlc M1) ++ fvL (lmlc M2)) y = true).
-        {
-          simpl. rewrite Nat.eqb_sym. rewrite eq. apply eq'.
-        }
-        apply fresh_spec in H'. rewrite Nat.eqb_sym. apply H'.
-      }
-      rewrite H. unfold church_plus. admit.
-    + admit.
+  - admit.
 (* M = M1 - M2 *)
   - admit.
 (* M = M1 * M2 *)
@@ -288,23 +277,58 @@ induction H as
 ].
 (* contextual cases *)
   (* fun *)
-  - simpl. apply bredstar_cont_lambda. apply IHfun_contextual.
+  - simpl. apply bredstar_contextual_abs. apply IHfun_contextual.
   (* fixfun *)
-  - simpl. unfold turing_fixpoint_applied. apply bredstar_cont_appl.
-    + apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply IHfixfun_contextual.
-    + apply bredstar_cont_appl.
+  - simpl. unfold turing_fixpoint_applied. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_abs. apply bredstar_contextual_abs. apply IHfixfun_contextual.
+    + apply bredstar_contextual_appl.
       * apply refl.
-      * apply bredstar_cont_lambda. apply bredstar_cont_lambda. apply IHfixfun_contextual.
+      * apply bredstar_contextual_abs. apply bredstar_contextual_abs. apply IHfixfun_contextual.
   (* application - function *)
-  - simpl. apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
     + apply IHappl_contextual.
     + apply refl.
   (* application - argument *)
-  - simpl. apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
     + apply refl.
     + apply IHappl_contextual.
   (* plus - lhs *)
-  - admit.
+  - simpl. unfold church_plus. remember (fresh (fvL (lmlc M) ++ fvL (lmlc M') ++ fvL (lmlc N))) as new_x.
+    remember (fresh (fvL (lmlc M) ++ fvL (lmlc N))) as x. remember (fresh (fvL (lmlc M') ++ fvL (lmlc N))) as x'.
+    apply beta_alpha_toplvl with (z := new_x).
+    + admit.
+    + admit.
+    + apply bredstar_contextual_abs.
+      remember (fresh [x]) as y.
+      remember (fresh [x']) as y'. simpl.
+      assert (x =? y = false). { admit. } assert (x' =? y' = false). { admit. }
+      rewrite H. rewrite H0. remember (fresh [new_x]) as new_y.
+      apply beta_alpha_toplvl with (z := new_y).
+      * admit.
+      * admit.
+      * apply bredstar_contextual_abs. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+        simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+        assert (y =? new_x = false). { admit. } assert (y' =? new_x = false). { admit. }
+        rewrite H1. rewrite H2. { apply bredstar_contextual_appl.
+          - apply bredstar_contextual_appl.
+            + admit.
+            + apply refl.
+          - apply bredstar_contextual_appl.
+            + apply bredstar_contextual_appl.
+              * {   rewrite substitution_fresh_l.
+                  - rewrite substitution_fresh_l.
+                    + {   rewrite substitution_fresh_l.
+                        - rewrite substitution_fresh_l.
+                          + apply IHplus_contextual.
+                          + admit.
+                        - admit.
+                      }
+                    + admit.
+                  - admit.
+                }
+              * apply refl.
+            + apply refl.
+        }
   (* plus - rhs *)
   - admit.
   (* minus - lhs *)
@@ -316,25 +340,25 @@ induction H as
   (* times - rhs *)
   - admit.
   (* gtz *)
-  - simpl. unfold church_gtz. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. unfold church_gtz. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply IHgtz_contextual.
       * apply refl.
     + apply refl.
   (* if then else - condition*)
-  - simpl. unfold church_if. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. unfold church_if. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply IHif_contextual.
       * apply refl.
     + apply refl.
   (* if then else - then branch *)
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply refl.
       * apply IHif_contextual.
     + apply refl.
   (* if then else - else branch *)
-  - simpl. apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
     + apply refl.
     + apply IHif_contextual.
   (* cons - head *)
@@ -344,17 +368,17 @@ induction H as
       apply beta_alpha_toplvl with (z := new_v0).
     + admit.
     + admit.
-    + remember (fresh [new_v0]) as new_v. apply bredstar_cont_lambda.
+    + remember (fresh [new_v0]) as new_v. apply bredstar_contextual_abs.
       rewrite subst_lambda_cont. rewrite subst_lambda_cont.
       simpl. assert (v =? v0 = false). { admit. } assert (v' =? v0' = false). { admit. } rewrite Nat.eqb_refl.
       rewrite Nat.eqb_sym. rewrite H. rewrite Nat.eqb_refl. rewrite Nat.eqb_sym. rewrite H0.
       apply beta_alpha_toplvl with (z := fresh [new_v0]).
       * admit.
       * admit.
-      * apply bredstar_cont_lambda. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+      * apply bredstar_contextual_abs. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
         assert (v =? new_v0 = false). { admit. } assert (v' =? new_v0 = false). { admit. }
-        rewrite H1. rewrite H2. apply bredstar_cont_appl.
-        -- apply bredstar_cont_appl.
+        rewrite H1. rewrite H2. apply bredstar_contextual_appl.
+        -- apply bredstar_contextual_appl.
           ++ apply refl.
           ++ rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
               rewrite substitution_fresh_l. apply IHcons_contextual. admit. admit. admit. admit.
@@ -364,20 +388,20 @@ induction H as
   (* cons - tail *)
   - admit. (* basically the same as previous case, let's focus on this one first. *)
   (* fold - list *)
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply IHfold_contextual.
       * apply refl.
     + apply refl.
   (* fold - operator *)
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply refl.
       * apply IHfold_contextual.
     + apply refl.
   (* fold - initial value *)
-  - simpl. apply bredstar_cont_appl.
-    + apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
+    + apply bredstar_contextual_appl.
       * apply refl.
       * apply refl.
     + apply IHfold_contextual.
@@ -385,12 +409,12 @@ induction H as
   - admit.
   (* pair - second element *)
   - admit.
-  - simpl. apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
     + apply IHfst.
     + remember (fresh (fvML P ++ fvML P')) as new_x. apply beta_alpha_toplvl with (z := new_x).
       * admit.
       * admit.
-      * apply bredstar_cont_lambda. simpl.
+      * apply bredstar_contextual_abs. simpl.
         assert (fresh (fvML P) =? fresh [fresh (fvML P)] = false).
         { admit. } rewrite H. rewrite Nat.eqb_refl.
         assert (fresh (fvML P') =? fresh [fresh (fvML P')] = false).
@@ -398,16 +422,16 @@ induction H as
         apply beta_alpha_toplvl with (z := fresh [new_x]).
         -- admit.
         -- admit.
-        -- apply bredstar_cont_lambda. simpl.
+        -- apply bredstar_contextual_abs. simpl.
            assert (fresh [fresh (fvML P)] =? new_x = false). { admit. }
            assert (fresh [fresh (fvML P')] =? new_x = false). { admit. }
            rewrite H1. rewrite H2. apply refl.
-  - simpl. apply bredstar_cont_appl.
+  - simpl. apply bredstar_contextual_appl.
     + apply IHsnd.
     + remember (fresh (fvML P ++ fvML P')) as new_x. apply beta_alpha_toplvl with (z := new_x).
       * admit.
       * admit.
-      * apply bredstar_cont_lambda. simpl.
+      * apply bredstar_contextual_abs. simpl.
         assert (fresh (fvML P) =? fresh [fresh (fvML P)] = false).
         { admit. } rewrite H.
         assert (fresh (fvML P') =? fresh [fresh (fvML P')] = false).
@@ -415,15 +439,15 @@ induction H as
         apply beta_alpha_toplvl with (z := fresh [new_x]).
         -- admit.
         -- admit.
-        -- apply bredstar_cont_lambda. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+        -- apply bredstar_contextual_abs. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
            apply refl.
 (* redex case *)
   - simpl. rewrite lmlc_substitution. apply onestep. apply redex_contraction.
 (* fixfun case *)
-  - simpl. unfold turing_fixpoint_applied. apply bredstar_cont_appl.
+  - simpl. unfold turing_fixpoint_applied. apply bredstar_contextual_appl.
     + apply refl.
     + apply trans with (y := Lappl (Labs 0 (Lappl (Lvar 0) (Lappl turing_fixpoint (Lvar 0)))) (Labs f (Labs x (lmlc M)))).
-      * unfold turing_fixpoint. apply bredstar_cont_appl.
+      * unfold turing_fixpoint. apply bredstar_contextual_appl.
         -- apply onestep. apply redex_contraction.
         -- apply refl.
       * apply onestep. apply redex_contraction.
@@ -440,7 +464,7 @@ induction H as
       unfold church_int. unfold church_int_free. apply trans with (y := Lappl (Labs 0 (Lvar 0)) (church_false)).
       * assert ((Labs 0 (Lvar 0)) = substitution (Labs 0 (Lvar 0)) (Labs 0 church_true) 1). { reflexivity. }
         rewrite H0. assert (Lappl (Lappl (Labs 1 (substitution (Labs 0 (Lvar 0)) (Labs 0 church_true) 1)) (Labs 0 church_true)) = Lappl (Lappl (Labs 1 (Labs 0 (Lvar 0))) (Labs 0 church_true))).
-        { reflexivity. } rewrite H1. apply bredstar_cont_appl.
+        { reflexivity. } rewrite H1. apply bredstar_contextual_appl.
         -- apply onestep. apply redex_contraction.
         -- apply refl.
       * apply onestep. assert (church_false = substitution (Lvar 0) church_false 0). { reflexivity. }
@@ -448,7 +472,7 @@ induction H as
         { rewrite <- H0. reflexivity. } rewrite H1. apply redex_contraction.
 (* fold base case *)
   - simpl. apply trans with (y := (Lappl (Labs 1 (Lvar 1)) (lmlc INIT))).
-    + apply bredstar_cont_appl.
+    + apply bredstar_contextual_appl.
       * assert (Labs 1 (Lvar 1) = substitution (Labs 1 (Lvar 1)) (lmlc FOO) 0). { reflexivity. } rewrite H.
         assert (Lappl (Labs 0 (substitution (Labs 1 (Lvar 1)) (lmlc FOO) 0)) (lmlc FOO) = Lappl (Labs 0 (Labs 1 (Lvar 1))) (lmlc FOO) ).
         { reflexivity. } rewrite H0. apply onestep. apply redex_contraction.

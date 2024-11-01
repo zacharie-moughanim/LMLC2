@@ -37,14 +37,8 @@ Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
 Notation "M [ N / x ]" := (substitution M N x) (at level 40).
 Notation "M ml[ N / x ]" := (ml_substitution M N x) (at level 40).
 
-Lemma bredstar_cont_lambda : forall (x : var) (M N : lambda_term), M ->b* N -> (Labs x M) ->b* (Labs x N).
-Proof. Admitted.
-
-Lemma bredstar_cont_appl : forall (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
-Proof. Admitted.
-
 Lemma bredstar_cont_subst : forall (x : var) (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> substitution M N x ->b* substitution M' N' x.
-Proof. Admitted.
+Proof. Admitted. (*not sure if that will be useful*)
 (* fresh variables *)
 
 Fixpoint fvL (M : lambda_term) : list var := match M with
@@ -72,7 +66,7 @@ Proof. induction M.
 Qed.
 
 Lemma alpha_sym : forall (M N : lambda_term), M ~a N -> N ~a M.
-Proof. Admitted.
+Proof. Admitted. (*not sure if that will be useful*)
 
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
@@ -135,7 +129,7 @@ Definition church_pred (N : lambda_term) : lambda_term :=
        (church_pair (church_int 0) (church_int 0))).
 
 Definition church_plus (M N : lambda_term) : lambda_term :=
-let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh (x::((fvL M) ++ (fvL N))) in
+let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh [x] in
                                Labs x (Labs y (
                                                  Lappl (Lappl N (Lvar y))
                                                        (Lappl (Lappl M (Lvar y))
