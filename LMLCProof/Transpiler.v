@@ -18,8 +18,10 @@ Fixpoint lmlc (M : ml_term) : lambda_term := match M with
   | Fold_right lst foo acc => Lappl (Lappl (lmlc lst) (lmlc foo)) (lmlc acc)
   | Nil => Labs 0 (Labs 1 (Lvar 1))
   | Pair P1 P2 => let z := fresh (fvML P1 ++ fvML P2) in Labs z (Lappl (Lappl (Lvar z) (lmlc P1)) (lmlc P2))
-  | Fst M => Lappl (lmlc M) (Labs 1 (Labs (fresh (fvML M)) (Lvar 1)))
-  | Snd M => Lappl (lmlc M) (Labs 1 (Labs (2) (Lvar 2)))
+  | Fst M => let x1 := fresh (fvML M) in let x2 := fresh [x1] in
+                Lappl (lmlc M) (Labs x1 (Labs x2 (Lvar x1)))
+  | Snd M => let x1 := fresh (fvML M) in let x2 := fresh [x1] in
+                Lappl (lmlc M) (Labs x1 (Labs x2 (Lvar x2)))
 end.
 
 Lemma fvML_L : forall (M : ml_term), fvL (lmlc M) = fvML M.

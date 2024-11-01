@@ -1,4 +1,4 @@
-DIGEST 9742359118db7b26b65ee7d839fce505
+DIGEST 77b2078af79d2075ac25bdb5c0e1214f
 FLMLCProof.Transpiler
 R30:34 LMLCProof.Utils <> <> lib
 R36:41 LMLCProof.Source <> <> lib
@@ -108,28 +108,49 @@ R993:996 LMLCProof.Object <> Lvar constr
 R998:998 LMLCProof.Transpiler <> z:6 var
 R976:976 LMLCProof.Transpiler <> z:6 var
 R1027:1029 LMLCProof.Source <> Fst constr
-R1036:1040 LMLCProof.Object <> Lappl constr
-R1052:1055 LMLCProof.Object <> Labs constr
-R1060:1063 LMLCProof.Object <> Labs constr
-R1083:1086 LMLCProof.Object <> Lvar constr
-R1066:1070 LMLCProof.Source <> fresh def
-R1073:1076 LMLCProof.Source <> fvML def
-R1078:1078 LMLCProof.Transpiler <> M:1 var
-R1043:1046 LMLCProof.Transpiler <> lmlc:2 def
-R1048:1048 LMLCProof.Transpiler <> M:1 var
-R1097:1099 LMLCProof.Source <> Snd constr
-R1106:1110 LMLCProof.Object <> Lappl constr
-R1122:1125 LMLCProof.Object <> Labs constr
-R1130:1133 LMLCProof.Object <> Labs constr
-R1140:1143 LMLCProof.Object <> Lvar constr
-R1113:1116 LMLCProof.Transpiler <> lmlc:2 def
-R1118:1118 LMLCProof.Transpiler <> M:1 var
-prf 1162:1167 <> fvML_L
-R1183:1189 LMLCProof.Source <> ml_term ind
-binder 1179:1179 <> M:7
-R1205:1207 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R1193:1195 LMLCProof.Object <> fvL def
-R1198:1201 LMLCProof.Transpiler <> lmlc def
-R1203:1203 LMLCProof.Transpiler <> M:7 var
-R1208:1211 LMLCProof.Source <> fvML def
-R1213:1213 LMLCProof.Transpiler <> M:7 var
+R1046:1050 LMLCProof.Source <> fresh def
+R1053:1056 LMLCProof.Source <> fvML def
+R1058:1058 LMLCProof.Transpiler <> M:1 var
+binder 1040:1041 <> x1:7
+R1074:1078 LMLCProof.Source <> fresh def
+R1080:1080 LMLCProof.Utils <> :::'['_x_';'_'..'_';'_x_']' not
+R1083:1083 LMLCProof.Utils <> :::'['_x_';'_'..'_';'_x_']' not
+R1081:1082 LMLCProof.Transpiler <> x1:7 var
+binder 1068:1069 <> x2:8
+R1104:1108 LMLCProof.Object <> Lappl constr
+R1120:1123 LMLCProof.Object <> Labs constr
+R1129:1132 LMLCProof.Object <> Labs constr
+R1138:1141 LMLCProof.Object <> Lvar constr
+R1143:1144 LMLCProof.Transpiler <> x1:7 var
+R1134:1135 LMLCProof.Transpiler <> x2:8 var
+R1125:1126 LMLCProof.Transpiler <> x1:7 var
+R1111:1114 LMLCProof.Transpiler <> lmlc:2 def
+R1116:1116 LMLCProof.Transpiler <> M:1 var
+R1153:1155 LMLCProof.Source <> Snd constr
+R1172:1176 LMLCProof.Source <> fresh def
+R1179:1182 LMLCProof.Source <> fvML def
+R1184:1184 LMLCProof.Transpiler <> M:1 var
+binder 1166:1167 <> x1:9
+R1200:1204 LMLCProof.Source <> fresh def
+R1206:1206 LMLCProof.Utils <> :::'['_x_';'_'..'_';'_x_']' not
+R1209:1209 LMLCProof.Utils <> :::'['_x_';'_'..'_';'_x_']' not
+R1207:1208 LMLCProof.Transpiler <> x1:9 var
+binder 1194:1195 <> x2:10
+R1230:1234 LMLCProof.Object <> Lappl constr
+R1246:1249 LMLCProof.Object <> Labs constr
+R1255:1258 LMLCProof.Object <> Labs constr
+R1264:1267 LMLCProof.Object <> Lvar constr
+R1269:1270 LMLCProof.Transpiler <> x2:10 var
+R1260:1261 LMLCProof.Transpiler <> x2:10 var
+R1251:1252 LMLCProof.Transpiler <> x1:9 var
+R1237:1240 LMLCProof.Transpiler <> lmlc:2 def
+R1242:1242 LMLCProof.Transpiler <> M:1 var
+prf 1287:1292 <> fvML_L
+R1308:1314 LMLCProof.Source <> ml_term ind
+binder 1304:1304 <> M:11
+R1330:1332 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1318:1320 LMLCProof.Object <> fvL def
+R1323:1326 LMLCProof.Transpiler <> lmlc def
+R1328:1328 LMLCProof.Transpiler <> M:11 var
+R1333:1336 LMLCProof.Source <> fvML def
+R1338:1338 LMLCProof.Transpiler <> M:11 var
