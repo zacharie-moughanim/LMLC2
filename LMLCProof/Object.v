@@ -157,7 +157,11 @@ Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (L
 
 (** lemmas about constuctors *)
 
-
+Lemma church_plus_is_plus : forall (n m : nat) (s z : var),
+      (substitution (substitution (church_int_free m) (Lvar s) 1)
+      ((substitution (substitution (church_int_free n) (Lvar s) 1) (Lvar z) 0)) 0) ->b*
+       substitution (substitution (church_int_free (n + m)) (Lvar z) 0) (Lvar s) 1.
+Proof. Admitted.
 
 
 

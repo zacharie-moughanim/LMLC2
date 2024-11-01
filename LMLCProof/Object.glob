@@ -1,4 +1,4 @@
-DIGEST d1e4369b784f9a15247a928fe95e714b
+DIGEST 29e3afb90f1afb53a1ca89fe40d7e1af
 FLMLCProof.Object
 R30:34 LMLCProof.Utils <> <> lib
 R36:41 LMLCProof.Source <> <> lib
@@ -713,3 +713,36 @@ R7488:7492 LMLCProof.Object <> Lappl constr
 R7512:7512 LMLCProof.Object <> M:110 var
 R7495:7509 LMLCProof.Object <> turing_fixpoint def
 R7485:7485 LMLCProof.Object <> M:110 var
+prf 7556:7574 <> church_plus_is_plus
+R7592:7594 Coq.Init.Datatypes <> nat ind
+binder 7586:7586 <> n:111
+binder 7588:7588 <> m:112
+R7604:7606 LMLCProof.Source <> var def
+binder 7598:7598 <> s:113
+binder 7600:7600 <> z:114
+R7616:7616 LMLCProof.Object <> :::x_'->b*'_x not
+R7757:7770 LMLCProof.Object <> :::x_'->b*'_x not
+R7617:7628 LMLCProof.Object <> substitution def
+R7684:7695 LMLCProof.Object <> substitution def
+R7744:7747 LMLCProof.Object <> Lvar constr
+R7749:7749 LMLCProof.Object <> z:114 var
+R7698:7709 LMLCProof.Object <> substitution def
+R7732:7735 LMLCProof.Object <> Lvar constr
+R7737:7737 LMLCProof.Object <> s:113 var
+R7712:7726 LMLCProof.Object <> church_int_free def
+R7728:7728 LMLCProof.Object <> n:111 var
+R7631:7642 LMLCProof.Object <> substitution def
+R7665:7668 LMLCProof.Object <> Lvar constr
+R7670:7670 LMLCProof.Object <> s:113 var
+R7645:7659 LMLCProof.Object <> church_int_free def
+R7661:7661 LMLCProof.Object <> m:112 var
+R7771:7782 LMLCProof.Object <> substitution def
+R7837:7840 LMLCProof.Object <> Lvar constr
+R7842:7842 LMLCProof.Object <> s:113 var
+R7785:7796 LMLCProof.Object <> substitution def
+R7825:7828 LMLCProof.Object <> Lvar constr
+R7830:7830 LMLCProof.Object <> z:114 var
+R7799:7813 LMLCProof.Object <> church_int_free def
+R7817:7819 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R7816:7816 LMLCProof.Object <> n:111 var
+R7820:7820 LMLCProof.Object <> m:112 var
