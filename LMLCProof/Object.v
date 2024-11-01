@@ -8,6 +8,7 @@ Inductive lambda_term : Type :=
   | Lappl (f : lambda_term) (arg : lambda_term)
   | Labs (x : var) (M : lambda_term).
 
+(* capture-avoiding substitution *)
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
   | Lvar y => if x =? y then N else Lvar y
   | Labs y M' => if x =? y then Labs y M' else Labs y (substitution M' N x)
@@ -128,12 +129,11 @@ Definition church_pred (N : lambda_term) : lambda_term :=
                                (church_succ (church_snd (Lvar 0)))))))
        (church_pair (church_int 0) (church_int 0))).
 
-Definition church_plus (M N : lambda_term) : lambda_term :=
-let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh [x] in
-                               Labs x (Labs y (
-                                                 Lappl (Lappl N (Lvar y))
-                                                       (Lappl (Lappl M (Lvar y))
-                                                              (Lvar x)))
+Definition church_plus (M N : lambda_term) (s z : var) : lambda_term :=
+                               Labs s (Labs z (
+                                                 Lappl (Lappl N (Lvar s))
+                                                       (Lappl (Lappl M (Lvar s))
+                                                              (Lvar z)))
                                               ).
 Definition church_minus (M N : lambda_term) : lambda_term :=
       Lappl (Lappl M (Labs 0 (church_pred (Lvar 0)))) N.
@@ -154,6 +154,10 @@ Definition turing_fixpoint_half : lambda_term :=
 Definition turing_fixpoint : lambda_term := Lappl turing_fixpoint_half turing_fixpoint_half.
 
 Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (Lappl (turing_fixpoint) M).
+
+(** lemmas about constuctors *)
+
+
 
 
 
