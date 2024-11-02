@@ -628,7 +628,31 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
         { rewrite Heqz. rewrite fvML_L. rewrite fvML_L. apply fresh_spec_2. }
         apply in_list_app1 in H. destruct H as [H1 H2]. apply H1.
 (* snd case *)
-  - admit.
+  - simpl. remember (fresh (fvML P1 ++ fvML P2)) as z. remember (fresh [z]) as z'.
+    apply trans with (y := (substitution (Lappl (Lappl (Lvar z) (lmlc P1)) (lmlc P2)) (Labs z (Labs z' (Lvar z'))) z)).
+    + apply onestep. apply redex_contraction.
+    + simpl. rewrite Nat.eqb_refl. rewrite substitution_fresh_l.
+      * { apply trans with (y := Lappl (substitution (Labs z' (Lvar z')) (lmlc P1) z)
+            (substitution (lmlc P2) (Labs z (Labs z' (Lvar z'))) z)).
+          - apply bredstar_contextual_appl.
+            + apply onestep. apply redex_contraction.
+            + apply refl.
+          - simpl. assert (z =? z' = false).
+            {
+              rewrite Nat.eqb_sym. rewrite Heqz'. apply fresh_spec. simpl. rewrite Nat.eqb_refl. reflexivity.
+            }
+            rewrite H.
+            apply trans with (y := substitution (Lvar z') (substitution (lmlc P2) (Labs z (Labs z' (Lvar z'))) z) z').
+            + apply onestep. apply redex_contraction.
+            + simpl. rewrite Nat.eqb_refl. rewrite substitution_fresh_l.
+              * apply refl.
+              * assert (in_list (fvL (lmlc P1) ++ fvL (lmlc P2)) z = false).
+                { rewrite Heqz. rewrite fvML_L. rewrite fvML_L. apply fresh_spec_2. }
+                apply in_list_app1 in H0. destruct H0 as [H1 H2]. apply H2.
+        }
+      * assert (in_list (fvL (lmlc P1) ++ fvL (lmlc P2)) z = false).
+        { rewrite Heqz. rewrite fvML_L. rewrite fvML_L. apply fresh_spec_2. }
+        apply in_list_app1 in H. destruct H as [H1 H2]. apply H1.
 
 
 
