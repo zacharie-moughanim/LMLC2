@@ -1,7 +1,13 @@
-From LMLCProof Require Import Utils Source.
 From Coq Require Import Lists.List.
 Require Import PeanoNat.
-Import ListNotations. Print le.
+Import ListNotations.
+Require Export Coq.Classes.Init.
+Require Import Coq.Program.Basics.
+Require Import Coq.Program.Tactics.
+Require Import Coq.Relations.Relation_Definitions.
+Require Import Relation_Definitions.
+
+From LMLCProof Require Import Utils Source.
 
 Inductive lambda_term : Type :=
   | Lvar (x : var)
@@ -157,11 +163,119 @@ Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (L
 
 (** lemmas about constuctors *)
 
+(** beta-reduction properties *)
+
+Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
+Proof. unfold transitive. intros *. unfold beta_star. apply trans. Qed.
+
+Lemma bredstar_contextual_abs :
+  forall (x : var) (M M': lambda_term), M ->b* M' -> Labs x M ->b* Labs x M'.
+Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep].
+  - apply refl.
+  - apply trans with (y := Labs x M2).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_lambda with (x := x) in Honestep. apply Honestep.
+Qed.
+
+Lemma bredstar_contextual_appl_function :
+  forall (M M' N : lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
+Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M M' Honestep].
+  - apply refl.
+  - apply trans with (y := Lappl M2 N).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_function. apply Honestep.
+Qed.
+
+Lemma bredstar_contextual_appl_argument :
+  forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
+Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHred2|N N' Honestep].
+  - apply refl.
+  - apply trans with (y := Lappl M N2).
+    + apply IHred1.
+    + apply IHred2.
+  - apply onestep. apply contextual_argument. apply Honestep.
+Qed.
+
+Lemma bredstar_contextual_appl :
+  forall (M M' N N': lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
+Proof. intros *. intros redlhs redrhs. apply trans with (y := Lappl M' N).
+  - apply bredstar_contextual_appl_function. apply redlhs.
+  - apply bredstar_contextual_appl_argument. apply redrhs.
+Qed.
+
+
+Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
+Proof. intros M P x H. induction M as [y | M IHM N IHN | y M IHM].
+  - simpl. simpl in H. destruct (x =? y).
+    + inversion H.
+    + reflexivity.
+  - simpl. simpl in H. apply in_list_app1 in H. destruct H as [H1 H2].
+    rewrite IHM. rewrite IHN. reflexivity. apply H2. apply H1.
+  - simpl. destruct (x =? y) eqn:eqxy.
+    + reflexivity.
+    + simpl in H. assert (cont : substitution M P x = M).
+      * apply IHM. apply in_list_remove with (y := y). apply H. apply Nat.eqb_neq. apply eqxy.
+      * rewrite cont. reflexivity.
+Qed.
+
+
+Lemma substitution_comm : forall (x y : var) (M N N' : lambda_term),
+      x <> y -> in_list (fvL N) y = false -> in_list (fvL N') x = false ->
+      substitution (substitution M N x) N' y = substitution (substitution M N' y) N x.
+Proof. intros *. intros neqxy HN HN'. induction M as [z | Mfun IHfun Marg IHarg | z M' IHabs].
+  - simpl. destruct (x =? z) eqn:eqxz.
+    + destruct (y =? z) eqn:eqyz.
+      * exfalso. apply neqxy. apply Nat.eqb_eq in eqxz. apply Nat.eqb_eq in eqyz.
+        rewrite eqxz. rewrite eqyz. reflexivity.
+      * intros. simpl. rewrite eqxz. rewrite substitution_fresh_l. reflexivity.
+        apply HN.
+    + destruct (y =? z) eqn:eqyz.
+      * simpl. rewrite eqyz. rewrite substitution_fresh_l. reflexivity.
+        apply HN'.
+      * simpl. rewrite eqxz. rewrite eqyz. reflexivity.
+  - simpl. rewrite IHfun. rewrite IHarg. reflexivity.
+  - destruct (x =? z) eqn:eqxz.
+    + destruct (y =? z) eqn:eqyz.
+      * simpl. rewrite eqxz. rewrite eqyz. simpl. rewrite eqxz. rewrite eqyz. reflexivity.
+      * simpl. rewrite eqxz. rewrite eqyz. simpl. rewrite eqxz. rewrite eqyz. reflexivity.
+    + destruct (y =? z) eqn:eqyz.
+      * simpl. rewrite eqxz. rewrite eqyz. simpl. rewrite eqxz. rewrite eqyz. reflexivity.
+      * simpl. rewrite eqxz. rewrite eqyz. simpl. rewrite eqxz. rewrite eqyz. rewrite IHabs.
+        reflexivity.
+Qed.
+
 Lemma church_plus_is_plus : forall (n m : nat) (s z : var),
+      s <> 0 -> z <> 1 -> s <> z ->
       (substitution (substitution (church_int_free m) (Lvar s) 1)
       ((substitution (substitution (church_int_free n) (Lvar s) 1) (Lvar z) 0)) 0) ->b*
        substitution (substitution (church_int_free (n + m)) (Lvar z) 0) (Lvar s) 1.
-Proof. Admitted.
+Proof. intros. induction m as [|m' IHm'].
+  - simpl. rewrite <- plus_n_O.
+           assert (substitution (substitution (church_int_free n) (Lvar s) 1) (Lvar z) 0 =
+                   substitution (substitution (church_int_free n) (Lvar z) 0) (Lvar s) 1).
+    {
+      apply substitution_comm.
+      - intro contra. discriminate contra.
+      - simpl. destruct s as [|s'].
+        + exfalso. apply H. reflexivity.
+        + reflexivity.
+      - simpl. destruct z as [|z'].
+        + reflexivity.
+        + destruct z' as [|z''].
+          * exfalso. apply H0. reflexivity.
+          * reflexivity.
+    }
+    rewrite H2. apply refl.
+  - simpl. destruct s as [|s'].
+    + exfalso. apply H; reflexivity.
+    + rewrite <- plus_n_Sm. remember (church_int_free n) as churchN.
+      remember (church_int_free m') as churchM'. simpl. remember (church_int_free (n+m')) as churchNpM'.
+      apply bredstar_contextual_appl.
+      * apply refl.
+      * apply IHm'.
+Qed.
 
 
 

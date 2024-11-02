@@ -8,6 +8,7 @@ Inductive lambda_term : Type :=
   | Lappl (f : lambda_term) (arg : lambda_term)
   | Labs (x : var) (M : lambda_term).
 
+(* capture-avoiding substitution *)
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
   | Lvar y => if x =? y then N else Lvar y
   | Labs y M' => if x =? y then Labs y M' else Labs y (substitution M' N x)
@@ -15,7 +16,7 @@ Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M wit
 end.
 
 Inductive beta_reduction : lambda_term -> lambda_term -> Prop :=
-  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x M)
+  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x N)
   | contextual_function : forall (M N M' : lambda_term), beta_reduction M M' -> beta_reduction (Lappl M N) (Lappl M' N)
   | contextual_argument : forall (M N N' : lambda_term), beta_reduction N N' -> beta_reduction (Lappl M N) (Lappl M N')
   | redex_contraction : forall (x : var) (M N : lambda_term), beta_reduction (Lappl (Labs x M) N) (substitution M N x)
@@ -37,14 +38,8 @@ Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
 Notation "M [ N / x ]" := (substitution M N x) (at level 40).
 Notation "M ml[ N / x ]" := (ml_substitution M N x) (at level 40).
 
-Lemma bredstar_cont_lambda : forall (x : var) (M N : lambda_term), M ->b* N -> (Labs x M) ->b* (Labs x N).
-Proof. Admitted.
-
-Lemma bredstar_cont_appl : forall (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
-Proof. Admitted.
-
 Lemma bredstar_cont_subst : forall (x : var) (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> substitution M N x ->b* substitution M' N' x.
-Proof. Admitted.
+Proof. Admitted. (*not sure if that will be useful*)
 (* fresh variables *)
 
 Fixpoint fvL (M : lambda_term) : list var := match M with
@@ -54,11 +49,25 @@ Fixpoint fvL (M : lambda_term) : list var := match M with
 end.
 
 Inductive alpha_equivalence : lambda_term -> lambda_term -> Prop :=
+  | alpha_context_var : forall (x : var), alpha_equivalence (Lvar x) (Lvar x)
   | alpha_context_labs : forall (M : lambda_term) (N : lambda_term) (x:var), alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs x N)
-  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term), alpha_equivalence (Lappl M N) (Lappl M' N')
-  | alpha_rename : forall (M N : lambda_term) (x y:var), ~(In y (fvL N)) -> alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs y (substitution N (Lvar y) x)).
+  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term),
+                                alpha_equivalence M M' -> alpha_equivalence N N' ->
+                                                              alpha_equivalence (Lappl M N) (Lappl M' N')
+  | alpha_rename : forall (M N new_N : lambda_term) (x new_x:var), ~(In new_x (fvL N)) -> alpha_equivalence M N ->
+                          new_N = substitution N (Lvar new_x) x  -> alpha_equivalence (Labs x M) (Labs new_x new_N).
 
 Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
+
+Lemma alpha_refl : forall (M : lambda_term), M ~a M.
+Proof. induction M.
+  - apply alpha_context_var.
+  - apply alpha_context_appl. apply IHM1. apply IHM2.
+  - apply alpha_context_labs. apply IHM.
+Qed.
+
+Lemma alpha_sym : forall (M N : lambda_term), M ~a N -> N ~a M.
+Proof. Admitted. (*not sure if that will be useful*)
 
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
@@ -120,12 +129,11 @@ Definition church_pred (N : lambda_term) : lambda_term :=
                                (church_succ (church_snd (Lvar 0)))))))
        (church_pair (church_int 0) (church_int 0))).
 
-Definition church_plus (M N : lambda_term) : lambda_term :=
-let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh (x::((fvL M) ++ (fvL N))) in
-                               Labs x (Labs y (
-                                                 Lappl (Lappl N (Lvar y))
-                                                       (Lappl (Lappl M (Lvar y))
-                                                              (Lvar x)))
+Definition church_plus (M N : lambda_term) (s z : var) : lambda_term :=
+                               Labs s (Labs z (
+                                                 Lappl (Lappl N (Lvar s))
+                                                       (Lappl (Lappl M (Lvar s))
+                                                              (Lvar z)))
                                               ).
 Definition church_minus (M N : lambda_term) : lambda_term :=
       Lappl (Lappl M (Labs 0 (church_pred (Lvar 0)))) N.
@@ -146,6 +154,14 @@ Definition turing_fixpoint_half : lambda_term :=
 Definition turing_fixpoint : lambda_term := Lappl turing_fixpoint_half turing_fixpoint_half.
 
 Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (Lappl (turing_fixpoint) M).
+
+(** lemmas about constuctors *)
+
+Lemma church_plus_is_plus : forall (n m : nat) (s z : var),
+      (substitution (substitution (church_int_free m) (Lvar s) 1)
+      ((substitution (substitution (church_int_free n) (Lvar s) 1) (Lvar z) 0)) 0) ->b*
+       substitution (substitution (church_int_free (n + m)) (Lvar z) 0) (Lvar s) 1.
+Proof. Admitted.
 
 
 

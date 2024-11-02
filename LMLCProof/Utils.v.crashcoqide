@@ -83,10 +83,6 @@ Proof.
     + rewrite <- minus_n_Sm_p.  apply IHa.
 Qed.
 
-
-Lemma find_opt_S : forall {X : Type} (l : list X) (n : nat), find_opt l (S n) <> None -> find_opt l n <> None.
-Proof. Admitted.
-
 Lemma find_opt_app1 : forall {X : Type} (l1 l2 : list X) (n : nat),
   find_opt l1 n <> None -> find_opt (l1++l2) n = find_opt l1 n.
 Proof. intros *. generalize dependent n. induction l1 as [|h t IHt].
@@ -149,16 +145,31 @@ Qed.
 
 Search (S _ <= S _).
 
-Lemma find_opt_length_2 : forall {X : Type} (l : list X) (n : nat), find_opt l n <> None -> n <= length l.
+Lemma find_opt_length_2''' : forall {X : Type} (l : list X) (n : nat), find_opt l n <> None -> n < length l.
 Proof. 
   intros X l.
   induction l as [|h tl IHtl].
   - intros n H. destruct n.
-    + contradiction.
-    + contradiction.
+    + simpl in H. exfalso. apply H. reflexivity.
+    + simpl in H. exfalso. apply H. reflexivity.
   - simpl. intros n. destruct n.
-    + intros H. apply all_positive_more_than_zero.
+    + intros H. apply Nat.lt_0_succ.
     + intros H. apply IHtl in H. apply le_n_S. apply H.
+Qed.
+
+Lemma find_opt_length_2'' : forall {X : Type} (l : list X) (n : nat), find_opt l n <> None -> n <= length l.
+Proof. intros. apply Nat.lt_le_incl. apply find_opt_length_2'''. apply H. Qed.
+
+Lemma find_opt_length_3 : forall {X : Type} (l : list X) (n : nat), n < length l -> find_opt l n <> None.
+Proof. intros. unfold not. generalize dependent n. induction l as [|h t].
+  - intros. simpl in H. inversion H.
+  - intros *. intro H. simpl. simpl in H. destruct n as [|n'].
+    + intro G. inversion G.
+    + apply IHt. apply Lt.lt_S_n. apply H.
+Qed.
+
+Lemma find_opt_S : forall {X : Type} (l : list X) (n : nat), find_opt l (S n) <> None -> find_opt l n <> None.
+Proof. intros. apply find_opt_length_2'' in H. Search find_opt length. apply find_opt_length_3. unfold lt. apply H.
 Qed.
 
 Lemma find_opt_length_2' : forall {X : Type} (l : list X) (n : nat), find_opt l n = None -> length l <= n.
@@ -248,10 +259,28 @@ Proof. intro. induction l1 as [|h1 t1].
     + apply IHt1. apply H.
 Qed.
 
+Lemma in_list_neq : forall (x y : nat) (l1 l2 : list nat), in_list (l1++y::l2) x = true -> x <> y -> in_list (l1++l2) x = true.
+Proof. intros. induction l1 as [|h1 t1].
+  - simpl. simpl in H. apply Nat.eqb_neq in H0. rewrite H0 in H. apply H.
+  - simpl. simpl in H. destruct (x =? h1).
+    + reflexivity.
+    + apply IHt1. apply H.
+Qed.
+
 Lemma in_list_app_comm : forall (x : nat) (l1 l2 : list nat), in_list (l1++l2) x = true <-> in_list (l2++l1) x = true.
-Proof. intros. induction l1.
-  - simpl. rewrite List.app_nil_r. reflexivity.
-  - simpl. Admitted.
+Proof. assert (one_dir : forall (x : nat) (l1 l2 : list nat), in_list (l1++l2) x = true -> in_list (l2++l1) x = true).
+      { intros *. intro H. generalize dependent l1. induction l2 as [|h2 t2 IHt2].
+        + intros. rewrite app_nil_r in H. apply H.
+        + intros. simpl. destruct (x =? h2) eqn:eqxh2.
+          * reflexivity.
+          * apply IHt2. apply in_list_neq with (y := h2).
+            -- apply H.
+            -- apply Nat.eqb_neq. apply eqxh2.
+      }
+      intros. split.
+  - apply one_dir.
+  - apply one_dir.
+Qed.
 
 Lemma not_in_neq : forall (x : nat) (l : list nat), in_list l x = false <-> (forall y, in_list l y = true -> y <> x).
 Proof. intros. split.
@@ -270,5 +299,17 @@ Proof. intros. split.
       * apply Nat.eqb_eq in eqxh. exfalso. symmetry in eqxh. generalize dependent eqxh. fold (not (x = h)). apply H.
         simpl. rewrite Nat.eqb_refl. reflexivity.
       * apply IHt. intros. apply H. simpl. destruct (y =? h) eqn:eqyh. reflexivity. apply H0.
+Qed.
+
+Lemma in_list_remove : forall (x y : nat) (l : list nat), in_list (remove_nat l y) x = false -> x <> y
+                                                                        -> in_list l x = false.
+Proof. intros. induction l as [|h t IHt].
+  - reflexivity.
+  - simpl. simpl in H. destruct (y =? h) eqn:eqyh.
+    + apply Nat.eqb_eq in eqyh. rewrite <- eqyh. apply Nat.eqb_neq in H0. rewrite H0. apply IHt.
+      apply H.
+    + destruct (x =? h) eqn:eqxh.
+      * simpl in H. rewrite eqxh in H. apply H.
+      * apply IHt. simpl in H. rewrite eqxh in H. apply H.
 Qed.
 

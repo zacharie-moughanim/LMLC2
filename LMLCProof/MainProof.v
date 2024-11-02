@@ -70,61 +70,6 @@ Example H3Modif : forall (n0 : nat) (h0 : lambda_term) (ht0 : lambda_term) (tlt0
      end.
 Proof. intros *. intro H3. apply H3. Qed.
 
-Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
-Proof. unfold transitive. intros *. unfold beta_star. apply trans. Qed.
-
-Lemma bredstar_contextual_abs :
-  forall (x : var) (M M': lambda_term), M ->b* M' -> Labs x M ->b* Labs x M'.
-Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep].
-  - apply refl.
-  - apply trans with (y := Labs x M2).
-    + apply IHred1.
-    + apply IHred2.
-  - apply onestep. apply contextual_lambda with (x := x) in Honestep. apply Honestep.
-Qed.
-
-Lemma bredstar_contextual_appl_function :
-  forall (M M' N : lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
-Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M M' Honestep].
-  - apply refl.
-  - apply trans with (y := Lappl M2 N).
-    + apply IHred1.
-    + apply IHred2.
-  - apply onestep. apply contextual_function. apply Honestep.
-Qed.
-
-Lemma bredstar_contextual_appl_argument :
-  forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
-Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHred2|N N' Honestep].
-  - apply refl.
-  - apply trans with (y := Lappl M N2).
-    + apply IHred1.
-    + apply IHred2.
-  - apply onestep. apply contextual_argument. apply Honestep.
-Qed.
-
-Lemma bredstar_contextual_appl :
-  forall (M M' N N': lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
-Proof. intros *. intros redlhs redrhs. apply trans with (y := Lappl M' N).
-  - apply bredstar_contextual_appl_function. apply redlhs.
-  - apply bredstar_contextual_appl_argument. apply redrhs.
-Qed.
-
-Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
-Proof. intros M P x H. induction M as [y | M IHM N IHN | y M IHM].
-  - simpl. simpl in H. destruct (x =? y).
-    + inversion H.
-    + reflexivity.
-  - simpl. simpl in H. apply in_list_app1 in H. destruct H as [H1 H2].
-    rewrite IHM. rewrite IHN. reflexivity. apply H2. apply H1.
-  - simpl. destruct (x =? y) eqn:eqxy.
-    + reflexivity.
-    + simpl in H. assert (cont : substitution M P x = M).
-      * apply IHM. apply in_list_remove with (y := y). apply H. apply Nat.eqb_neq. apply eqxy.
-      * rewrite cont. reflexivity.
-Qed.
-
-
 Lemma beta_alpha : forall (M M' N N' : lambda_term), M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
 Proof. intros. apply alpha_quot in H0. apply alpha_quot in H1. rewrite <- H0. rewrite <- H1.
   apply H. Qed.
@@ -615,7 +560,14 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
             rewrite subst_lambda_cont.
            -- apply trans with (y := substitution (substitution (church_int_free m) (Lvar s) 1) churchN 0).
               ** apply onestep. apply redex_contraction.
-              ** rewrite HeqchurchN. rewrite HeqchurchNplusM. apply church_plus_is_plus.
+              ** rewrite HeqchurchN. rewrite HeqchurchNplusM.
+                 generalize dependent Heqs. generalize dependent Heqz. unfold fresh. unfold fresh_aux.
+                 intro Heqz. intro Heqs. assert (lt01 : 1 <=? 0 = false).
+                 { apply Nat.leb_nle. intro contra. inversion contra. } rewrite Heqs in Heqz.
+                 rewrite lt01 in Heqz. apply church_plus_is_plus.
+                 ++ rewrite Heqs. intro contra. discriminate contra.
+                 ++ rewrite Heqz. intro contra; discriminate contra.
+                 ++ rewrite Heqs. rewrite Heqz. intro contra; discriminate contra.
            -- intro contra. discriminate contra.
           }
         -- generalize dependent Heqs. generalize dependent Heqz. unfold fresh. unfold fresh_aux.
