@@ -85,6 +85,13 @@ Proof. assert (forall l  y,  in_list l y = true -> y < (fresh l)). { intros l y 
        apply Le.le_refl.
 Qed.
 
+Lemma fresh_spec_2 : forall (l : list nat), in_list l (fresh l) = false.
+Proof. intros. destruct (in_list l (fresh l)) eqn:eq.
+  - unfold fresh in eq. apply fresh_aux_spec2 with (n := 0) in eq.
+    exfalso. apply Nat.lt_irrefl in eq. apply eq.
+  - reflexivity.
+Qed.
+
 (* Basic terms constructors *)
 
 (* Boolean *)
