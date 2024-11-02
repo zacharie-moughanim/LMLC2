@@ -170,6 +170,15 @@ Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (L
 
 (** lemmas about constuctors *)
 
+(** substitution lemmas *)
+Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
+                                    substitution (Labs x M) N y = Labs x (substitution M N y).
+Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
+
+Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
+                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
+Proof. reflexivity. Qed.
+
 (** beta-reduction properties *)
 
 Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
@@ -284,5 +293,22 @@ Proof. intros. induction m as [|m' IHm'].
       * apply IHm'.
 Qed.
 
+Lemma church_int_Sn : forall (n : nat), church_int_free (S n) = Lappl (Lvar 1) (church_int_free n).
+Proof. reflexivity. Qed.
 
-
+Lemma church_gtz_Sn : forall (n : nat),
+      (substitution (substitution (church_int_free (S n)) (Labs 0 church_true) 1) church_false 0) ->b* church_true.
+Proof. intro n. induction n as [|n'].
+  - simpl. apply trans with (y := substitution church_true church_false 0).
+    + apply onestep; apply redex_contraction.
+    + simpl. unfold church_true. apply refl.
+  - rewrite church_int_Sn. rewrite subst_appl_cont. rewrite subst_appl_cont.
+    apply trans with (y := Lappl (substitution (substitution (Lvar 1) (Labs 0 church_true) 1) church_false 0)
+                                  church_true).
+    + apply bredstar_contextual_appl.
+      * apply refl.
+      * apply IHn'.
+    + simpl. apply trans with (y := substitution church_true church_true 0).
+      * apply onestep; apply redex_contraction.
+      * simpl. apply refl.
+Qed.

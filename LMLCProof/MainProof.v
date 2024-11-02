@@ -14,7 +14,27 @@ From LMLCProof Require Import Utils Source Object Transpiler.
       if we use the fact that In is decidable on list of nat
     - As mush as possible, we authorise to admit. a case in the main proof only for goals
       of the form [~(In x l)] or [in_list l x = false], when it seems clear from the specification
-      of fresh variables that these are true *)
+      of fresh variables that these are true
+
+  CASES LEFT TO PROVE :
+  - _In the main proof_
+    * contextual cases for minus and times (these will surely resemble the contextual case for plus)
+    * minus
+    * times
+    * fold induction step
+  - _In the proof of substitution_ (necessary to the case of a redex in the main proof)
+    * fixfun
+    * plus
+    * minus
+    * times
+    * gtz
+    * if then else
+    * cons
+    * fold_right
+    * pair
+    * fst
+    * snd
+*)
 
 
 (** Beta-Reduction properties *)
@@ -88,14 +108,6 @@ Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution
     + reflexivity.
 Qed.
 
-Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
-                                    substitution (Labs x M) N y = Labs x (substitution M N y).
-Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
-
-Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
-                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
-Proof. reflexivity. Qed.
-
 (* MAIN PROOF *)
 Lemma lmlc_substitution : forall (M N : ml_term) (x : var),
                           lmlc (ml_substitution M N x) = substitution (lmlc M) (lmlc N) x.
@@ -133,7 +145,7 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
           - admit.
         }
 (* M = 0 < M *)
-  - simpl. symmetry. rewrite <- IHgtz. symmetry. unfold church_gtz. unfold church_true. unfold church_false. admit.
+  - admit.
 (* M = true *)
   - intros. simpl. destruct b.
     + unfold church_true. destruct (x =? 0) eqn:eqx0.
@@ -161,11 +173,7 @@ Proof. induction M as [ x | M1 IHappl1 M2 IHappl2 | x M' IHfunbody| f x M' IHfix
 (* M = <P1,P2> *)
   - admit.
 (* M = fst P *)
-  - intros. simpl. rewrite IHfst. destruct (x =? 1) eqn:eqx1.
-    + admit.
-    + destruct (x =? 2) eqn:eqx2.
-      * admit.
-      * admit.
+  - admit.
 (* M = snd P *)
   - admit.
 Admitted.
@@ -266,7 +274,12 @@ induction H as
         assert (y =? new_x = false). { admit. } assert (y' =? new_x = false). { admit. }
         rewrite H1. rewrite H2. { apply bredstar_contextual_appl.
           - apply bredstar_contextual_appl.
-            + admit.
+            + rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+              rewrite substitution_fresh_l. rewrite substitution_fresh_l. apply refl.
+              * admit.
+              * admit.
+              * admit.
+              * admit.
             + apply refl.
           - apply bredstar_contextual_appl.
             + apply bredstar_contextual_appl.
@@ -580,7 +593,14 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
   - admit.
 (* greather than zero case *)
   - destruct (0 <? n) eqn:ineqn.
-    + simpl. apply Nat.ltb_lt in ineqn. admit.
+    + simpl. apply Nat.ltb_lt in ineqn. apply Nat.succ_pred_pos in ineqn. remember (Nat.pred n) as n'.
+      unfold church_gtz. unfold church_int.
+      apply trans with (y := Lappl (substitution (Labs 0 (church_int_free n)) (Labs 0 church_true) 1) church_false).
+      * apply bredstar_contextual_appl_function. apply onestep; apply redex_contraction.
+      * simpl.
+        apply trans with (y := substitution (substitution (church_int_free n) (Labs 0 church_true) 1) church_false 0).
+        -- apply onestep; apply redex_contraction.
+        -- rewrite <- ineqn. apply church_gtz_Sn.
     + apply Nat.ltb_nlt in ineqn. apply Nat.nlt_ge in ineqn. inversion ineqn. simpl. unfold church_gtz.
       unfold church_int. unfold church_int_free. apply trans with (y := Lappl (Labs 0 (Lvar 0)) (church_false)).
       * assert ((Labs 0 (Lvar 0)) = substitution (Labs 0 (Lvar 0)) (Labs 0 church_true) 1). { reflexivity. }
