@@ -1,4 +1,4 @@
-DIGEST 9f7885fcf05a5a473c2f5a8411d3ea76
+DIGEST 8a326472b0671c2dda439f54aae4a11c
 FLMLCProof.Transpiler
 R30:34 LMLCProof.Utils <> <> lib
 R36:41 LMLCProof.Source <> <> lib
@@ -89,13 +89,13 @@ R818:822 LMLCProof.Object <> Lappl constr
 R854:857 LMLCProof.Object <> Lvar constr
 R859:862 LMLCProof.Transpiler <> init:7 var
 R825:829 LMLCProof.Object <> Lappl constr
-R842:845 LMLCProof.Object <> Lvar constr
-R847:849 LMLCProof.Transpiler <> foo:6 var
-R832:835 LMLCProof.Transpiler <> lmlc:2 def
+R843:846 LMLCProof.Transpiler <> lmlc:2 def
+R832:835 LMLCProof.Object <> Lvar constr
+R837:839 LMLCProof.Transpiler <> foo:6 var
 R789:793 LMLCProof.Object <> Lappl constr
-R807:810 LMLCProof.Transpiler <> lmlc:2 def
-R796:799 LMLCProof.Object <> Lvar constr
-R801:803 LMLCProof.Transpiler <> foo:6 var
+R806:809 LMLCProof.Object <> Lvar constr
+R811:813 LMLCProof.Transpiler <> foo:6 var
+R796:799 LMLCProof.Transpiler <> lmlc:2 def
 R776:779 LMLCProof.Transpiler <> init:7 var
 R766:768 LMLCProof.Transpiler <> foo:6 var
 R872:881 LMLCProof.Source <> Fold_right constr

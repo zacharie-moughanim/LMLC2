@@ -21,7 +21,6 @@ From LMLCProof Require Import Utils Source Object Transpiler.
     * contextual cases for minus and times (these will surely resemble the contextual case for plus)
     * minus
     * times
-    * fold induction step
   - _In the proof of substitution_ (necessary to the case of a redex in the main proof)
     * fixfun
     * plus
@@ -390,10 +389,12 @@ induction H as
         assert (v =? new_v0 = false). { admit. } assert (v' =? new_v0 = false). { admit. }
         rewrite H1. rewrite H2. apply bredstar_contextual_appl.
         -- apply bredstar_contextual_appl.
-          ++ apply refl.
           ++ rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
-              rewrite substitution_fresh_l. apply IHcons_contextual. admit. admit. admit. admit.
-        -- admit.
+              rewrite substitution_fresh_l. apply refl. admit. admit. admit. admit.
+          ++ apply refl.
+        -- apply bredstar_contextual_appl_function. apply bredstar_contextual_appl_argument.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           rewrite substitution_fresh_l. apply IHcons_contextual. admit. admit. admit. admit.
       * admit.
       * admit.
   (* cons - tail *)
@@ -413,21 +414,12 @@ induction H as
       * apply bredstar_contextual_abs. simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
         assert (v =? new_v0 = false). { admit. } assert (v' =? new_v0 = false). { admit. }
         rewrite H1. rewrite H2. apply bredstar_contextual_appl.
-        -- apply bredstar_contextual_appl.
-          ++ apply refl.
-          ++ rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
-             rewrite substitution_fresh_l. apply refl. admit. admit. admit. admit.
-        -- rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
-           rewrite substitution_fresh_l. { apply bredstar_contextual_appl.
-            - apply bredstar_contextual_appl.
-              + apply IHcons_contextual.
-              + apply refl.
-            - apply refl.
-          }
-          admit.
-          admit.
-          admit.
-          admit.
+        -- apply bredstar_contextual_appl_function.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           rewrite substitution_fresh_l. apply IHcons_contextual. admit. admit. admit. admit.
+        -- apply bredstar_contextual_appl_function. apply bredstar_contextual_appl_argument.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           rewrite substitution_fresh_l. apply refl. admit. admit. admit. admit.
       * admit.
       * admit.
   (* fold - list *)
@@ -620,7 +612,26 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
       * apply refl.
     + apply onestep. apply redex_contraction.
 (* fold induction step case *)
-  - admit.
+  - simpl. remember (fresh (fvML HD ++ fvML TL)) as op. remember (fresh [op]) as init.
+    apply trans with (y := Lappl
+                          (substitution
+                             (
+                                (Labs init
+                                   (Lappl (Lappl (lmlc TL) (Lvar op)) (Lappl (Lappl (Lvar op) (lmlc HD)) (Lvar init)))))
+                             (lmlc FOO) op) (lmlc INIT)).
+    + apply bredstar_contextual_appl_function. apply onestep. apply redex_contraction.
+    + simpl. assert (op =? init = false). { admit. } rewrite H. rewrite Nat.eqb_refl.
+      rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+      apply trans with (y := substitution (
+        (Lappl (Lappl (lmlc TL) (lmlc FOO)) (Lappl (Lappl (lmlc FOO) (lmlc HD)) (Lvar init)))) (lmlc INIT) init).
+      * apply onestep. apply redex_contraction.
+      * simpl. rewrite Nat.eqb_refl. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+        rewrite substitution_fresh_l. apply refl.
+      admit.
+      admit.
+      admit.
+      * admit.
+      * admit.
 (* fst case *)
   - simpl. remember (fresh (fvML P1 ++ fvML P2)) as z. remember (fresh [z]) as z'.
     apply trans with (y := (substitution (Lappl (Lappl (Lvar z) (lmlc P1)) (lmlc P2)) (Labs z (Labs z' (Lvar z))) z)).
