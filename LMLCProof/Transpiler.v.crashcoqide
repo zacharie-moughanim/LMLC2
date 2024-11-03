@@ -14,7 +14,7 @@ Fixpoint lmlc (M : ml_term) : lambda_term := match M with
   | If C T E => church_if (lmlc C) (lmlc T) (lmlc E)
   | Cons HD TL => let foo := fresh ((fvML HD) ++ (fvML TL)) in
                   let init := fresh [foo] in
-    Labs foo (Labs init (Lappl (Lappl (Lvar foo) (lmlc HD)) (Lappl (Lappl (lmlc TL) (Lvar foo)) (Lvar init))))
+    Labs foo (Labs init (Lappl (Lappl (lmlc TL) (Lvar foo)) (Lappl (Lappl (Lvar foo) (lmlc HD)) (Lvar init))))
   | Fold_right lst foo acc => Lappl (Lappl (lmlc lst) (lmlc foo)) (lmlc acc)
   | Nil => Labs 0 (Labs 1 (Lvar 1))
   | Pair P1 P2 => let z := fresh (fvML P1 ++ fvML P2) in Labs z (Lappl (Lappl (Lvar z) (lmlc P1)) (lmlc P2))

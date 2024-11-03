@@ -18,7 +18,6 @@ From LMLCProof Require Import Utils Source Object Transpiler.
 
   CASES LEFT TO PROVE :
   - _In the main proof_
-    * contextual cases for minus and times (these will surely resemble the contextual case for plus)
     * minus
     * times
   - _In the proof of substitution_ (necessary to the case of a redex in the main proof)
@@ -342,13 +341,77 @@ induction H as
             + apply refl.
         }
   (* minus - lhs *)
-  - admit.
+  - simpl. unfold church_minus. apply bredstar_contextual_appl_function. apply bredstar_contextual_appl_function.
+    apply IHminus_contextual.
   (* minus - rhs *)
-  - admit.
+  - simpl. unfold church_minus. apply bredstar_contextual_appl_argument.
+    apply IHminus_contextual.
   (* times - lhs *)
-  - admit.
+  - simpl. unfold church_times. remember (fresh (fvL (lmlc M) ++ fvL (lmlc N))) as x.
+    remember (fresh [x]) as y. remember (fresh (fvL (lmlc M') ++ fvL (lmlc N))) as x'.
+    remember (fresh [x']) as y'. remember (fresh (fvL (lmlc M) ++ (fvL (lmlc M') ++ fvL (lmlc N)))) as x''.
+    apply beta_alpha_toplvl with (z := x'').
+    + admit.
+    + admit.
+    + simpl. apply bredstar_contextual_abs. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+      assert (x =? y = false). { admit. }
+      assert (x' =? y' = false). { admit. }
+      rewrite H. rewrite H0. clear H. clear H0.
+      rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+      rewrite substitution_fresh_l.
+      * remember (fresh [x'']) as y''. apply beta_alpha_toplvl with (z := y'').
+        -- admit.
+        -- admit.
+        -- simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+           assert (y =? x'' = false). { admit. }
+           assert (y' =? x'' = false). { admit. }
+           rewrite H. rewrite H0. clear H. clear H0.
+           apply bredstar_contextual_abs.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           ++ apply bredstar_contextual_appl_argument. apply bredstar_contextual_appl_function.
+              apply bredstar_contextual_appl_function. apply IHtimes_contextual.
+           ++ admit.
+           ++ admit.
+           ++ admit.
+           ++ admit.
+      * admit.
+      * admit.
+      * admit.
+      * admit.
   (* times - rhs *)
-  - admit.
+  - simpl. unfold church_times. remember (fresh (fvL (lmlc M) ++ fvL (lmlc N))) as x.
+    remember (fresh [x]) as y. remember (fresh (fvL (lmlc M) ++ fvL (lmlc N'))) as x'.
+    remember (fresh [x']) as y'. remember (fresh (fvL (lmlc M) ++ fvL (lmlc N) ++ (fvL (lmlc N')))) as x''.
+    apply beta_alpha_toplvl with (z := x'').
+    + admit.
+    + admit.
+    + simpl. apply bredstar_contextual_abs. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+      assert (x =? y = false). { admit. }
+      assert (x' =? y' = false). { admit. }
+      rewrite H. rewrite H0. clear H. clear H0.
+      rewrite substitution_fresh_l. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+      rewrite substitution_fresh_l.
+      * remember (fresh [x'']) as y''. apply beta_alpha_toplvl with (z := y'').
+        -- admit.
+        -- admit.
+        -- simpl. rewrite Nat.eqb_refl. rewrite Nat.eqb_refl.
+           assert (y =? x'' = false). { admit. }
+           assert (y' =? x'' = false). { admit. }
+           rewrite H. rewrite H0. clear H. clear H0.
+           apply bredstar_contextual_abs.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           rewrite substitution_fresh_l. rewrite substitution_fresh_l.
+           ++ apply bredstar_contextual_appl_function. apply bredstar_contextual_appl_function.
+              apply IHtimes_contextual.
+           ++ admit.
+           ++ admit.
+           ++ admit.
+           ++ admit.
+      * admit.
+      * admit.
+      * admit.
+      * admit.
   (* gtz *)
   - simpl. unfold church_gtz. apply bredstar_contextual_appl.
     + apply bredstar_contextual_appl.
@@ -634,20 +697,20 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
         + apply alpha_rename with (N := (Labs init
               (Lappl (Lappl (lmlc TL) (Lvar op)) (Lappl (Lappl (Lvar op) (lmlc HD)) (Lvar init))))).
           * admit.
-          * apply alpha_eq. reflexivity.
+          * apply alpha_refl.
           * simpl. assert (op =? init = false). { admit. }
             rewrite H. clear H. rewrite Nat.eqb_refl. rewrite substitution_fresh_l. rewrite substitution_fresh_l. symmetry.
             apply alpha_quot. apply alpha_rename with (N := (Lappl (Lappl (lmlc TL) (Lvar op')) (Lappl (Lappl (Lvar op') (lmlc HD)) (Lvar init)))).
             -- simpl. admit.
-            -- apply alpha_eq. reflexivity.
+            -- apply alpha_refl.
             -- simpl. rewrite Nat.eqb_refl. assert (init =? op' = false). { admit. } rewrite H. clear H.
                rewrite substitution_fresh_l. rewrite substitution_fresh_l. reflexivity.
                admit.
                admit.
             -- admit.
             -- admit.
-        + apply alpha_eq. reflexivity.
-      - apply alpha_eq. reflexivity.
+        + apply alpha_refl.
+      - apply alpha_refl.
     } rewrite <- H. clear H. clear Heqinit'. clear Heqop'. clear op'. clear init'.
     apply trans with (y := Lappl
                           (substitution
