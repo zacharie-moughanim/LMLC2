@@ -77,6 +77,9 @@ Proof. Admitted. (*not sure if that will be useful*)
 
 Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
 
+Lemma alpha_eq : forall (M N : lambda_term), M = N -> M ~a N.
+Proof. Admitted.
+
 Lemma fresh_of_fresh_is_fresh : forall (x : nat) (l : list nat), x = fresh l -> in_list l (fresh [x]) = false.
 Proof. assert (forall l  y,  in_list l y = true -> y < (fresh l)). { intros l y G. unfold fresh. apply fresh_aux_spec2. apply G. }
        assert (forall l x y, in_list l y = true -> fresh l <= x -> y < x). { intros. apply Lt.lt_le_trans with (m := fresh l). apply H. apply H0. apply H1. }

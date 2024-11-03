@@ -612,7 +612,43 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
       * apply refl.
     + apply onestep. apply redex_contraction.
 (* fold induction step case *)
-  - simpl. remember (fresh (fvML HD ++ fvML TL)) as op. remember (fresh [op]) as init.
+  - simpl. remember (fresh (fvML HD ++ fvML TL)) as op'. remember (fresh [op']) as init'.
+    remember (fresh (fvML HD ++ fvML TL ++ fvML FOO)) as op. remember (fresh [op]) as init.
+    assert (  Lappl
+                (Lappl
+                   (Labs op
+                      (Labs init
+                         (Lappl (Lappl (lmlc TL) (Lvar op))
+                            (Lappl (Lappl (Lvar op) (lmlc HD)) (Lvar init))))) 
+                   (lmlc FOO)) (lmlc INIT) =
+               Lappl
+              (Lappl
+                 (Labs op'
+                    (Labs init'
+                       (Lappl (Lappl (lmlc TL) (Lvar op'))
+                          (Lappl (Lappl (Lvar op') (lmlc HD)) (Lvar init'))))) 
+                 (lmlc FOO)) (lmlc INIT)).
+    {
+      apply alpha_quot. apply alpha_context_appl.
+      - apply alpha_context_appl.
+        + apply alpha_rename with (N := (Labs init
+              (Lappl (Lappl (lmlc TL) (Lvar op)) (Lappl (Lappl (Lvar op) (lmlc HD)) (Lvar init))))).
+          * admit.
+          * apply alpha_eq. reflexivity.
+          * simpl. assert (op =? init = false). { admit. }
+            rewrite H. clear H. rewrite Nat.eqb_refl. rewrite substitution_fresh_l. rewrite substitution_fresh_l. symmetry.
+            apply alpha_quot. apply alpha_rename with (N := (Lappl (Lappl (lmlc TL) (Lvar op')) (Lappl (Lappl (Lvar op') (lmlc HD)) (Lvar init)))).
+            -- simpl. admit.
+            -- apply alpha_eq. reflexivity.
+            -- simpl. rewrite Nat.eqb_refl. assert (init =? op' = false). { admit. } rewrite H. clear H.
+               rewrite substitution_fresh_l. rewrite substitution_fresh_l. reflexivity.
+               admit.
+               admit.
+            -- admit.
+            -- admit.
+        + apply alpha_eq. reflexivity.
+      - apply alpha_eq. reflexivity.
+    } rewrite <- H. clear H. clear Heqinit'. clear Heqop'. clear op'. clear init'.
     apply trans with (y := Lappl
                           (substitution
                              (
@@ -620,16 +656,19 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
                                    (Lappl (Lappl (lmlc TL) (Lvar op)) (Lappl (Lappl (Lvar op) (lmlc HD)) (Lvar init)))))
                              (lmlc FOO) op) (lmlc INIT)).
     + apply bredstar_contextual_appl_function. apply onestep. apply redex_contraction.
-    + simpl. assert (op =? init = false). { admit. } rewrite H. rewrite Nat.eqb_refl.
+    + simpl. assert (op =? init = false). {
+        rewrite Nat.eqb_sym. rewrite Heqinit. apply fresh_spec. simpl. rewrite Nat.eqb_refl.
+        reflexivity.
+      } rewrite H. rewrite Nat.eqb_refl.
       rewrite substitution_fresh_l. rewrite substitution_fresh_l.
       apply trans with (y := substitution (
         (Lappl (Lappl (lmlc TL) (lmlc FOO)) (Lappl (Lappl (lmlc FOO) (lmlc HD)) (Lvar init)))) (lmlc INIT) init).
       * apply onestep. apply redex_contraction.
       * simpl. rewrite Nat.eqb_refl. rewrite substitution_fresh_l. rewrite substitution_fresh_l.
         rewrite substitution_fresh_l. apply refl.
-      admit.
-      admit.
-      admit.
+        admit.
+        admit.
+        admit.
       * admit.
       * admit.
 (* fst case *)
