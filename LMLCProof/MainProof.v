@@ -642,10 +642,10 @@ Lappl (substitution (Labs 0 (church_int_free m)) (Lvar s) 1)
             intro Heqz. intro Heqs. rewrite Heqs in Heqz. assert (lt01 : 1 <=? 0 = false).
             { apply Nat.leb_nle. intro contra. inversion contra. } rewrite lt01 in Heqz. rewrite Heqz.
             intro contra; discriminate contra.
-(* minus case *)
-  - admit.
 (* times case *)
   - admit.
+(* minus case *)
+  - simpl. unfold church_minus.
 (* greather than zero case *)
   - destruct (0 <? n) eqn:ineqn.
     + simpl. apply Nat.ltb_lt in ineqn. apply Nat.succ_pred_pos in ineqn. remember (Nat.pred n) as n'.

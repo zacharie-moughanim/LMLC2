@@ -14,6 +14,15 @@ Inductive lambda_term : Type :=
   | Lappl (f : lambda_term) (arg : lambda_term)
   | Labs (x : var) (M : lambda_term).
 
+Fixpoint eql (M N : lambda_term) : bool := match M,N with
+  | Lvar x, Lvar y => x =? y
+  | Lappl M1 M2, Lappl N1 N2 => eql M1 N1 && eql M2 N2
+  | Labs x M', Labs y N' => (x =? y) && (eql M' N')
+  | _, _ => false
+end.
+
+Notation "M =?l N" := (eql M N) (at level 50).
+
 (* capture-avoiding substitution *)
 Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
   | Lvar y => if x =? y then N else Lvar y
@@ -46,6 +55,7 @@ Notation "M ml[ N / x ]" := (ml_substitution M N x) (at level 40).
 
 Lemma bredstar_cont_subst : forall (x : var) (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> substitution M N x ->b* substitution M' N' x.
 Proof. Admitted. (*not sure if that will be useful*)
+
 (* fresh variables *)
 
 Fixpoint fvL (M : lambda_term) : list var := match M with
@@ -133,14 +143,23 @@ Definition church_succ2 (N : lambda_term) : lambda_term :=
                   | Labs x N'' => Labs f (Labs x (Lappl (Lvar f) N''))
                   end)
 end.
-
+(* there is a problem with this... *)
 Definition church_pred (N : lambda_term) : lambda_term :=
   church_snd
-  (Lappl (Lappl N
-            (Labs 0 (Labs 1
-                          (Lappl (Lappl (Lvar 1) (church_succ2 (church_snd (Lvar 0))))
-                               (church_succ (church_snd (Lvar 0)))))))
-       (church_pair (church_int 0) (church_int 0))).
+  (
+    Lappl (Lappl N
+                 (Labs 2
+                       (Lappl (Lvar 2)
+                             (Labs 0 (Labs 1
+                                  (Labs 3
+                                       (Lappl (Lappl (Lvar 3) (church_succ (Lvar 1))) (Lvar 1)))
+                                )
+                             )
+                       )
+                 )
+          )
+          (church_pair (church_int 0) (church_int 0))
+  ).
 
 Definition church_plus (M N : lambda_term) (s z : var) : lambda_term :=
                                Labs s (Labs z (
@@ -169,17 +188,6 @@ Definition turing_fixpoint_half : lambda_term :=
 Definition turing_fixpoint : lambda_term := Lappl turing_fixpoint_half turing_fixpoint_half.
 
 Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (Lappl (turing_fixpoint) M).
-
-(** lemmas about constuctors *)
-
-(** substitution lemmas *)
-Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
-                                    substitution (Labs x M) N y = Labs x (substitution M N y).
-Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
-
-Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
-                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
-Proof. reflexivity. Qed.
 
 (** beta-reduction properties *)
 
@@ -264,6 +272,131 @@ Proof. intros *. intros neqxy HN HN'. induction M as [z | Mfun IHfun Marg IHarg 
         reflexivity.
 Qed.
 
+
+(** evaluator *)
+Fixpoint leftmost_outermost_beta_aux (M : lambda_term) : lambda_term * bool := match M with
+  | Lvar x => (Lvar x, false)
+  | Lappl (Labs x M') N' => (substitution M' N' x, true)
+  | Lappl M' N' => let res := (leftmost_outermost_beta_aux M') in
+    if snd res then
+      (Lappl (fst res) N', true)
+    else
+      let res' := leftmost_outermost_beta_aux N' in (Lappl M' (fst res'), snd res')
+  | Labs x M' => let res := leftmost_outermost_beta_aux M' in (Labs x (fst res), snd res)
+end.
+
+Definition leftmost_outermost_beta (M : lambda_term) : lambda_term :=
+      fst (leftmost_outermost_beta_aux M).
+
+Lemma modification_lmom_aux : forall (M : lambda_term), snd (leftmost_outermost_beta_aux M) = false ->
+                                                        M = leftmost_outermost_beta M.
+Proof. intros. induction M.
+  - unfold leftmost_outermost_beta. reflexivity.
+  - unfold leftmost_outermost_beta. simpl. destruct M1.
+    + simpl. simpl in H. apply IHM2 in H. unfold leftmost_outermost_beta in H.
+      rewrite <- H. reflexivity.
+    + destruct (snd (leftmost_outermost_beta_aux (Lappl M1_1 M1_2))) eqn:eq.
+      * simpl in H. simpl in eq. rewrite eq in H. inversion H.
+      * simpl. simpl in H. simpl in eq. rewrite eq in H. simpl in H. apply IHM2 in H.
+        unfold leftmost_outermost_beta in H. rewrite <- H. reflexivity.
+    + simpl in H. discriminate H.
+  - unfold leftmost_outermost_beta. simpl. apply IHM in H. unfold leftmost_outermost_beta in H. rewrite <- H.
+    reflexivity.
+Qed.
+
+Lemma first_let : forall {X Y} (p : X*Y), (let (x,_) := p in x) = fst p.
+Proof. intros; destruct p.
+       reflexivity. Qed.
+
+Lemma leftmost_subset_beta : forall (M : lambda_term), M ->b* (leftmost_outermost_beta M).
+Proof. induction M.
+  - unfold leftmost_outermost_beta. simpl. apply refl.
+  - unfold leftmost_outermost_beta. simpl. destruct M1.
+    + simpl. apply bredstar_contextual_appl_argument. apply IHM2.
+    + destruct (snd (leftmost_outermost_beta_aux (Lappl M1_1 M1_2))).
+      * unfold fst. apply bredstar_contextual_appl_function. rewrite first_let.
+        unfold leftmost_outermost_beta in IHM1. apply IHM1.
+      * simpl. apply bredstar_contextual_appl_argument. unfold leftmost_outermost_beta in IHM2.
+        apply IHM2.
+   + simpl. apply onestep. apply redex_contraction.
+  - unfold leftmost_outermost_beta. simpl. apply bredstar_contextual_abs. unfold leftmost_outermost_beta in IHM.
+    apply IHM.
+Qed.
+
+Lemma leftmost_step : forall (M N : lambda_term), leftmost_outermost_beta M ->b* N -> M ->b* N.
+Proof. intros. apply trans with (y := leftmost_outermost_beta M).
+  + apply leftmost_subset_beta.
+  + apply H.
+Qed.
+
+Lemma eql_eq : forall (M N : lambda_term), M = N <-> M =?l N = true.
+Proof. intros. split.
+  - generalize dependent M. induction N.
+    + intros M H; rewrite H. simpl. rewrite Nat.eqb_refl. reflexivity.
+    + intros M H; rewrite H. simpl. rewrite IHN1. rewrite IHN2. reflexivity.
+      reflexivity. reflexivity.
+    + intros M H. rewrite H. simpl. rewrite Nat.eqb_refl. simpl. rewrite IHN. reflexivity. reflexivity.
+  - Admitted.
+
+Inductive lambda_address : Type :=
+  | here
+  | function : lambda_address -> lambda_address
+  | argument : lambda_address -> lambda_address
+  | through_abs : lambda_address -> lambda_address.
+
+Fixpoint beta_red_address (M : lambda_term) (a : lambda_address) : lambda_term := match a, M with
+  | here, Lappl (Labs x M') N' => substitution M' N' x
+  | function a', Lappl M' N' => Lappl (beta_red_address M' a') N'
+  | argument a', Lappl M' N' => Lappl M' (beta_red_address N' a')
+  | through_abs a', Labs x M' => Labs x (beta_red_address M' a')
+  | _, _ => M
+end.
+
+Lemma beta_red_address_subset_beta : forall (M : lambda_term) (a : lambda_address),
+        M ->b* (beta_red_address M a).
+Proof. intros. generalize dependent M. induction a.
+  - destruct M.
+    + simpl. apply refl.
+    + simpl. destruct M1.
+      * apply refl.
+      * apply refl.
+      * apply onestep. apply redex_contraction.
+    + simpl. apply refl.
+  - destruct M.
+    + simpl. apply refl.
+    + simpl. apply bredstar_contextual_appl_function. apply IHa.
+    + simpl. apply refl.
+  - destruct M.
+    + apply refl.
+    + simpl. apply bredstar_contextual_appl_argument. apply IHa.
+    + apply refl.
+  - destruct M.
+    + apply refl.
+    + apply refl.
+    + simpl. apply bredstar_contextual_abs. apply IHa.
+Qed.
+
+Lemma adress_step : forall (M N : lambda_term) (a : lambda_address), (beta_red_address M a) ->b* N ->
+                                                                              M ->b* N.
+Proof. intros. apply trans with (y := beta_red_address M a).
+  + apply beta_red_address_subset_beta.
+  + apply H.
+Qed.
+
+(** lemmas about constuctors *)
+
+Lemma succ2_spec : forall (n : nat), church_succ2 (church_int n) = church_int (S n).
+Proof. intros. unfold church_succ2. unfold church_int. simpl. reflexivity. Qed.
+
+(** substitution lemmas *)
+Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
+                                    substitution (Labs x M) N y = Labs x (substitution M N y).
+Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
+
+Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
+                                    substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
+Proof. reflexivity. Qed.
+
 Lemma church_plus_is_plus : forall (n m : nat) (s z : var),
       s <> 0 -> z <> 1 -> s <> z ->
       (substitution (substitution (church_int_free m) (Lvar s) 1)
@@ -294,6 +427,33 @@ Proof. intros. induction m as [|m' IHm'].
       * apply refl.
       * apply IHm'.
 Qed.
+
+Lemma church_pred_free : forall (n : nat), (Lappl
+     (Lappl (church_int n)
+        (Labs 2
+           (Lappl (Lvar 2)
+              (Labs 0 (Labs 1 (Labs 3 (Lappl (Lappl (Lvar 3) (church_succ (Lvar 1))) (Lvar 1))))))))
+     (church_pair (church_int 0) (church_int 0))) ->b* church_pair (church_int n) (church_int (Nat.pred n)).
+Proof. induction n as [|n' IHn'].
+  - simpl. unfold church_int. unfold church_pred. unfold church_int_free.
+    apply leftmost_step. apply leftmost_step. apply leftmost_step. apply leftmost_step.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl. apply refl.
+  - simpl. unfold church_int. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+
+
+Lemma church_pred_is_pred : forall (n : nat), church_pred (church_int n) ->b* church_int (Nat.pred n).
+Proof. intros. destruct n as [|n'].
+  - simpl. unfold church_int. unfold church_pred. unfold church_int_free.
+    apply leftmost_step. apply leftmost_step. apply leftmost_step. apply leftmost_step.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl. apply refl.
+  - simpl. unfold church_pred. unfold church_int. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+    apply leftmost_step. unfold leftmost_outermost_beta. simpl.
+
 
 Lemma church_int_Sn : forall (n : nat), church_int_free (S n) = Lappl (Lvar 1) (church_int_free n).
 Proof. reflexivity. Qed.

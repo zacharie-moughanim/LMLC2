@@ -195,8 +195,8 @@ Inductive ml_reduction : ml_term -> ml_term -> Prop :=
   | fold_nil : forall (FOO INIT : ml_term), ml_reduction (Fold_right Nil FOO INIT) INIT
   | fold_cons : forall (HD TL FOO INIT : ml_term), ml_reduction (Fold_right (Cons HD TL) FOO INIT) (Fold_right TL FOO (Appl (Appl FOO HD) INIT))
 (* Pairs operations *)
-  | fst : forall (P1 P2 : ml_term), ml_reduction (Fst (Pair P1 P2)) P1
-  | snd : forall (P1 P2 : ml_term), ml_reduction (Snd (Pair P1 P2)) P2
+  | fst_red : forall (P1 P2 : ml_term), ml_reduction (Fst (Pair P1 P2)) P1
+  | snd_red : forall (P1 P2 : ml_term), ml_reduction (Snd (Pair P1 P2)) P2
 .
 
 Fixpoint ml_gen_to_ml (M : ml_term_gen) : ml_term := match M with
