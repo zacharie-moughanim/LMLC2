@@ -46,3 +46,5 @@ time-of-build-pretty.log
 
 CoqMakefile
 CoqMakefile.conf
+
+*.crashcoqide
