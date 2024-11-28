@@ -88,8 +88,14 @@ Example H3Modif : forall (n0 : nat) (h0 : lambda_term) (ht0 : lambda_term) (tlt0
      end.
 Proof. intros *. intro H3. apply H3. Qed.
 
-Lemma beta_alpha : forall (M M' N N' : lambda_term), M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
-Proof. intros. apply alpha_quot in H0. apply alpha_quot in H1. rewrite <- H0. rewrite <- H1.
+Lemma beta_alpha :
+  forall (M M' N N' : lambda_term),
+    M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
+Proof.
+  intros.
+  apply alpha_quot in H0.
+  apply alpha_quot in H1.
+  rewrite <- H0, <- H1.
   apply H. Qed.
 
 Lemma beta_alpha_toplvl : forall (M N : lambda_term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
