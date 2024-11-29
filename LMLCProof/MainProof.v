@@ -37,7 +37,8 @@ From LMLCProof Require Import Utils Source Object Transpiler.
 
 (** Beta-Reduction properties *)
 
-Lemma beta_red_is_reflexive : reflexive lambda_term (beta_star).
+Lemma beta_red_is_reflexive:
+  reflexive term (beta_star).
 Proof. unfold reflexive. intro x. unfold beta_star. apply refl.
 Qed.
 
@@ -69,7 +70,7 @@ Proof.
   - reflexivity.
 Qed.
 
-Example H3Modif : forall (n0 : nat) (h0 : lambda_term) (ht0 : lambda_term) (tlt0 : list lambda_term),
+Example H3Modif : forall (n0 : nat) (h0 : term) (ht0 : term) (tlt0 : list term),
      (forall n : nat,
      match find_opt (h0 :: ht0 :: tlt0) n with
      | Some a =>
@@ -89,7 +90,7 @@ Example H3Modif : forall (n0 : nat) (h0 : lambda_term) (ht0 : lambda_term) (tlt0
 Proof. intros *. intro H3. apply H3. Qed.
 
 Lemma beta_alpha :
-  forall (M M' N N' : lambda_term),
+  forall (M M' N N' : term),
     M ->b* N -> M ~a M' -> N ~a N' -> M' ->b* N'.
 Proof.
   intros.
@@ -98,7 +99,7 @@ Proof.
   rewrite <- H0, <- H1.
   apply H. Qed.
 
-Lemma beta_alpha_toplvl : forall (M N : lambda_term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
+Lemma beta_alpha_toplvl : forall (M N : term) (x y z : var), ~(In z (fvL M)) -> ~(In z (fvL N)) ->
         Labs z (substitution M (Lvar z) x) ->b* Labs z (substitution N (Lvar z) y) -> Labs x M ->b* Labs y N.
 Proof. intros M N x y z H G H0. apply beta_alpha with (M := Labs z (substitution M (Lvar z) x)) (N := Labs z (substitution N (Lvar z) y)).
   - apply H0.

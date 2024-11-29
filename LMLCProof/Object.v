@@ -1,201 +1,354 @@
 From Coq Require Import Lists.List.
-Require Import PeanoNat.
+Require Import PeanoNat Lia.
 Import ListNotations.
 Require Export Coq.Classes.Init.
 Require Import Coq.Program.Basics.
 Require Import Coq.Program.Tactics.
 Require Import Coq.Relations.Relation_Definitions.
-Require Import Relation_Definitions.
+Require Import Coq.Relations.Relation_Operators.
+Require Import Coq.Classes.RelationClasses.
 
-From LMLCProof Require Import Utils Source.
+From LMLCProof Require Import Utils.
 
-Inductive lambda_term : Type :=
+(** * Simple Formalization of the Pure Lambda Calculus *)
+
+Definition var : Type := nat.
+
+(** Lambda Terms *)
+Inductive term : Type :=
   | Lvar (x : var)
-  | Lappl (f : lambda_term) (arg : lambda_term)
-  | Labs (x : var) (M : lambda_term).
+  | Lappl (f : term) (arg : term)
+  | Labs (x : var) (M : term).
 
-Fixpoint eql (M N : lambda_term) : bool := match M,N with
-  | Lvar x, Lvar y => x =? y
-  | Lappl M1 M2, Lappl N1 N2 => eql M1 N1 && eql M2 N2
-  | Labs x M', Labs y N' => (x =? y) && (eql M' N')
-  | _, _ => false
+(** Decidable Equality *)
+Lemma eq_dec:
+  forall (e1 e2 : term), {e1 = e2} + {e1 <> e2}.
+Proof.
+  do 2 decide equality.
+Defined.
+
+Notation "M =? N" := (eq_dec M N).
+
+(** Capture-avoiding substitution *)
+Fixpoint substitution (M N : term) (x : var) : term :=
+  match M with
+  | Lvar y =>
+    if Nat.eq_dec x y then N else Lvar y
+  | Labs y M' =>
+    if Nat.eq_dec x y then Labs y M' else Labs y (substitution M' N x)
+  | Lappl M' N' =>
+    Lappl (substitution M' N x) (substitution N' N x)
 end.
 
-Notation "M =?l N" := (eql M N) (at level 50).
+(** ** Small-step, Right-to-left, Call-by-value Semantics *)
 
-(* capture-avoiding substitution *)
-Fixpoint substitution (M N : lambda_term) (x : var) : lambda_term := match M with
-  | Lvar y => if x =? y then N else Lvar y
-  | Labs y M' => if x =? y then Labs y M' else Labs y (substitution M' N x)
-  | Lappl M' N' => Lappl (substitution M' N x) (substitution N' N x)
-end.
+(** Values are irreducible terms (lambdas, and variables) *)
+Inductive is_value : term -> Prop :=
+  | Lvar_is_value x   : is_value (Lvar x)
+  | Labs_is_value x e : is_value (Labs x e).
 
-Inductive beta_reduction : lambda_term -> lambda_term -> Prop :=
-  | contextual_lambda : forall (x : var) (M N : lambda_term), beta_reduction M N -> beta_reduction (Labs x M) (Labs x N)
-  | contextual_function : forall (M N M' : lambda_term), beta_reduction M M' -> beta_reduction (Lappl M N) (Lappl M' N)
-  | contextual_argument : forall (M N N' : lambda_term), beta_reduction N N' -> beta_reduction (Lappl M N) (Lappl M N')
-  | redex_contraction : forall (x : var) (M N : lambda_term), beta_reduction (Lappl (Labs x M) N) (substitution M N x)
-.
+Inductive step_cbv : term -> term -> Prop :=
+  | step_Lappl_r e1 e2 e2':
+    step_cbv e2 e2' ->
+    step_cbv (Lappl e1 e2) (Lappl e1 e2')
 
-Inductive refl_trans_closure {X} (R : X -> X -> Prop) : X -> X -> Prop :=
-  | refl : forall (x : X), refl_trans_closure R x x
-  | trans : forall (x y z: X), refl_trans_closure R x y -> refl_trans_closure R y z -> refl_trans_closure R x z
-  | onestep : forall (x y : X), R x y -> refl_trans_closure R x y
-.
+  | step_Lappl_l e1 e1' e2:
+    is_value e2 ->
+    step_cbv e1 e1' ->
+    step_cbv (Lappl e1 e2) (Lappl e1' e2)
 
-Definition beta_star := refl_trans_closure beta_reduction.
-Definition ml_red_star := refl_trans_closure ml_reduction.
-Notation "M ->b N" := (beta_reduction M N) (at level 50).
-Notation "M ->ml N" := (ml_reduction M N) (at level 50).
+  | step_beta x e1 e2 :
+    is_value e2 ->
+    step_cbv (Lappl (Labs x e1) e2) (substitution e1 e2 x).
 
-Notation "M ->b* N" := (beta_star M N) (at level 50).
-Notation "M ->ml* N" := (ml_red_star M N) (at level 50).
-Notation "M [ N / x ]" := (substitution M N x) (at level 40).
-Notation "M ml[ N / x ]" := (ml_substitution M N x) (at level 40).
+(** ** Big-step, Right-to-left, Call-by-value Semantics *)
+Inductive eval_cbv : term -> term -> Prop :=
+  | eval_value e:
+    is_value e -> eval_cbv e e
 
-Lemma bredstar_cont_subst : forall (x : var) (M M' N N' : lambda_term), M ->b* M' -> N ->b* N' -> substitution M N x ->b* substitution M' N' x.
-Proof. Admitted. (*not sure if that will be useful*)
+  | eval_Lapp e1 x e1' e2 e2' v:
+    eval_cbv e1 (Labs x e1') ->
+    eval_cbv e2 e2' ->
+    eval_cbv (substitution e1' e2' x) v ->
+    eval_cbv (Lappl e1 e2) v.
 
-(* fresh variables *)
-
-Fixpoint fvL (M : lambda_term) : list var := match M with
-  | Lvar x => [x]
-  | Labs x M' => remove_nat (fvL M') x
-  | Lappl M' N' => (fvL M') ++ (fvL N')
-end.
-
-Inductive alpha_equivalence : lambda_term -> lambda_term -> Prop :=
-  | alpha_context_var : forall (x : var), alpha_equivalence (Lvar x) (Lvar x)
-  | alpha_context_labs : forall (M : lambda_term) (N : lambda_term) (x:var), alpha_equivalence M N -> alpha_equivalence (Labs x M) (Labs x N)
-  | alpha_context_appl : forall (M : lambda_term) (N : lambda_term) (M' : lambda_term) (N' : lambda_term),
-                                alpha_equivalence M M' -> alpha_equivalence N N' ->
-                                                              alpha_equivalence (Lappl M N) (Lappl M' N')
-  | alpha_rename : forall (M N new_N : lambda_term) (x new_x:var), ~(In new_x (fvL N)) -> alpha_equivalence M N ->
-                          new_N = substitution N (Lvar new_x) x  -> alpha_equivalence (Labs x M) (Labs new_x new_N).
-
-Notation "M ~a N" := (alpha_equivalence M N) (at level 50).
-
-Lemma alpha_refl : forall (M : lambda_term), M ~a M.
-Proof. induction M.
-  - apply alpha_context_var.
-  - apply alpha_context_appl. apply IHM1. apply IHM2.
-  - apply alpha_context_labs. apply IHM.
+(** The big-step semantics always produces irreducible terms (values) *)
+Theorem eval_to_value:
+  forall e v, eval_cbv e v -> is_value v.
+Proof.
+  induction 1; auto.
 Qed.
 
-Lemma alpha_sym : forall (M N : lambda_term), M ~a N -> N ~a M.
-Proof. Admitted. (*not sure if that will be useful*)
+Definition steps := clos_refl_trans_1n _ step_cbv.
 
-Axiom alpha_quot : forall (M N : lambda_term), M ~a N -> M = N.
-
-Lemma fresh_of_fresh_is_fresh : forall (x : nat) (l : list nat), x = fresh l -> in_list l (fresh [x]) = false.
-Proof. assert (forall l  y,  in_list l y = true -> y < (fresh l)). { intros l y G. unfold fresh. apply fresh_aux_spec2. apply G. }
-       assert (forall l x y, in_list l y = true -> fresh l <= x -> y < x). { intros. apply Lt.lt_le_trans with (m := fresh l). apply H. apply H0. apply H1. }
-       clear H. intros x l G. apply not_in_neq. intros. apply Nat.lt_neq. apply (H0 l).
-       apply H. rewrite <- G. apply Nat.lt_le_incl. apply (H0 [x]). simpl. rewrite Nat.eqb_refl. reflexivity.
-       apply Le.le_refl.
+Instance steps_refl:
+  Reflexive steps.
+Proof.
+  intros x. apply rt1n_refl.
 Qed.
 
-Lemma fresh_spec_2 : forall (l : list nat), in_list l (fresh l) = false.
-Proof. intros. destruct (in_list l (fresh l)) eqn:eq.
-  - unfold fresh in eq. apply fresh_aux_spec2 with (n := 0) in eq.
-    exfalso. apply Nat.lt_irrefl in eq. apply eq.
+Instance steps_trans:
+  Transitive steps.
+Proof.
+  intros x y z Hxy Hyz.
+  induction Hxy as [ | x y y' Hy'z Hyy' IH ]; auto.
+  apply IH in Hyz.
+  eapply rt1n_trans; eauto.
+Qed.
+
+Theorem steps_Lapp_l:
+  forall e1 e1' e2,
+    is_value e2 ->
+    steps e1 e1' ->
+    steps (Lappl e1 e2) (Lappl e1' e2).
+Proof.
+  induction 2.
   - reflexivity.
+  - eapply rt1n_trans; eauto.
+    apply step_Lappl_l; eauto.
 Qed.
 
-(* Basic terms constructors *)
+Theorem steps_Lapp_r:
+  forall e1 e2 e2',
+    steps e2 e2' ->
+    steps (Lappl e1 e2) (Lappl e1 e2').
+Proof.
+  induction 1.
+  - reflexivity.
+  - eapply rt1n_trans; eauto.
+    eapply step_Lappl_r; eauto.
+Qed.
 
-(* Boolean *)
+(** ** Correspondance betwen Big-step and Small-step *)
+Theorem eval_implies_steps:
+  forall e v, eval_cbv e v -> steps e v.
+Proof.
+  induction 1.
+  - reflexivity.
+  - assert (Hval : is_value e2') by (eapply eval_to_value; eauto).
+    etransitivity.
+    eapply steps_Lapp_r; eauto.
+    etransitivity.
+    eapply steps_Lapp_l; eauto.
+    etransitivity; eauto.
+    eapply rt1n_trans.
+    apply step_beta; eauto.
+    reflexivity.
+Qed.
+
+Theorem step_eval:
+  forall e1 e2 v,
+    step_cbv e1 e2 -> eval_cbv e2 v -> eval_cbv e1 v.
+Proof.
+  intros e1 e2 v Hstep. revert v.
+  induction Hstep as [ e1 e2 e2' Hstep IH | | ]; intros v.
+  - intros Heval. inversion Heval; subst; try easy.
+    econstructor; eauto.
+  - intros Heval. inversion Heval; subst; try easy.
+    econstructor; eauto.
+  - intros Heval. econstructor; eauto.
+    apply eval_value. now constructor.
+    now apply eval_value.
+Qed.
+
+Theorem steps_eval:
+  forall e1 e2 v,
+    steps e1 e2 -> eval_cbv e2 v -> eval_cbv e1 v.
+Proof.
+  intros e1 e2 v H Heval.
+  induction H as [ | e1 e1' e2 H1 H2 IH ]; auto.
+  specialize (IH Heval).
+  eapply step_eval; eauto.
+Qed.
+
+Theorem steps_imlpies_eval:
+  forall e v, steps e v -> is_value v -> eval_cbv e v.
+Proof.
+  induction 1; intros.
+  - now apply eval_value.
+  - specialize (IHclos_refl_trans_1n H1).
+    eapply steps_eval; eauto.
+    eapply rt1n_trans; eauto.
+    reflexivity.
+Qed.
+
+Notation "M ->b N" := (step_cbv M N) (at level 50).
+Notation "M ->b* N" := (steps M N) (at level 50).
+
+(** ** fresh variables *)
+
+Fixpoint is_free (M : term) (x : var) : Prop :=
+  match M with
+  | Lvar y => x = y
+  | Labs y M => x <> y /\ is_free M x
+  | Lappl M N => is_free M x \/ is_free N x
+  end.
+
+Fixpoint fresh (M : term) : var :=
+  match M with
+  | Lvar x => S x
+  | Labs x M => fresh M
+  | Lappl M N => max (fresh M) (fresh N)
+  end.
+
+Definition is_fresh (M : term) (x : var) : Prop :=
+  ~is_free M x.
+
+Theorem fresh_gt_free:
+  forall M x, is_free M x -> fresh M > x.
+Proof.
+  induction M; intros y Hy; simpl in *.
+  - lia.
+  - destruct Hy as [Hy%IHM1 | Hy%IHM2]; lia.
+  - now destruct Hy as [_ H2%IHM].
+Qed.
+
+Theorem fresh_is_fresh:
+  forall M, is_fresh M (fresh M).
+Proof.
+  intros M Hx%fresh_gt_free. lia.
+Qed.
+
+(** ** Curch Encodings of Basic Datatypes *)
+
+(** *** Booleans *)
+
 Definition church_true := Labs 0 (Labs 1 (Lvar 0)).
+
 Definition church_false := Labs 0 (Labs 1 (Lvar 1)).
-Definition church_if (c t e : lambda_term) := Lappl (Lappl c t) e.
-Definition church_and (b1 b2 : lambda_term) := church_if b1 b2 church_false.
-Definition church_or (b1 b2 : lambda_term) := church_if b1 church_true b2.
 
-(* Pairs *)
+Definition church_if (c t e : term) := Lappl (Lappl c t) e.
 
-Definition church_pair (M : lambda_term) (N : lambda_term) : lambda_term :=
-  let x := fresh ((fvL M) ++ (fvL N)) in
+Definition church_and (b1 b2 : term) := church_if b1 b2 church_false.
+
+Definition church_or (b1 b2 : term) := church_if b1 church_true b2.
+
+(** *** Pairs *)
+
+Definition church_pair (M : term) (N : term) : term :=
+  let x := max (fresh M) (fresh N) in
   Labs x (Lappl (Lappl (Lvar x) M) N).
-Definition church_fst (P : lambda_term) : lambda_term := Lappl P (Labs 0 (Labs 1 (Lvar 0))).
-Definition church_snd (P : lambda_term) : lambda_term := Lappl P (Labs 0 (Labs 1 (Lvar 1))).
 
-(* Integer *)
-Fixpoint church_int_free (n : nat) : lambda_term := match n with
+Definition church_fst (P : term) : term := Lappl P (Labs 0 (Labs 1 (Lvar 0))).
+
+Definition church_snd (P : term) : term := Lappl P (Labs 0 (Labs 1 (Lvar 1))).
+
+(** *** Integers *)
+
+Definition church_zero : term :=
+  Labs 1 (Labs 0 (Lvar 0)).
+
+Definition church_succ (n : term) : term :=
+  let x := fresh n in
+  let f := S x in
+  Labs f (Labs x (Lappl (Lvar f) (Lappl (Lappl n (Lvar f)) (Lvar x)))).
+
+Fixpoint church_nat (n : nat) : term :=
+  match n with
+  | 0   => church_zero
+  | S n => church_succ (church_nat n)
+  end.
+
+(* 
+
+Fixpoint church_int_free (n : nat) : term :=
+  match n with
   | 0 => Lvar 0
   | S n' => Lappl (Lvar 1) (church_int_free n')
 end.
-Definition church_int (n : nat) : lambda_term := Labs 1 (Labs 0 (church_int_free n)).
-Definition church_succ (N : lambda_term) : lambda_term :=
-    Labs 2 (Labs 0 (Labs 1 (
-            (Lappl (Lvar 2)
-                  (Lappl (Lappl (Lvar 2)
-                              (Lvar 0))
-                  (Lvar 1))
-            )
-           ))).
-Definition church_succ2 (N : lambda_term) : lambda_term :=
+
+Definition church_int (n : nat) : term :=
+  Labs 1 (Labs 0 (church_int_free n)).
+
+Definition church_succ (N : term) : term :=
+    Labs 2 (Labs 0 (Labs 1 ((Lappl (Lvar 2) (Lappl (Lappl (Lvar 2) (Lvar 0)) (Lvar 1)))))).
+
+Definition church_succ2 (N : term) : term :=
   match N with
   | Lvar _ => N
   | Lappl _ _ => N
-  | Labs f N' => (match N' with
-                  | Lvar _ => N
-                  | Lappl _ _ => N
-                  | Labs x N'' => Labs f (Labs x (Lappl (Lvar f) N''))
-                  end)
+  | Labs f N' =>
+    match N' with
+    | Lvar _ => N
+    | Lappl _ _ => N
+    | Labs x N'' => Labs f (Labs x (Lappl (Lvar f) N''))
+    end
 end.
+
 (* there is a problem with this... *)
-Definition church_pred (N : lambda_term) : lambda_term :=
+Definition church_pred (N : term) : term :=
   church_snd
-  (
-    Lappl (Lappl N
-                 (Labs 2
-                       (Lappl (Lvar 2)
-                             (Labs 0 (Labs 1
-                                  (Labs 3
-                                       (Lappl (Lappl (Lvar 3) (church_succ (Lvar 1))) (Lvar 1)))
-                                )
-                             )
-                       )
-                 )
-          )
-          (church_pair (church_int 0) (church_int 0))
-  ).
+  (Lappl (Lappl N (Labs 2 (Lappl (Lvar 2) (Labs 0 (Labs 1 (Labs 3 (Lappl (Lappl (Lvar 3) (church_succ (Lvar 1))) (Lvar 1)))))))) (church_pair (church_int 0) (church_int 0))).
 
-Definition church_plus (M N : lambda_term) (s z : var) : lambda_term :=
-                               Labs s (Labs z (
-                                                 Lappl (Lappl N (Lvar s))
-                                                       (Lappl (Lappl M (Lvar s))
-                                                              (Lvar z)))
-                                              ).
-Definition church_minus (M N : lambda_term) : lambda_term :=
-      Lappl (Lappl M (Labs 0 (church_pred (Lvar 0)))) N.
+Definition church_plus (M N : term) (s z : var) : term :=
+  Labs s (Labs z (Lappl (Lappl N (Lvar s)) (Lappl (Lappl M (Lvar s)) (Lvar z)))).
 
-Definition church_times (M N : lambda_term) : lambda_term :=
-let x := fresh ((fvL M) ++ (fvL N)) in let y := fresh [x] in
-                               Labs x (Labs y (
-                                                 Lappl (Lappl N (Lvar x))
-                                                       (Lappl (Lappl M (Lvar x))
-                                                              (Lvar y)))
-                                              ).
+Definition church_minus (M N : term) : term :=
+  Lappl (Lappl M (Labs 0 (church_pred (Lvar 0)))) N.
 
-Definition church_gtz (M : lambda_term) : lambda_term := Lappl (Lappl M (Labs 0 church_true)) (church_false).
+Definition church_times (M N : term) : term :=
+  let x := max (fresh M) (fresh N) in
+  let y := S x in
+  Labs x (Labs y (Lappl (Lappl N (Lvar x)) (Lappl (Lappl M (Lvar x)) (Lvar y)))).
 
-(* Turing fixpoint *)
+Definition church_gtz (M : term) : term :=
+  Lappl (Lappl M (Labs 0 church_true)) church_false.
 
-Definition turing_fixpoint_half : lambda_term := 
-                        Labs 1 (Labs 0 (Lappl (Lvar 0) (Lappl (Lappl (Lvar 1) (Lvar 1)) (Lvar 0)))).
+*)
 
-Definition turing_fixpoint : lambda_term := Lappl turing_fixpoint_half turing_fixpoint_half.
+(** *** Turing fixpoint *)
 
-Definition turing_fixpoint_applied (M : lambda_term) : lambda_term := Lappl M (Lappl (turing_fixpoint) M).
+Definition turing_fixpoint_half : term := 
+  Labs 1 (Labs 0 (Lappl (Lvar 0) (Lappl (Lappl (Lvar 1) (Lvar 1)) (Lvar 0)))).
+
+Definition turing_fixpoint : term :=
+  Lappl turing_fixpoint_half turing_fixpoint_half.
+
+Definition turing_fixpoint_applied (M : term) : term :=
+  Lappl M (Lappl (turing_fixpoint) M).
+
+Lemma step_steps:
+  forall e1 e2, step_cbv e1 e2 -> steps e1 e2.
+Proof.
+  intros e1 e2 H.
+  eapply rt1n_trans; eauto.
+  reflexivity.
+Qed.
+
+Notation "'λ' x ';' e" := (Labs x e) (at level 90).
+Notation "'⟨' e1 e2 '⟩'" := (Lappl e1 e2) (at level 90).
+Notation "'#' n" := (Lvar n) (at level 90).
+
+Lemma turing_fixpoint_is_fp:
+  forall f y,
+    is_value f ->
+    is_value y ->
+    Lappl (Lappl turing_fixpoint f) y ->b*
+    Lappl (Lappl f (Lappl turing_fixpoint f)) y.
+Proof.
+  intros f x Hf Hx.
+  etransitivity.
+  eapply steps_Lapp_l; auto.
+  eapply steps_Lapp_l; auto.
+  unfold turing_fixpoint.
+  eapply rt1n_trans.
+  eapply step_beta. constructor.
+  reflexivity. simpl.
+  etransitivity.
+  eapply steps_Lapp_l; auto.
+  eapply step_steps.
+  apply step_beta; auto.
+  simpl. reflexivity.
+Qed.
+
 
 (** beta-reduction properties *)
 
-Lemma beta_red_is_transitive : transitive lambda_term (beta_star).
+(* Lemma beta_red_is_transitive : transitive term (beta_star).
 Proof. unfold transitive. intros *. unfold beta_star. apply trans. Qed.
 
 Lemma bredstar_contextual_abs :
-  forall (x : var) (M M': lambda_term), M ->b* M' -> Labs x M ->b* Labs x M'.
+  forall (x : var) (M M': term), M ->b* M' -> Labs x M ->b* Labs x M'.
 Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep].
   - apply refl.
   - apply trans with (y := Labs x M2).
@@ -205,7 +358,7 @@ Proof. intros. induction H as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M N Honestep]
 Qed.
 
 Lemma bredstar_contextual_appl_function :
-  forall (M M' N : lambda_term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
+  forall (M M' N : term), M ->b* M' -> Lappl M N ->b* Lappl M' N.
 Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHred2|M M' Honestep].
   - apply refl.
   - apply trans with (y := Lappl M2 N).
@@ -215,7 +368,7 @@ Proof. intros *. intros red. induction red as [M'|M1 M2 M3 Red1 IHred1 Red2 IHre
 Qed.
 
 Lemma bredstar_contextual_appl_argument :
-  forall (M N N': lambda_term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
+  forall (M N N': term), N ->b* N' -> Lappl M N ->b* Lappl M N'.
 Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHred2|N N' Honestep].
   - apply refl.
   - apply trans with (y := Lappl M N2).
@@ -225,14 +378,14 @@ Proof. intros *. intros red.  induction red as [N'|N1 N2 N3 Red1 IHred1 Red2 IHr
 Qed.
 
 Lemma bredstar_contextual_appl :
-  forall (M M' N N': lambda_term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
+  forall (M M' N N': term), M ->b* M' -> N ->b* N' -> Lappl M N ->b* Lappl M' N'.
 Proof. intros *. intros redlhs redrhs. apply trans with (y := Lappl M' N).
   - apply bredstar_contextual_appl_function. apply redlhs.
   - apply bredstar_contextual_appl_argument. apply redrhs.
 Qed.
 
 
-Lemma substitution_fresh_l : forall (M N : lambda_term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
+Lemma substitution_fresh_l : forall (M N : term) (x : var), in_list (fvL M) x = false -> substitution M N x = M.
 Proof. intros M P x H. induction M as [y | M IHM N IHN | y M IHM].
   - simpl. simpl in H. destruct (x =? y).
     + inversion H.
@@ -247,7 +400,7 @@ Proof. intros M P x H. induction M as [y | M IHM N IHN | y M IHM].
 Qed.
 
 
-Lemma substitution_comm : forall (x y : var) (M N N' : lambda_term),
+Lemma substitution_comm : forall (x y : var) (M N N' : term),
       x <> y -> in_list (fvL N) y = false -> in_list (fvL N') x = false ->
       substitution (substitution M N x) N' y = substitution (substitution M N' y) N x.
 Proof. intros *. intros neqxy HN HN'. induction M as [z | Mfun IHfun Marg IHarg | z M' IHabs].
@@ -274,7 +427,7 @@ Qed.
 
 
 (** evaluator *)
-Fixpoint leftmost_outermost_beta_aux (M : lambda_term) : lambda_term * bool := match M with
+Fixpoint leftmost_outermost_beta_aux (M : term) : term * bool := match M with
   | Lvar x => (Lvar x, false)
   | Lappl (Labs x M') N' => (substitution M' N' x, true)
   | Lappl M' N' => let res := (leftmost_outermost_beta_aux M') in
@@ -285,10 +438,10 @@ Fixpoint leftmost_outermost_beta_aux (M : lambda_term) : lambda_term * bool := m
   | Labs x M' => let res := leftmost_outermost_beta_aux M' in (Labs x (fst res), snd res)
 end.
 
-Definition leftmost_outermost_beta (M : lambda_term) : lambda_term :=
+Definition leftmost_outermost_beta (M : term) : term :=
       fst (leftmost_outermost_beta_aux M).
 
-Lemma modification_lmom_aux : forall (M : lambda_term), snd (leftmost_outermost_beta_aux M) = false ->
+Lemma modification_lmom_aux : forall (M : term), snd (leftmost_outermost_beta_aux M) = false ->
                                                         M = leftmost_outermost_beta M.
 Proof. intros. induction M.
   - unfold leftmost_outermost_beta. reflexivity.
@@ -308,7 +461,7 @@ Lemma first_let : forall {X Y} (p : X*Y), (let (x,_) := p in x) = fst p.
 Proof. intros; destruct p.
        reflexivity. Qed.
 
-Lemma leftmost_subset_beta : forall (M : lambda_term), M ->b* (leftmost_outermost_beta M).
+Lemma leftmost_subset_beta : forall (M : term), M ->b* (leftmost_outermost_beta M).
 Proof. induction M.
   - unfold leftmost_outermost_beta. simpl. apply refl.
   - unfold leftmost_outermost_beta. simpl. destruct M1.
@@ -323,13 +476,13 @@ Proof. induction M.
     apply IHM.
 Qed.
 
-Lemma leftmost_step : forall (M N : lambda_term), leftmost_outermost_beta M ->b* N -> M ->b* N.
+Lemma leftmost_step : forall (M N : term), leftmost_outermost_beta M ->b* N -> M ->b* N.
 Proof. intros. apply trans with (y := leftmost_outermost_beta M).
   + apply leftmost_subset_beta.
   + apply H.
 Qed.
 
-Lemma eql_eq : forall (M N : lambda_term), M = N <-> M =?l N = true.
+Lemma eql_eq : forall (M N : term), M = N <-> M =?l N = true.
 Proof. intros. split.
   - generalize dependent M. induction N.
     + intros M H; rewrite H. simpl. rewrite Nat.eqb_refl. reflexivity.
@@ -344,7 +497,7 @@ Inductive lambda_address : Type :=
   | argument : lambda_address -> lambda_address
   | through_abs : lambda_address -> lambda_address.
 
-Fixpoint beta_red_address (M : lambda_term) (a : lambda_address) : lambda_term := match a, M with
+Fixpoint beta_red_address (M : term) (a : lambda_address) : term := match a, M with
   | here, Lappl (Labs x M') N' => substitution M' N' x
   | function a', Lappl M' N' => Lappl (beta_red_address M' a') N'
   | argument a', Lappl M' N' => Lappl M' (beta_red_address N' a')
@@ -352,7 +505,7 @@ Fixpoint beta_red_address (M : lambda_term) (a : lambda_address) : lambda_term :
   | _, _ => M
 end.
 
-Lemma beta_red_address_subset_beta : forall (M : lambda_term) (a : lambda_address),
+Lemma beta_red_address_subset_beta : forall (M : term) (a : lambda_address),
         M ->b* (beta_red_address M a).
 Proof. intros. generalize dependent M. induction a.
   - destruct M.
@@ -376,7 +529,7 @@ Proof. intros. generalize dependent M. induction a.
     + simpl. apply bredstar_contextual_abs. apply IHa.
 Qed.
 
-Lemma adress_step : forall (M N : lambda_term) (a : lambda_address), (beta_red_address M a) ->b* N ->
+Lemma adress_step : forall (M N : term) (a : lambda_address), (beta_red_address M a) ->b* N ->
                                                                               M ->b* N.
 Proof. intros. apply trans with (y := beta_red_address M a).
   + apply beta_red_address_subset_beta.
@@ -389,11 +542,11 @@ Lemma succ2_spec : forall (n : nat), church_succ2 (church_int n) = church_int (S
 Proof. intros. unfold church_succ2. unfold church_int. simpl. reflexivity. Qed.
 
 (** substitution lemmas *)
-Lemma subst_lambda_cont : forall (M N : lambda_term) (x y : var), x <> y ->
+Lemma subst_lambda_cont : forall (M N : term) (x y : var), x <> y ->
                                     substitution (Labs x M) N y = Labs x (substitution M N y).
 Proof. intros. simpl. apply Nat.eqb_neq in H. rewrite Nat.eqb_sym. rewrite H. reflexivity. Qed.
 
-Lemma subst_appl_cont : forall (M N P : lambda_term) (x : var),
+Lemma subst_appl_cont : forall (M N P : term) (x : var),
                                     substitution (Lappl M N) P x = Lappl (substitution M P x) (substitution N P x).
 Proof. reflexivity. Qed.
 
@@ -473,4 +626,4 @@ Proof. intro n. induction n as [|n'].
     + simpl. apply trans with (y := substitution church_true church_true 0).
       * apply onestep; apply redex_contraction.
       * simpl. apply refl.
-Qed.
+Qed. *)

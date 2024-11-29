@@ -1,5 +1,4 @@
 -Q . LMLCProof
-./Object.v
 ./Source.v
-./Transpiler.v
 ./Utils.v
+./Object.v
