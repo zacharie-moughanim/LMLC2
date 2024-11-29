@@ -2,17 +2,10 @@ Require Import PeanoNat.
 From Coq Require Import Lists.List.
 
 Fixpoint find_opt {X : Type} (l : list X) (n : nat) : option X :=
-  match n with
-  | 0 =>
-    match l with
-    | nil => None
-    | cons hd tl => Some hd
-    end
-  | S n' =>
-    match l with
-    | nil => None
-    | cons hd tl => find_opt tl n'
-    end
+  match n, l with
+  | 0, cons hd tl => Some hd
+  | S n', cons hd tl => find_opt tl n'
+  | _, _ => None
 end.
 
 Notation "x :: l" := (cons x l)
